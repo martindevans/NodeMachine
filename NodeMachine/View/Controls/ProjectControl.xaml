@@ -1,0 +1,70 @@
+﻿<UserControl x:Class="NodeMachine.View.Controls.ProjectControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock 
+            x:Name="ProjectName"
+            Grid.Column="0"
+            VerticalAlignment="Center"
+            Text="{Binding Path=ProjectManager.CurrentProject.Name, FallbackValue='No Project'}"
+            FontWeight="Light"
+            Foreground="{DynamicResource WindowTitleColorBrush}"
+            FontSize="24"
+            FontFamily="Segoe UI" 
+            Padding="12 0 0 0">
+            <TextBlock.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Click="OpenProjectInExplorer" Header="Open In Explorer"></MenuItem>
+                </ContextMenu>
+            </TextBlock.ContextMenu>
+        </TextBlock>
+        
+        <StackPanel Orientation="Horizontal" Height="Auto" Grid.Row="1" Grid.Column="0">
+            <Button Style="{DynamicResource MetroCircleButtonStyle}" Width="50" Height="50" ToolTip="New Project" Click="NewProject">
+                <Rectangle Width="25" Height="25">
+                    <Rectangle.Fill>
+                        <VisualBrush Stretch="UniformToFill" Visual="{StaticResource appbar_new}" />
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Button>
+            <Button Style="{DynamicResource MetroCircleButtonStyle}" Width="50" Height="50" ToolTip="Save" Click="SaveProject">
+                <Rectangle Width="25" Height="25">
+                    <Rectangle.Fill>
+                        <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_save}" />
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Button>
+            <Button Style="{DynamicResource MetroCircleButtonStyle}" Width="50" Height="50" ToolTip="Open" Click="OpenProject">
+                <Rectangle Width="25" Height="25" >
+                    <Rectangle.Fill>
+                        <VisualBrush Stretch="UniformToFill" Visual="{StaticResource appbar_folder_open}" />
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Button>
+            <Button Style="{DynamicResource MetroCircleButtonStyle}" Width="50" Height="50" ToolTip="Reload" Click="ReloadProject">
+                <Rectangle Width="25" Height="25" >
+                    <Rectangle.Fill>
+                        <VisualBrush Stretch="UniformToFill" Visual="{StaticResource appbar_refresh}" />
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

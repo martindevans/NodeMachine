@@ -1,0 +1,91 @@
+﻿<controls:MetroWindow x:Class="NodeMachine.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
+        xmlns:dockablz="clr-namespace:Dragablz.Dockablz;assembly=Dragablz"
+        Height="350" Width="525"
+        Margin="15"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        BorderBrush="{DynamicResource AccentColorBrush}"
+        BorderThickness="1"
+        Title="NODE/MACHINE"
+>
+    <controls:MetroWindow.RightWindowCommands>
+        <controls:WindowCommands>
+            <Button x:Name="RefreshConnection" Click="OnRefreshConnectionClick">
+                <Button.Content>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
+                            <Rectangle Width="20" Height="20" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                                <Rectangle.OpacityMask>
+                                    <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_refresh_top}" />
+                                </Rectangle.OpacityMask>
+                            </Rectangle>
+                            <TextBlock Margin="4 0 0 0" VerticalAlignment="Center" Text="Refresh" />
+                        </StackPanel>
+
+                        <controls:MetroProgressBar Grid.Row="0" Grid.Column="0" IsIndeterminate="True" Opacity="0.75" Visibility="{Binding Path=IsConnecting, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                    </Grid>
+                </Button.Content>
+            </Button>
+            <Button x:Name="SettingsButton" Click="OnSettingsButtonClick">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Rectangle Width="20" Height="20" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_cogs}" />
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+                        <TextBlock Margin="4 0 0 0" VerticalAlignment="Center" Text="Settings" />
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+        </controls:WindowCommands>
+    </controls:MetroWindow.RightWindowCommands>
+
+    <controls:MetroWindow.Flyouts>
+        <controls:FlyoutsControl>
+            <controls:Flyout x:Name="SettingsFlyout" Header="Settings" Position="Right" Width="250" Theme="Accent">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Orientation="Vertical">
+                        <!--<controls:ToggleSwitch Header="Paranoid Logout" IsChecked="{Binding Path=Settings.ParanoidLogout, Mode=TwoWay}">
+                            <controls:ToggleSwitch.ToolTip>
+                                <TextBlock>Log Out All Keybase Sessions</TextBlock>
+                            </controls:ToggleSwitch.ToolTip>
+                        </controls:ToggleSwitch>
+                        <controls:ToggleSwitch Header="Paranoid Locking" IsChecked="{Binding Path=Settings.ParanoidLocking, Mode=TwoWay}">
+                            <controls:ToggleSwitch.ToolTip>
+                                <TextBlock>Log Out Whenever The Application Loses Focus</TextBlock>
+                            </controls:ToggleSwitch.ToolTip>
+                        </controls:ToggleSwitch>
+                        <controls:ToggleSwitch Header="Paranoid Verification" IsChecked="{Binding Path=Settings.ParanoidVerification, Mode=TwoWay}">
+                            <controls:ToggleSwitch.ToolTip>
+                                <TextBlock>Verify All Messages From The Server</TextBlock>
+                            </controls:ToggleSwitch.ToolTip>
+                        </controls:ToggleSwitch>
+                        <controls:ToggleSwitch Header="Save Username" IsChecked="{Binding Path=Settings.SaveMostRecentUser, Mode=TwoWay}">
+                            <controls:ToggleSwitch.ToolTip>
+                                <TextBlock>Save The Most Recently Logged In User</TextBlock>
+                            </controls:ToggleSwitch.ToolTip>
+                        </controls:ToggleSwitch>-->
+                    </StackPanel>
+                </ScrollViewer>
+            </controls:Flyout>
+        </controls:FlyoutsControl>
+    </controls:MetroWindow.Flyouts>
+
+    <dragablz:TabablzControl ItemsSource="{Binding TabContents}" x:Name="InitialTabablzControl" Margin="4 0 4 4">
+        <dragablz:TabablzControl.InterTabController>
+            <dragablz:InterTabController InterTabClient="{Binding InterTabClient}" />
+        </dragablz:TabablzControl.InterTabController>
+    </dragablz:TabablzControl>
+
+</controls:MetroWindow>

@@ -1,0 +1,29 @@
+﻿<UserControl x:Class="NodeMachine.View.Controls.StatusControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:converter="clr-namespace:NodeMachine.ViewModel.Converter"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             DataContext="{Binding RelativeSource={RelativeSource Self}}">
+
+    <Control.Resources>
+        <converter:LongToFileSizeConverter x:Key="LongToFileSizeConverter" />
+    </Control.Resources>
+    
+    <StackPanel Orientation="Vertical" x:Name="Stack">
+        <TextBlock Text="{Binding Process.WorkingSet64, Mode=OneWay, Converter={StaticResource LongToFileSizeConverter}, StringFormat='Memory Usage: {0:#,#}'}"></TextBlock>
+        <TextBlock>
+            <TextBlock.Text>
+                <MultiBinding StringFormat="Processor Time: {0:D2}m {1:D2}s {2:D2}ms">
+                    <Binding Path="Process.UserProcessorTime.Minutes"></Binding>
+                    <Binding Path="Process.UserProcessorTime.Seconds"></Binding>
+                    <Binding Path="Process.UserProcessorTime.Milliseconds"></Binding>
+                </MultiBinding>
+            </TextBlock.Text>
+        </TextBlock>
+        <TextBlock Text="{Binding Process.Threads.Count, StringFormat='Threads: {0:#,#}'}"></TextBlock>
+        <TextBlock Text="{Binding Process.HandleCount, StringFormat='Handles: {0:#,#}'}"></TextBlock>
+    </StackPanel>
+</UserControl>

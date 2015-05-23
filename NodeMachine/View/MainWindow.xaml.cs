@@ -1,0 +1,140 @@
+﻿using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using System.Windows;
+using Dragablz;
+using MahApps.Metro;
+using Ninject;
+using NodeMachine.Annotations;
+using NodeMachine.Connection;
+using NodeMachine.View.Controls;
+using NodeMachine.ViewModel.Tabs;
+
+namespace NodeMachine.View
+{
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow
+        : INotifyPropertyChanged
+    {
+        private readonly IKernel _kernel;
+
+        private readonly IGameConnection _connection;
+        public IGameConnection Connection
+        {
+            get
+            {
+                return _connection;
+            }
+        }
+
+        private readonly IInterTabClient _interTabClient;
+        public IInterTabClient InterTabClient
+        {
+            get { return _interTabClient; }
+        }
+
+        private readonly ObservableCollection<TabContent> _tabContents = new ObservableCollection<TabContent>();
+        // ReSharper disable ReturnTypeCanBeEnumerable.Global
+        public ObservableCollection<TabContent> TabContents
+        // ReSharper restore ReturnTypeCanBeEnumerable.Global
+        {
+            get { return _tabContents; }
+        }
+
+        public MainWindow(IKernel kernel, IGameConnection connection, IInterTabClient interTab)
+        {
+            _kernel = kernel;
+            _connection = connection;
+            _interTabClient = interTab;
+
+            DataContext = this;
+            InitializeComponent();
+
+            Loaded += WindowLoaded;
+        }
+
+        private async void WindowLoaded(object sender, RoutedEventArgs e)
+        {
+            await WaitForGameConnection();
+        }
+
+        public Func<object> NewItemFactory
+        {
+            get { return () => new TabContent(_kernel.Get<NewTabControl>()); }
+        }
+
+        private void OnSettingsButtonClick(object sender, RoutedEventArgs e)
+        {
+            SettingsFlyout.IsOpen = !SettingsFlyout.IsOpen;
+        }
+
+        private async void OnRefreshTopology(object sender, RoutedEventArgs e)
+        {
+            var topology = await _connection.RefreshTopology();
+            if (topology == null)
+            {
+                await WaitForGameConnection();
+                return;
+            }
+
+            Console.WriteLine(topology);
+        }
+
+        private bool _isConnecting;
+        public bool IsConnecting
+        {
+            get
+            {
+                return _isConnecting;
+            }
+            set
+            {
+                _isConnecting = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private async Task WaitForGameConnection()
+        {
+            IsConnecting = true;
+            var start = DateTime.Now;
+
+            var t = _connection.Connect();
+            await Task.Delay(100);
+
+            if (!t.IsCompleted)
+            {
+                ThemeManager.ChangeAppStyle(Application.Current, ThemeManager.GetAccent("Crimson"), ThemeManager.GetAppTheme("BaseLight"));
+                await t;
+            }
+
+            ThemeManager.ChangeAppStyle(Application.Current, ThemeManager.GetAccent("Blue"), ThemeManager.GetAppTheme("BaseLight"));
+
+            var remainingTime = TimeSpan.FromSeconds(2) - (DateTime.Now - start);
+            if (remainingTime > TimeSpan.Zero)
+                await Task.Delay(remainingTime);
+            IsConnecting = false;
+        }
+
+        private async void OnRefreshConnectionClick(object sender, RoutedEventArgs e)
+        {
+            await WaitForGameConnection();
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+}
