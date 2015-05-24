@@ -3,14 +3,16 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
-        xmlns:dockablz="clr-namespace:Dragablz.Dockablz;assembly=Dragablz"
         Height="350" Width="525"
         Margin="15"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         BorderBrush="{DynamicResource AccentColorBrush}"
         BorderThickness="1"
         Title="NODE/MACHINE"
->
+        ShowIconOnTitleBar="False"
+        
+        Closing="WindowClosing">
+    
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
             <Button x:Name="RefreshConnection" Click="OnRefreshConnectionClick">

@@ -6,14 +6,12 @@ namespace NodeMachine.Project
     public interface IProject
         : INotifyPropertyChanged
     {
-        string Name { get; }
+        string Name { get; set; }
 
-        string ProjectFile { get; }
+        string ProjectFile { get; set; }
 
         bool UnsavedChanges { get; }
 
         Task Save();
-
-        Task Load();
     }
 }

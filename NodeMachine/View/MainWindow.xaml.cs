@@ -9,6 +9,7 @@ using MahApps.Metro;
 using Ninject;
 using NodeMachine.Annotations;
 using NodeMachine.Connection;
+using NodeMachine.Project;
 using NodeMachine.View.Controls;
 using NodeMachine.ViewModel.Tabs;
 
@@ -134,6 +135,29 @@ namespace NodeMachine.View
             if (handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        private bool _suppressClosingSave = false;
+        private async void WindowClosing(object sender, CancelEventArgs e)
+        {
+            //We only want to do this if we're the last window!
+            if (Application.Current.Windows.Count > 1 || _suppressClosingSave)
+                return;
+
+            //Check if we actually have anything to save
+            var manager = _kernel.Get<IProjectManager>();
+            if (!manager.CurrentProject.UnsavedChanges)
+                return;
+
+            //Cancel the close
+            e.Cancel = true;
+
+            //Save, and then close again
+            if (await ProjectControl.SaveUnsavedChanged(manager, this))
+            {
+                _suppressClosingSave = true;
+                Close();
             }
         }
     }

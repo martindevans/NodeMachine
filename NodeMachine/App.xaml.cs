@@ -1,4 +1,5 @@
 ﻿using Dragablz;
+using MahApps.Metro.Controls;
 using Ninject;
 using System.Windows;
 using NodeMachine.Connection;
@@ -32,8 +33,9 @@ namespace NodeMachine
 
         private void ConfigureContainer()
         {
-            _container.Bind<IGameConnection>().To<GameConnection>().InSingletonScope();
-            _container.Bind<IProjectManager>().To<ProjectManager>().InSingletonScope();
+            _container.Bind<IGameConnection>().ToConstant(_container.Get<GameConnection>());
+            _container.Bind<IProjectManager>().ToConstant(_container.Get<ProjectManager>());
+
             _container.Bind<IInterTabClient>().To<InterTabClient>();
         }
 

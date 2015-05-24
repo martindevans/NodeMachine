@@ -1,6 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
 using NodeMachine.Annotations;
 using System.ComponentModel;
 using System.IO;
@@ -31,46 +29,70 @@ namespace NodeMachine.Project
         {
             get
             {
-                return Path.GetFileNameWithoutExtension(ProjectFile);
+                return _projectData.Name;
+            }
+            set
+            {
+                _projectData.Name = value;
+                OnPropertyChanged();
+
+                UnsavedChanges = true;
             }
         }
 
-        public async Task Save()
-        {
-            await Task.Factory.StartNew(() => {
-                using (var file = File.Open(ProjectFile, FileMode.Create))
-                using (var writer = new StreamWriter(file))
-                using (JsonWriter jsonWriter = new JsonTextWriter(writer))
-                {
-                    JsonSerializer j = new JsonSerializer() {
-                        Formatting = Formatting.Indented,
-                    };
-
-                    j.Serialize(jsonWriter, _projectData);
-                }
-            });
-        }
-
+        private bool _unsavedChanges = false;
         public bool UnsavedChanges
         {
             get
             {
-                return true;
+                return _unsavedChanges;
+            }
+            private set
+            {
+                _unsavedChanges = value;
+                OnPropertyChanged();
             }
         }
 
-        private readonly string _filePath;
+        private string _filePath;
         public string ProjectFile
         {
             get
             {
                 return _filePath;
             }
+            set
+            {
+                _filePath = value;
+                OnPropertyChanged();
+
+                UnsavedChanges = true;
+            }
         }
 
         public Project(string filePath)
         {
             _filePath = filePath;
+        }
+
+        public async Task Save()
+        {
+            await Task.Factory.StartNew(() =>
+            {
+                using (var file = File.Open(ProjectFile, FileMode.Create))
+                using (var writer = new StreamWriter(file))
+                using (JsonWriter jsonWriter = new JsonTextWriter(writer))
+                {
+                    JsonSerializer j = new JsonSerializer()
+                    {
+                        Formatting = Formatting.Indented,
+                    };
+
+                    j.Serialize(jsonWriter, _projectData);
+                }
+            });
+
+            UnsavedChanges = false;
         }
 
         public async Task Load()
@@ -89,6 +111,8 @@ namespace NodeMachine.Project
                     return j.Deserialize<ProjectData>(jsonReader) ?? new ProjectData();
                 }
             });
+
+            UnsavedChanges = false;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

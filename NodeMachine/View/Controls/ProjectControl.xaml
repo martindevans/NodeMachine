@@ -2,11 +2,19 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:converter="clr-namespace:NodeMachine.ViewModel.Converter"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              DataContext="{Binding RelativeSource={RelativeSource Self}}">
-    
+
+    <Control.Resources>
+        <converter:ValueConverterChain x:Key="NullStringToVisibleConverter">
+            <converter:IsStringNullConverter/>
+            <BooleanToVisibilityConverter/>
+        </converter:ValueConverterChain>
+    </Control.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -19,22 +27,41 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock 
-            x:Name="ProjectName"
+        <TextBox 
             Grid.Column="0"
             VerticalAlignment="Center"
-            Text="{Binding Path=ProjectManager.CurrentProject.Name, FallbackValue='No Project'}"
+            Text="{Binding Path=ProjectManager.CurrentProject.Name, TargetNullValue='No Project', UpdateSourceTrigger=PropertyChanged}"
             FontWeight="Light"
             Foreground="{DynamicResource WindowTitleColorBrush}"
             FontSize="24"
-            FontFamily="Segoe UI" 
-            Padding="12 0 0 0">
-            <TextBlock.ContextMenu>
+            FontFamily="Segoe UI">
+            <TextBox.ContextMenu>
                 <ContextMenu>
                     <MenuItem Click="OpenProjectInExplorer" Header="Open In Explorer"></MenuItem>
                 </ContextMenu>
-            </TextBlock.ContextMenu>
-        </TextBlock>
+            </TextBox.ContextMenu>
+        </TextBox>
+        <StackPanel Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right">
+            <TextBlock 
+            Visibility="{Binding ProjectManager.CurrentProject.UnsavedChanges, Converter={StaticResource BooleanToVisibilityConverter}}"
+                HorizontalAlignment="Right"
+                FontSize="12"
+                Background="Transparent"
+                FontWeight="Light"
+                FontFamily="Segoe UI"
+                Padding="0 0 6 0"
+                Text="unsaved changes" />
+            <TextBlock 
+                Visibility="{Binding ProjectManager.CurrentProject.ProjectFile, Converter={StaticResource NullStringToVisibleConverter}}"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                FontSize="12"
+                Background="Transparent"
+                FontWeight="Light"
+                FontFamily="Segoe UI"
+                Padding="0 0 6 0"
+                Text="no file" />
+        </StackPanel>
         
         <StackPanel Orientation="Horizontal" Height="Auto" Grid.Row="1" Grid.Column="0">
             <Button Style="{DynamicResource MetroCircleButtonStyle}" Width="50" Height="50" ToolTip="New Project" Click="NewProject">
@@ -62,6 +89,13 @@
                 <Rectangle Width="25" Height="25" >
                     <Rectangle.Fill>
                         <VisualBrush Stretch="UniformToFill" Visual="{StaticResource appbar_refresh}" />
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Button>
+            <Button Style="{DynamicResource MetroCircleButtonStyle}" Width="50" Height="50" ToolTip="Delete" Click="DeleteProject">
+                <Rectangle Width="25" Height="25" >
+                    <Rectangle.Fill>
+                        <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_smiley_cry}" />
                     </Rectangle.Fill>
                 </Rectangle>
             </Button>

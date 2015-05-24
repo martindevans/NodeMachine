@@ -33,6 +33,10 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>
+    </ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Dragablz">
       <HintPath>..\packages\Dragablz.0.0.1.110\lib\net45\Dragablz.dll</HintPath>
@@ -95,7 +99,9 @@
     <Compile Include="Project\ProjectData.cs" />
     <Compile Include="Project\ProjectManager.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="ViewModel\Converter\IsStringNullConverter.cs" />
     <Compile Include="ViewModel\Converter\LongToFileSizeConverter.cs" />
+    <Compile Include="ViewModel\Converter\ValueConverterChain.cs" />
     <Compile Include="ViewModel\Nodes\ProceduralNodeViewModel.cs" />
     <Compile Include="ViewModel\Tabs\InterTabClient.cs" />
     <Compile Include="ViewModel\Tabs\ITabName.cs" />
@@ -190,7 +196,12 @@
   <ItemGroup>
     <Resource Include="Resources\Entypo-license.txt" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Konachan.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\NodeMachineIcon.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

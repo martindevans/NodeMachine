@@ -9,13 +9,14 @@ namespace NodeMachine.Project
     public class ProjectManager
         : IProjectManager
     {
-        private IProject _currentProject;
-        public IProject CurrentProject {
+        private IProject _currentProject = new Project(null);
+        public IProject CurrentProject
+        {
             get
             {
                 return _currentProject;
             }
-            set
+            private set
             {
                 _currentProject = value;
                 OnPropertyChanged();
@@ -24,8 +25,14 @@ namespace NodeMachine.Project
 
         public async Task OpenProject(string fileName)
         {
-            CurrentProject = new Project(fileName);
-            await CurrentProject.Load();
+            var p = new Project(fileName);
+            await p.Load();
+            CurrentProject = p;
+        }
+
+        public async Task CloseProject()
+        {
+            CurrentProject = new Project(null);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
