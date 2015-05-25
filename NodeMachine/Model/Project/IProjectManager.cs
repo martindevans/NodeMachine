@@ -1,8 +1,7 @@
-﻿
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Threading.Tasks;
 
-namespace NodeMachine.Project
+namespace NodeMachine.Model.Project
 {
     public interface IProjectManager
         : INotifyPropertyChanged

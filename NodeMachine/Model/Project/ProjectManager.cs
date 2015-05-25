@@ -1,10 +1,9 @@
-﻿
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using NodeMachine.Annotations;
 
-namespace NodeMachine.Project
+namespace NodeMachine.Model.Project
 {
     public class ProjectManager
         : IProjectManager

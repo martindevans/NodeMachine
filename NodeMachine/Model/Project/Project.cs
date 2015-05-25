@@ -1,17 +1,16 @@
-﻿using Newtonsoft.Json;
-using NodeMachine.Annotations;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using NodeMachine.Annotations;
 
-namespace NodeMachine.Project
+namespace NodeMachine.Model.Project
 {
     public class Project
         : IProject
     {
-        private ProjectData _projectData = new ProjectData();
-
+        private ProjectData _projectData;
         public ProjectData ProjectData
         {
             get
@@ -20,23 +19,17 @@ namespace NodeMachine.Project
             }
             private set
             {
+                //Unsubscribe from changes on old data
+                if (_projectData != null)
+                    _projectData.PropertyChanged -= ProjectDataPropertyChanged;
+
                 _projectData = value;
-                OnPropertyChanged();
-            }
-        }
 
-        public string Name
-        {
-            get
-            {
-                return _projectData.Name;
-            }
-            set
-            {
-                _projectData.Name = value;
-                OnPropertyChanged();
+                //Subscribe to changes on new data
+                if (_projectData != null)
+                    _projectData.PropertyChanged += ProjectDataPropertyChanged;
 
-                UnsavedChanges = true;
+                OnPropertyChanged();
             }
         }
 
@@ -73,6 +66,8 @@ namespace NodeMachine.Project
         public Project(string filePath)
         {
             _filePath = filePath;
+
+            ProjectData = new ProjectData();
         }
 
         public async Task Save()
@@ -88,7 +83,7 @@ namespace NodeMachine.Project
                         Formatting = Formatting.Indented,
                     };
 
-                    j.Serialize(jsonWriter, _projectData);
+                    j.Serialize(jsonWriter, ProjectData);
                 }
             });
 
@@ -97,7 +92,7 @@ namespace NodeMachine.Project
 
         public async Task Load()
         {
-            _projectData = await Task.Factory.StartNew(() =>
+            ProjectData = await Task.Factory.StartNew(() =>
             {
                 using (var file = File.Open(ProjectFile, FileMode.OpenOrCreate))
                 using (var reader = new StreamReader(file))
@@ -124,6 +119,11 @@ namespace NodeMachine.Project
             {
                 handler(this, new PropertyChangedEventArgs(propertyName));
             }
+        }
+
+        private void ProjectDataPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            UnsavedChanges = true;
         }
     }
 }

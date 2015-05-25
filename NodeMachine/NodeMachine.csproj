@@ -92,12 +92,16 @@
     <Compile Include="CancelDialogException.cs" />
     <Compile Include="Connection\IScreenCollection.cs" />
     <Compile Include="Connection\ScreenCollection.cs" />
+    <Compile Include="Model\Facade.cs" />
+    <Compile Include="Model\Building.cs" />
+    <Compile Include="Model\Floor.cs" />
+    <Compile Include="Model\Block.cs" />
     <Compile Include="Model\Screen.cs" />
-    <Compile Include="Project\IProject.cs" />
-    <Compile Include="Project\IProjectManager.cs" />
-    <Compile Include="Project\Project.cs" />
-    <Compile Include="Project\ProjectData.cs" />
-    <Compile Include="Project\ProjectManager.cs" />
+    <Compile Include="Model\Project\IProject.cs" />
+    <Compile Include="Model\Project\IProjectManager.cs" />
+    <Compile Include="Model\Project\Project.cs" />
+    <Compile Include="Model\Project\ProjectData.cs" />
+    <Compile Include="Model\Project\ProjectManager.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ViewModel\Converter\IsStringNullConverter.cs" />
     <Compile Include="ViewModel\Converter\LongToFileSizeConverter.cs" />
@@ -106,6 +110,15 @@
     <Compile Include="ViewModel\Tabs\InterTabClient.cs" />
     <Compile Include="ViewModel\Tabs\ITabName.cs" />
     <Compile Include="ViewModel\Tabs\TabContent.cs" />
+    <Compile Include="View\Controls\BlockEditor.xaml.cs">
+      <DependentUpon>BlockEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Controls\BuildingEditor.xaml.cs">
+      <DependentUpon>BuildingEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Controls\FloorEditor.xaml.cs">
+      <DependentUpon>FloorEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Controls\NewTabControl.xaml.cs">
       <DependentUpon>NewTabControl.xaml</DependentUpon>
     </Compile>
@@ -121,6 +134,18 @@
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Controls\BlockEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Controls\BuildingEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Controls\FloorEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Controls\ProjectControl.xaml">
       <SubType>Designer</SubType>
@@ -195,9 +220,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Entypo-license.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Konachan.ico" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\NodeMachineIcon.png" />

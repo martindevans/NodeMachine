@@ -46,13 +46,29 @@ namespace NodeMachine.View.Controls
                     return null;
                 });
 
+                yield return new TileOption("Project", () => _kernel.Get<ProjectControl>());
                 yield return new TileOption("Status Monitor", () => _kernel.Get<StatusControl>());
                 yield return new TileOption("Topology Tree", () => _kernel.Get<NodeTree>());
-                yield return new TileOption("Floor Plan", () => null);
-                yield return new TileOption("Block Plan", () => null);
-                yield return new TileOption("Building Plan", () => null);
-                yield return new TileOption("Project", () => _kernel.Get<ProjectControl>());
+
+                yield return new TileOption("City Editor", () => null);
+                yield return new TileOption("Block Editor", () => _kernel.Get<BlockEditor>());
+                yield return new TileOption("Building Editor", () => _kernel.Get<BuildingEditor>());
+                yield return new TileOption("Floor Editor", () => _kernel.Get<FloorEditor>());
+                yield return new TileOption("Room Editor", () => null);
+                yield return new TileOption("Facade Editor", () => null);
             }
+        }
+
+        public NewTabControl()
+        {
+            InitializeComponent();
+        }
+
+        public NewTabControl(TileOption option)
+        {
+            InitializeComponent();
+
+            SetContent(option);
         }
 
         private async Task StartGame()
@@ -115,7 +131,7 @@ namespace NodeMachine.View.Controls
             await progress.CloseAsync();
         }
 
-        private async Task WaitForCancel(ProgressDialogController dialog, string message)
+        private static async Task WaitForCancel(ProgressDialogController dialog, string message)
         {
             dialog.SetMessage("Failed: " + message);
             dialog.SetCancelable(true);
@@ -126,17 +142,21 @@ namespace NodeMachine.View.Controls
             await dialog.CloseAsync();
         }
 
-        public void TileClicked(object sender, RoutedEventArgs args)
+        private void TileClicked(object sender, RoutedEventArgs args)
         {
             var clicked = (TileOption)((Control)sender).DataContext;
 
-            var content = clicked.Control();
+            SetContent(clicked);
+        }
+
+        private void SetContent(TileOption option)
+        {
+            var content = option.Control();
             if (content == null)
                 return;
 
             Container.Children.Add(content);
-
-            TabName = clicked.Title;
+            TabName = option.Title;
 
             OptionsSelector.Visibility = Visibility.Collapsed;
         }
@@ -163,6 +183,7 @@ namespace NodeMachine.View.Controls
         public class TileOption
         {
             private readonly Func<UIElement> _child;
+
             public string Title { get; private set; }
 
             public TileOption(string title, Func<UIElement> child)

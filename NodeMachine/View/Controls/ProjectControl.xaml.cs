@@ -1,12 +1,18 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
+using Dragablz;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Win32;
-using NodeMachine.Project;
+using Ninject;
+using Ninject.Parameters;
+using NodeMachine.Model;
+using NodeMachine.Model.Project;
 using System.Windows.Controls;
+using NodeMachine.ViewModel.Tabs;
 
 namespace NodeMachine.View.Controls
 {
@@ -15,10 +21,12 @@ namespace NodeMachine.View.Controls
     /// </summary>
     public partial class ProjectControl : UserControl
     {
+        private readonly IKernel _kernel;
         public IProjectManager ProjectManager { get; private set; }
 
-        public ProjectControl(IProjectManager projectManager)
+        public ProjectControl(IKernel kernel, IProjectManager projectManager)
         {
+            _kernel = kernel;
             ProjectManager = projectManager;
 
             InitializeComponent();
@@ -57,14 +65,14 @@ namespace NodeMachine.View.Controls
             return d.FileName;
         }
 
-        public static async Task<bool> SaveUnsavedChanged(IProjectManager projectManager, MetroWindow window, bool preSavePrompt = true, bool forceChooseFile = false)
+        public static async Task<bool> SaveUnsavedChanges(IProjectManager projectManager, MetroWindow window, bool preSavePrompt = true, bool forceChooseFile = false)
         {
             if (preSavePrompt)
             {
                 if (!projectManager.CurrentProject.UnsavedChanges)
                     return true;
 
-                var result = await window.ShowMessageAsync("Unsaved Changes", string.Format("Save '{0}' First?", "Name"), MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, new MetroDialogSettings
+                var result = await window.ShowMessageAsync("Unsaved Changes", string.Format("Save '{0}' First?", projectManager.CurrentProject.ProjectData.Name ?? "Unnamed Project"), MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, new MetroDialogSettings
                 {
                     AffirmativeButtonText = "Save",
                     NegativeButtonText = "Discard",
@@ -95,38 +103,7 @@ namespace NodeMachine.View.Controls
 
         private async Task<bool> SaveUnsavedChanges(bool preSavePrompt = true, bool forceChooseFile = false)
         {
-            if (preSavePrompt)
-            {
-                if (!ProjectManager.CurrentProject.UnsavedChanges)
-                    return true;
-
-                var window = (MetroWindow) Window.GetWindow(this);
-                var result = await window.ShowMessageAsync("Unsaved Changes", string.Format("Save '{0}' First?", "Name"), MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, new MetroDialogSettings {
-                    AffirmativeButtonText = "Save",
-                    NegativeButtonText = "Discard",
-                    FirstAuxiliaryButtonText = "Cancel"
-                });
-
-                //Cancel option
-                if (result == MessageDialogResult.FirstAuxiliary)
-                    return false;
-
-                //Discard option
-                if (result == MessageDialogResult.Negative)
-                    return true;
-            }
-
-            //Save option
-            if (ProjectManager.CurrentProject.ProjectFile == null || forceChooseFile)
-            {
-                var path = await ChooseSaveProjectFile(false);
-                if (path == null)
-                    return false;
-                ProjectManager.CurrentProject.ProjectFile = path;
-            }
-
-            await ProjectManager.CurrentProject.Save();
-            return true;
+            return await SaveUnsavedChanges(ProjectManager, (MetroWindow)Window.GetWindow(this), preSavePrompt, forceChooseFile);
         }
 
         private async Task OpenProjectDialog(bool checkExists)
@@ -156,7 +133,7 @@ namespace NodeMachine.View.Controls
 
         private async void ReloadProject(object sender, RoutedEventArgs e)
         {
-            if (!await SaveUnsavedChanges())
+            if (!await SaveUnsavedChanges(true, true))
                 return;
 
             if (ProjectManager.CurrentProject.ProjectFile != null)
@@ -178,12 +155,70 @@ namespace NodeMachine.View.Controls
             await SaveUnsavedChanges(preSavePrompt: false);
         }
 
-        private void DeleteProject(object sender, RoutedEventArgs e)
+        private async void SaveProjectAs(object sender, RoutedEventArgs e)
         {
+            await SaveUnsavedChanges(false, true);
+        }
+
+        private async void DeleteProject(object sender, RoutedEventArgs e)
+        {
+            var window = (MetroWindow)Window.GetWindow(this);
+            var result = await window.ShowMessageAsync("Delete", string.Format("Delete '{0}'?", ProjectManager.CurrentProject.ProjectData.Name ?? "Unnamed Project"), MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
+            {
+                AffirmativeButtonText = "Delete",
+                NegativeButtonText = "Cancel"
+            });
+
+            if (result == MessageDialogResult.Negative)
+                return;
+
             if (ProjectManager.CurrentProject.ProjectFile != null)
                 File.Delete(ProjectManager.CurrentProject.ProjectFile);
-
             ProjectManager.CurrentProject.ProjectFile = null;
+        }
+
+        private void OpenInEditor(object sender, RoutedEventArgs e)
+        {
+            var context = ((Control)sender).DataContext;
+            var window = (MainWindow)Window.GetWindow(this);
+            if (window == null)
+                throw new NullReferenceException();
+
+            //if (OpenEditor<CityEditor, City>(window, context, "city"))
+            //    return;
+
+            if (OpenEditor<BlockEditor, Block>(window, context, "block"))
+                return;
+
+            if (OpenEditor<BuildingEditor, Building>(window, context, "building"))
+                return;
+
+            if (OpenEditor<FloorEditor, Floor>(window, context, "floor"))
+                return;
+
+            //if (OpenEditor<RoomEditor, Room>(window, context, "room"))
+            //    return;
+
+            //if (OpenEditor<MiscNodeEditor, MiscNode>(window, context, "node"))
+            //    return;
+
+            //if (OpenEditor<FacadeEditor, Facade>(window, context, "facade"))
+            //    return;
+
+            throw new NotImplementedException();
+        }
+
+        private bool OpenEditor<TEditor, TArg>(MainWindow window, object context, string argName)
+            where TArg : class
+        {
+            var arg = context as TArg;
+            if (arg == null)
+                return false;
+
+            window.TabContents.Add(new TabContent(
+                _kernel.Get<FloorEditor>(new ConstructorArgument(argName, arg))
+                ));
+            return true;
         }
     }
 }

@@ -9,7 +9,7 @@ using MahApps.Metro;
 using Ninject;
 using NodeMachine.Annotations;
 using NodeMachine.Connection;
-using NodeMachine.Project;
+using NodeMachine.Model.Project;
 using NodeMachine.View.Controls;
 using NodeMachine.ViewModel.Tabs;
 
@@ -71,18 +71,6 @@ namespace NodeMachine.View
         private void OnSettingsButtonClick(object sender, RoutedEventArgs e)
         {
             SettingsFlyout.IsOpen = !SettingsFlyout.IsOpen;
-        }
-
-        private async void OnRefreshTopology(object sender, RoutedEventArgs e)
-        {
-            var topology = await _connection.RefreshTopology();
-            if (topology == null)
-            {
-                await WaitForGameConnection();
-                return;
-            }
-
-            Console.WriteLine(topology);
         }
 
         private bool _isConnecting;
@@ -154,7 +142,7 @@ namespace NodeMachine.View
             e.Cancel = true;
 
             //Save, and then close again
-            if (await ProjectControl.SaveUnsavedChanged(manager, this))
+            if (await ProjectControl.SaveUnsavedChanges(manager, this))
             {
                 _suppressClosingSave = true;
                 Close();

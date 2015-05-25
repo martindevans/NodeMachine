@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel;
 using System.Threading.Tasks;
 
-namespace NodeMachine.Project
+namespace NodeMachine.Model.Project
 {
     public interface IProject
         : INotifyPropertyChanged
     {
-        string Name { get; set; }
+        ProjectData ProjectData { get; }
 
         string ProjectFile { get; set; }
 

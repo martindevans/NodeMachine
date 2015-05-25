@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:converter="clr-namespace:NodeMachine.ViewModel.Converter"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              DataContext="{Binding RelativeSource={RelativeSource Self}}">
@@ -13,35 +14,41 @@
             <converter:IsStringNullConverter/>
             <BooleanToVisibilityConverter/>
         </converter:ValueConverterChain>
+
+        <ControlTemplate x:Key="ElementListTemplate" TargetType="ListBox">
+            <ListBox ItemsSource="{Binding}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}">
+                            <TextBlock.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Open Editor" Click="OpenInEditor" />
+                                </ContextMenu>
+                            </TextBlock.ContextMenu>
+                        </TextBlock>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </ControlTemplate>
     </Control.Resources>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-
-        <TextBox 
-            Grid.Column="0"
-            VerticalAlignment="Center"
-            Text="{Binding Path=ProjectManager.CurrentProject.Name, TargetNullValue='No Project', UpdateSourceTrigger=PropertyChanged}"
-            FontWeight="Light"
-            Foreground="{DynamicResource WindowTitleColorBrush}"
-            FontSize="24"
-            FontFamily="Segoe UI">
-            <TextBox.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Click="OpenProjectInExplorer" Header="Open In Explorer"></MenuItem>
-                </ContextMenu>
-            </TextBox.ContextMenu>
-        </TextBox>
-        <StackPanel Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right">
+    <StackPanel>
+        <Grid>
+            <TextBox 
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Text="{Binding Path=ProjectManager.CurrentProject.ProjectData.Name, TargetNullValue='Unnamed Project', UpdateSourceTrigger=PropertyChanged}"
+                FontWeight="Light"
+                Foreground="{DynamicResource WindowTitleColorBrush}"
+                FontSize="24"
+                FontFamily="Segoe UI">
+                <TextBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Click="OpenProjectInExplorer" Header="Open In Explorer"></MenuItem>
+                    </ContextMenu>
+                </TextBox.ContextMenu>
+            </TextBox>
+            <StackPanel Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right">
             <TextBlock 
             Visibility="{Binding ProjectManager.CurrentProject.UnsavedChanges, Converter={StaticResource BooleanToVisibilityConverter}}"
                 HorizontalAlignment="Right"
@@ -62,8 +69,9 @@
                 Padding="0 0 6 0"
                 Text="no file" />
         </StackPanel>
-        
-        <StackPanel Orientation="Horizontal" Height="Auto" Grid.Row="1" Grid.Column="0">
+        </Grid>
+
+        <WrapPanel Grid.Row="1" Grid.Column="0">
             <Button Style="{DynamicResource MetroCircleButtonStyle}" Width="50" Height="50" ToolTip="New Project" Click="NewProject">
                 <Rectangle Width="25" Height="25">
                     <Rectangle.Fill>
@@ -75,6 +83,13 @@
                 <Rectangle Width="25" Height="25">
                     <Rectangle.Fill>
                         <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_save}" />
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Button>
+            <Button Style="{DynamicResource MetroCircleButtonStyle}" Width="50" Height="50" ToolTip="Save As" Click="SaveProjectAs">
+                <Rectangle Width="25" Height="25">
+                    <Rectangle.Fill>
+                        <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_page_copy}" />
                     </Rectangle.Fill>
                 </Rectangle>
             </Button>
@@ -99,6 +114,48 @@
                     </Rectangle.Fill>
                 </Rectangle>
             </Button>
-        </StackPanel>
-    </Grid>
+        </WrapPanel>
+
+        <Expander DataContext="{Binding ProjectManager.CurrentProject.ProjectData.Cities}">
+            <Expander.Header>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    
+                    <TextBlock FontWeight="Light" Foreground="{DynamicResource IdealForegroundColorBrush}" FontSize="16" Grid.Column="0" Margin="0 0 8 0">Cities</TextBlock>
+                    <Grid Grid.Column="1" Background="{DynamicResource WhiteBrush}">
+                        <TextBlock Margin="5,2" Grid.Column="0" VerticalAlignment="Center" Text="Filter" Foreground="LightSteelBlue" Visibility="{Binding ElementName=Filter, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                        <TextBox Name="Filter" Background="Transparent" />
+                    </Grid>
+                </Grid>
+            </Expander.Header>
+            <ListBox Template="{StaticResource ElementListTemplate}" />
+        </Expander>
+
+        <Expander Header="Blocks" DataContext="{Binding ProjectManager.CurrentProject.ProjectData.Blocks}">
+            <ListBox Template="{StaticResource ElementListTemplate}" />
+        </Expander>
+
+        <Expander Header="Buildings" DataContext="{Binding ProjectManager.CurrentProject.ProjectData.Buildings}" >
+            <ListBox Template="{StaticResource ElementListTemplate}" />
+        </Expander>
+
+        <Expander Header="Floors" DataContext="{Binding ProjectManager.CurrentProject.ProjectData.Floors}">
+            <ListBox Template="{StaticResource ElementListTemplate}" />
+        </Expander>
+
+        <Expander Header="Rooms" DataContext="{Binding ProjectManager.CurrentProject.ProjectData.Rooms}">
+            <ListBox Template="{StaticResource ElementListTemplate}" />
+        </Expander>
+
+        <Expander Header="Miscellaneous" DataContext="{Binding ProjectManager.CurrentProject.ProjectData.Misc}">
+            <ListBox Template="{StaticResource ElementListTemplate}" />
+        </Expander>
+
+        <Expander Header="Facades" DataContext="{Binding ProjectManager.CurrentProject.ProjectData.Facades}">
+            <ListBox Template="{StaticResource ElementListTemplate}" />
+        </Expander>
+    </StackPanel>
 </UserControl>

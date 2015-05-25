@@ -3,7 +3,7 @@ using MahApps.Metro.Controls;
 using Ninject;
 using System.Windows;
 using NodeMachine.Connection;
-using NodeMachine.Project;
+using NodeMachine.Model.Project;
 using NodeMachine.View;
 using NodeMachine.View.Controls;
 using NodeMachine.ViewModel.Tabs;
