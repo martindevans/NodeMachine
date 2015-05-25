@@ -36,8 +36,8 @@ namespace NodeMachine.View.Controls
         public NodeTree(IGameConnection connection)
         {
             Connection = connection;
-            if (connection.Topology != null)
-                _rootTopology = new ProceduralNodeViewModel(Connection.Topology);
+            if (connection.Topology.Root != null)
+                _rootTopology = new ProceduralNodeViewModel(Connection.Topology.Root);
 
             InitializeComponent();
 
@@ -45,7 +45,7 @@ namespace NodeMachine.View.Controls
                       .Throttle(TimeSpan.FromMilliseconds(250))
                       .Subscribe(a => Dispatcher.Invoke(() => FilterChanged(a.Sender, a.EventArgs)));
 
-            connection.PropertyChanged += ConnectionPropertyChanged;
+            connection.Topology.PropertyChanged += ConnectionPropertyChanged;
 
             RefreshTopology();
         }
@@ -54,8 +54,8 @@ namespace NodeMachine.View.Controls
         {
             switch (e.PropertyName)
             {
-                case "Topology":
-                    _rootTopology = Connection.Topology == null ? null : new ProceduralNodeViewModel(Connection.Topology);
+                case "Root":
+                    _rootTopology = Connection.Topology.Root == null ? null : new ProceduralNodeViewModel(Connection.Topology.Root);
                     OnPropertyChanged("Topology");
                     break;
             }
@@ -63,7 +63,7 @@ namespace NodeMachine.View.Controls
 
         private async void RefreshTopology()
         {
-            await Connection.RefreshTopology();
+            await Connection.Topology.Refresh();
         }
 
         private void RefreshTopology(object sender, RoutedEventArgs e)
@@ -78,7 +78,7 @@ namespace NodeMachine.View.Controls
 
         private async void ClearTopology(object sender, RoutedEventArgs e)
         {
-            await Connection.ClearTopology();
+            await Connection.Topology.Clear();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

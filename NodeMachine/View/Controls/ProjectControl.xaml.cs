@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 using Dragablz;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
@@ -202,22 +203,21 @@ namespace NodeMachine.View.Controls
             //if (OpenEditor<MiscNodeEditor, MiscNode>(window, context, "node"))
             //    return;
 
-            //if (OpenEditor<FacadeEditor, Facade>(window, context, "facade"))
-            //    return;
+            if (OpenEditor<FacadeEditor, Facade>(window, context, "facade"))
+                return;
 
             throw new NotImplementedException();
         }
 
         private bool OpenEditor<TEditor, TArg>(MainWindow window, object context, string argName)
             where TArg : class
+            where TEditor : Control
         {
             var arg = context as TArg;
             if (arg == null)
                 return false;
 
-            window.TabContents.Add(new TabContent(
-                _kernel.Get<FloorEditor>(new ConstructorArgument(argName, arg))
-                ));
+            window.TabContents.Add(new TabContent(_kernel.Get<TEditor>(new ConstructorArgument(argName, arg))));
             return true;
         }
     }

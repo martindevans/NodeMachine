@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using NodeMachine.Model;
 using System.Threading.Tasks;
 
 namespace NodeMachine.Connection
@@ -7,15 +6,13 @@ namespace NodeMachine.Connection
     public interface IGameConnection
         : INotifyPropertyChanged
     {
-        ProceduralNode Topology { get; }
-
-        Task<ProceduralNode> RefreshTopology();
-
-        Task ClearTopology();
+        ITopology Topology { get; }
 
         IScreenCollection Screens { get; }
 
         Task Connect();
+
+        Task<bool> IsConnected();
 
         void Disconnect();
     }

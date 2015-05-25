@@ -38,6 +38,15 @@ namespace NodeMachine.View
             get { return _interTabClient; }
         }
 
+        private readonly IProjectManager _projectManager;
+        public IProjectManager ProjectManager
+        {
+            get
+            {
+                return _projectManager;
+            }
+        }
+
         private readonly ObservableCollection<TabContent> _tabContents = new ObservableCollection<TabContent>();
         // ReSharper disable ReturnTypeCanBeEnumerable.Global
         public ObservableCollection<TabContent> TabContents
@@ -46,13 +55,13 @@ namespace NodeMachine.View
             get { return _tabContents; }
         }
 
-        public MainWindow(IKernel kernel, IGameConnection connection, IInterTabClient interTab)
+        public MainWindow(IKernel kernel, IGameConnection connection, IInterTabClient interTab, IProjectManager projectManager)
         {
             _kernel = kernel;
             _connection = connection;
             _interTabClient = interTab;
+            _projectManager = projectManager;
 
-            DataContext = this;
             InitializeComponent();
 
             Loaded += WindowLoaded;

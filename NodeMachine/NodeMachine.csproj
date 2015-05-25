@@ -41,8 +41,29 @@
     <Reference Include="Dragablz">
       <HintPath>..\packages\Dragablz.0.0.1.110\lib\net45\Dragablz.dll</HintPath>
     </Reference>
+    <Reference Include="EpimetheusPlugins">
+      <HintPath>..\packages\EpimetheusPlugins.1.0.5618.28790\lib\net40-Client\EpimetheusPlugins.dll</HintPath>
+    </Reference>
+    <Reference Include="HandyCollections">
+      <HintPath>..\packages\HandyCollections.1.1.0.0\lib\net40\HandyCollections.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="MahApps.Metro">
       <HintPath>..\packages\MahApps.Metro.1.1.2.0\lib\net45\MahApps.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="Myre">
+      <HintPath>..\packages\Myre.4.0.0.0\lib\net40-Client\Myre.dll</HintPath>
+    </Reference>
+    <Reference Include="Myre.Debugging">
+      <HintPath>..\packages\Myre.Debugging.3.0.0.0\lib\net40-Client\Myre.Debugging.dll</HintPath>
+    </Reference>
+    <Reference Include="Myre.Entities">
+      <HintPath>..\packages\Myre.Entities.6.0.1.0\lib\net40-Client\Myre.Entities.dll</HintPath>
+    </Reference>
+    <Reference Include="Myre.Graphics">
+      <HintPath>..\packages\Myre.Graphics.5.2.0.0\lib\net40-Client\Myre.Graphics.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -50,12 +71,58 @@
     <Reference Include="Ninject">
       <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
     </Reference>
+    <Reference Include="NLog, Version=3.2.1.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NLog.3.2.1\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="Placeholder">
+      <HintPath>..\packages\Placeholder.2.2.0.0\lib\net40-Client\Placeholder.dll</HintPath>
+    </Reference>
+    <Reference Include="Placeholder.AI">
+      <HintPath>..\packages\Placeholder.AI.1.0.5.0\lib\net40-Client\Placeholder.AI.dll</HintPath>
+    </Reference>
+    <Reference Include="Placeholder.AI.Control">
+      <HintPath>..\packages\Placeholder.AI.Planning.Parsing.4.1.2.0\lib\net40\Placeholder.AI.Control.dll</HintPath>
+    </Reference>
+    <Reference Include="Placeholder.AI.Pathfinding">
+      <HintPath>..\packages\Placeholder.AI.Pathfinding.8.1.0.0\lib\net40-Client\Placeholder.AI.Pathfinding.dll</HintPath>
+    </Reference>
+    <Reference Include="Placeholder.AI.Planning.Parsing">
+      <HintPath>..\packages\Placeholder.AI.Planning.Parsing.4.1.2.0\lib\net40\Placeholder.AI.Planning.Parsing.dll</HintPath>
+    </Reference>
+    <Reference Include="Placeholder.Audio2">
+      <HintPath>..\packages\Placeholder.Audio2.4.4.0.0\lib\net40-Client\Placeholder.Audio2.dll</HintPath>
+    </Reference>
+    <Reference Include="Placeholder.ConstructiveSolidGeometry">
+      <HintPath>..\packages\Placeholder.ConstructiveSolidGeometry.8.2.0.0\lib\net40-Client\Placeholder.ConstructiveSolidGeometry.dll</HintPath>
+    </Reference>
+    <Reference Include="Placeholder.Content">
+      <HintPath>..\packages\Placeholder.Content.1.2.3.0\lib\net40-Client\Placeholder.Content.dll</HintPath>
+    </Reference>
+    <Reference Include="Placeholder.Entities">
+      <HintPath>..\packages\Placeholder.Entities.1.4.1.0\lib\net40-Client\Placeholder.Entities.dll</HintPath>
+    </Reference>
+    <Reference Include="Placeholder.Networking">
+      <HintPath>..\packages\Placeholder.Networking.1.2.0.0\lib\net40-Client\Placeholder.Networking.dll</HintPath>
+    </Reference>
+    <Reference Include="Placeholder.Serialization">
+      <HintPath>..\packages\Placeholder.Serialization.2.0.0.0\lib\net40\Placeholder.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="Poly2Tri">
+      <HintPath>..\packages\Placeholder.ConstructiveSolidGeometry.8.2.0.0\lib\net40-Client\Poly2Tri.dll</HintPath>
+    </Reference>
     <Reference Include="RestSharp">
       <HintPath>..\packages\RestSharp.105.1.0\lib\net45\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="SupersonicSound">
+      <HintPath>..\packages\SupersonicSound.1.2.0.0\lib\net40-Client\SupersonicSound.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Abstractions">
+      <HintPath>..\packages\System.IO.Abstractions.2.0.0.113\lib\net40\System.IO.Abstractions.dll</HintPath>
+    </Reference>
     <Reference Include="System.Reactive.Core">
       <HintPath>..\packages\Rx-Core.2.2.5\lib\net45\System.Reactive.Core.dll</HintPath>
     </Reference>
@@ -80,6 +147,9 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="WebSocketSharp">
+      <HintPath>..\packages\websocket-sharp.clone.1.0.2.0\lib\Net45\WebSocketSharp.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -91,7 +161,10 @@
     </ApplicationDefinition>
     <Compile Include="CancelDialogException.cs" />
     <Compile Include="Connection\IScreenCollection.cs" />
+    <Compile Include="Connection\ITopology.cs" />
+    <Compile Include="Connection\RemoteSubdivisionContext.cs" />
     <Compile Include="Connection\ScreenCollection.cs" />
+    <Compile Include="Connection\Topology.cs" />
     <Compile Include="Model\Facade.cs" />
     <Compile Include="Model\Building.cs" />
     <Compile Include="Model\Floor.cs" />
@@ -103,6 +176,7 @@
     <Compile Include="Model\Project\ProjectData.cs" />
     <Compile Include="Model\Project\ProjectManager.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="ViewModel\Converter\BooleanInverter.cs" />
     <Compile Include="ViewModel\Converter\IsStringNullConverter.cs" />
     <Compile Include="ViewModel\Converter\LongToFileSizeConverter.cs" />
     <Compile Include="ViewModel\Converter\ValueConverterChain.cs" />
@@ -110,11 +184,15 @@
     <Compile Include="ViewModel\Tabs\InterTabClient.cs" />
     <Compile Include="ViewModel\Tabs\ITabName.cs" />
     <Compile Include="ViewModel\Tabs\TabContent.cs" />
+    <Compile Include="View\Controls\BaseEditorControl.cs" />
     <Compile Include="View\Controls\BlockEditor.xaml.cs">
       <DependentUpon>BlockEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Controls\BuildingEditor.xaml.cs">
       <DependentUpon>BuildingEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Controls\FacadeEditor.xaml.cs">
+      <DependentUpon>FacadeEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Controls\FloorEditor.xaml.cs">
       <DependentUpon>FloorEditor.xaml</DependentUpon>
@@ -140,6 +218,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Controls\BuildingEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Controls\FacadeEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

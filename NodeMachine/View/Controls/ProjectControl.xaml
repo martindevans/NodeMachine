@@ -15,20 +15,44 @@
             <BooleanToVisibilityConverter/>
         </converter:ValueConverterChain>
 
-        <ControlTemplate x:Key="ElementListTemplate" TargetType="ListBox">
-            <ListBox ItemsSource="{Binding}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Name}">
-                            <TextBlock.ContextMenu>
-                                <ContextMenu>
-                                    <MenuItem Header="Open Editor" Click="OpenInEditor" />
-                                </ContextMenu>
-                            </TextBlock.ContextMenu>
+        <ControlTemplate x:Key="ElementListTemplate" TargetType="Expander">
+            <Expander Margin="0 -2 0 -2">
+                <Expander.Header>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock FontWeight="Light" Foreground="{DynamicResource IdealForegroundColorBrush}" FontSize="16" Grid.Column="0" Margin="0 0 8 0">
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}{0} ({1})">
+                                    <Binding Path="Tag" RelativeSource="{RelativeSource TemplatedParent}" />
+                                    <Binding Path="Count"/>
+                                </MultiBinding>
+                            </TextBlock.Text>
                         </TextBlock>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                        <!-- Text box for filtering items in this collection, not implemented -->
+                        <!--<Grid Grid.Column="1" Background="{DynamicResource WhiteBrush}">
+                            <TextBlock Margin="5,2" Grid.Column="0" VerticalAlignment="Center" Text="Filter" Foreground="LightSteelBlue" Visibility="{Binding ElementName=Filter, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                            <TextBox Name="Filter" Background="Transparent" />
+                        </Grid>-->
+                    </Grid>
+                </Expander.Header>
+                <ListBox ItemsSource="{Binding}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}">
+                                <TextBlock.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Header="Open Editor" Click="OpenInEditor" />
+                                    </ContextMenu>
+                                </TextBlock.ContextMenu>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Expander>
         </ControlTemplate>
     </Control.Resources>
 
@@ -71,7 +95,7 @@
         </StackPanel>
         </Grid>
 
-        <WrapPanel Grid.Row="1" Grid.Column="0">
+        <WrapPanel>
             <Button Style="{DynamicResource MetroCircleButtonStyle}" Width="50" Height="50" ToolTip="New Project" Click="NewProject">
                 <Rectangle Width="25" Height="25">
                     <Rectangle.Fill>
@@ -110,52 +134,18 @@
             <Button Style="{DynamicResource MetroCircleButtonStyle}" Width="50" Height="50" ToolTip="Delete" Click="DeleteProject">
                 <Rectangle Width="25" Height="25" >
                     <Rectangle.Fill>
-                        <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_smiley_cry}" />
+                        <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_delete}" />
                     </Rectangle.Fill>
                 </Rectangle>
             </Button>
         </WrapPanel>
 
-        <Expander DataContext="{Binding ProjectManager.CurrentProject.ProjectData.Cities}">
-            <Expander.Header>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    
-                    <TextBlock FontWeight="Light" Foreground="{DynamicResource IdealForegroundColorBrush}" FontSize="16" Grid.Column="0" Margin="0 0 8 0">Cities</TextBlock>
-                    <Grid Grid.Column="1" Background="{DynamicResource WhiteBrush}">
-                        <TextBlock Margin="5,2" Grid.Column="0" VerticalAlignment="Center" Text="Filter" Foreground="LightSteelBlue" Visibility="{Binding ElementName=Filter, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}" />
-                        <TextBox Name="Filter" Background="Transparent" />
-                    </Grid>
-                </Grid>
-            </Expander.Header>
-            <ListBox Template="{StaticResource ElementListTemplate}" />
-        </Expander>
-
-        <Expander Header="Blocks" DataContext="{Binding ProjectManager.CurrentProject.ProjectData.Blocks}">
-            <ListBox Template="{StaticResource ElementListTemplate}" />
-        </Expander>
-
-        <Expander Header="Buildings" DataContext="{Binding ProjectManager.CurrentProject.ProjectData.Buildings}" >
-            <ListBox Template="{StaticResource ElementListTemplate}" />
-        </Expander>
-
-        <Expander Header="Floors" DataContext="{Binding ProjectManager.CurrentProject.ProjectData.Floors}">
-            <ListBox Template="{StaticResource ElementListTemplate}" />
-        </Expander>
-
-        <Expander Header="Rooms" DataContext="{Binding ProjectManager.CurrentProject.ProjectData.Rooms}">
-            <ListBox Template="{StaticResource ElementListTemplate}" />
-        </Expander>
-
-        <Expander Header="Miscellaneous" DataContext="{Binding ProjectManager.CurrentProject.ProjectData.Misc}">
-            <ListBox Template="{StaticResource ElementListTemplate}" />
-        </Expander>
-
-        <Expander Header="Facades" DataContext="{Binding ProjectManager.CurrentProject.ProjectData.Facades}">
-            <ListBox Template="{StaticResource ElementListTemplate}" />
-        </Expander>
+        <Expander Tag="Cities" DataContext="{Binding ProjectManager.CurrentProject.ProjectData.Cities}" Template="{StaticResource ElementListTemplate}" />
+        <Expander Tag="Blocks" DataContext="{Binding ProjectManager.CurrentProject.ProjectData.Blocks}" Template="{StaticResource ElementListTemplate}" />
+        <Expander Tag="Buildings" DataContext="{Binding ProjectManager.CurrentProject.ProjectData.Buildings}" Template="{StaticResource ElementListTemplate}" />
+        <Expander Tag="Floors" DataContext="{Binding ProjectManager.CurrentProject.ProjectData.Floors}" Template="{StaticResource ElementListTemplate}" />
+        <Expander Tag="Rooms" DataContext="{Binding ProjectManager.CurrentProject.ProjectData.Rooms}" Template="{StaticResource ElementListTemplate}" />
+        <Expander Tag="Facades" DataContext="{Binding ProjectManager.CurrentProject.ProjectData.Facades}" Template="{StaticResource ElementListTemplate}" />
+        <Expander Tag="Misc" DataContext="{Binding ProjectManager.CurrentProject.ProjectData.Misc}" Template="{StaticResource ElementListTemplate}" />
     </StackPanel>
 </UserControl>

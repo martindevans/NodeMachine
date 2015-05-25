@@ -106,7 +106,7 @@
         </Expander>
 
         <Expander Grid.Row="4" Grid.Column="0" Header="Metadata">
-            <DataGrid SelectionMode="Single" SelectionUnit="FullRow" IsReadOnly="True" ItemsSource="{Binding SelectedNode.Metadata}">
+            <DataGrid SelectionMode="Single" SelectionUnit="FullRow" IsReadOnly="True" ItemsSource="{Binding SelectedNode.Metadata}" AutoGenerateColumns="False">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Key" Width="Auto"></DataGridTextColumn>
                     <DataGridTextColumn Header="Value" Width="*"></DataGridTextColumn>

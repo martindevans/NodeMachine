@@ -24,7 +24,7 @@ namespace NodeMachine.Model.Project
 
         public ObservableCollection<string> Cities { get; private set; }
         public ObservableCollection<Block> Blocks { get; private set; }
-        public ObservableCollection<string> Buildings { get; private set; }
+        public ObservableCollection<Building> Buildings { get; private set; }
         public ObservableCollection<Floor> Floors { get; private set; }
         public ObservableCollection<string> Rooms { get; private set; }
         public ObservableCollection<string> Misc { get; private set; }
@@ -34,7 +34,7 @@ namespace NodeMachine.Model.Project
         {
             Cities = new ObservableCollection<string>();
             Blocks = new ObservableCollection<Block>();
-            Buildings = new ObservableCollection<string>();
+            Buildings = new ObservableCollection<Building>();
             Floors = new ObservableCollection<Floor>();
             Rooms = new ObservableCollection<string>();
             Misc = new ObservableCollection<string>();

@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -21,13 +23,31 @@ namespace NodeMachine.Model.Project
             {
                 //Unsubscribe from changes on old data
                 if (_projectData != null)
+                {
                     _projectData.PropertyChanged -= ProjectDataPropertyChanged;
+                    _projectData.Blocks.CollectionChanged -= ProjectDataCollectionChanged;
+                    _projectData.Buildings.CollectionChanged -= ProjectDataCollectionChanged;
+                    _projectData.Cities.CollectionChanged -= ProjectDataCollectionChanged;
+                    _projectData.Facades.CollectionChanged -= ProjectDataCollectionChanged;
+                    _projectData.Floors.CollectionChanged -= ProjectDataCollectionChanged;
+                    _projectData.Misc.CollectionChanged -= ProjectDataCollectionChanged;
+                    _projectData.Rooms.CollectionChanged -= ProjectDataCollectionChanged;
+                }
 
                 _projectData = value;
 
                 //Subscribe to changes on new data
                 if (_projectData != null)
+                {
                     _projectData.PropertyChanged += ProjectDataPropertyChanged;
+                    SubscribeToCollectionUpdates(_projectData.Blocks);
+                    //SubscribeToCollectionUpdates(_projectData.Buildings);
+                    //SubscribeToCollectionUpdates(_projectData.Cities);
+                    SubscribeToCollectionUpdates(_projectData.Facades);
+                    SubscribeToCollectionUpdates(_projectData.Floors);
+                    //SubscribeToCollectionUpdates(_projectData.Misc);
+                    //SubscribeToCollectionUpdates(_projectData.Rooms);
+                }
 
                 OnPropertyChanged();
             }
@@ -124,6 +144,27 @@ namespace NodeMachine.Model.Project
         private void ProjectDataPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             UnsavedChanges = true;
+        }
+
+        private void SubscribeToCollectionUpdates<T>(ObservableCollection<T> collection) where T : INotifyPropertyChanged
+        {
+            collection.CollectionChanged += ProjectDataCollectionChanged;
+
+            foreach (var item in collection)
+                ((INotifyPropertyChanged) item).PropertyChanged += ProjectDataPropertyChanged;
+        }
+
+        private void ProjectDataCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            UnsavedChanges = true;
+
+            if (e.Action == NotifyCollectionChangedAction.Add)
+                foreach (var item in e.NewItems)
+                    ((INotifyPropertyChanged)item).PropertyChanged += ProjectDataPropertyChanged;
+
+            if (e.Action == NotifyCollectionChangedAction.Remove)
+                foreach (var item in e.OldItems)
+                    ((INotifyPropertyChanged)item).PropertyChanged -= ProjectDataPropertyChanged;
         }
     }
 }

@@ -1,7 +1,9 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using NodeMachine.Annotations;
 
@@ -46,6 +48,11 @@ namespace NodeMachine.View.Controls
             {
                 handler(this, new PropertyChangedEventArgs(propertyName));
             }
+        }
+
+        private void ForceGC(object sender, RoutedEventArgs e)
+        {
+            GC.Collect();
         }
     }
 }

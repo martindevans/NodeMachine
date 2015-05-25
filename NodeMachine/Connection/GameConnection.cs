@@ -1,5 +1,4 @@
 ﻿using NodeMachine.Annotations;
-using NodeMachine.Model;
 using RestSharp;
 using System.ComponentModel;
 using System.Net;
@@ -15,54 +14,28 @@ namespace NodeMachine.Connection
 
         private readonly RestClient _client = new RestClient("http://localhost:41338");
 
-        private ProceduralNode _topology;
-        public ProceduralNode Topology
-        {
-            get
-            {
-                return _topology;
-            }
-            private set
-            {
-                _topology = value;
-                OnPropertyChanged();
-            }
-        }
+        public ITopology Topology { get; private set; }
 
         public IScreenCollection Screens { get; private set; }
 
         public GameConnection()
         {
             Screens = new ScreenCollection(this);
+            Topology = new Topology(this);
         }
 
         public async Task Connect()
         {
-            IRestResponse response;
-            do
+            while (!await IsConnected())
             {
-                var request = new RestRequest("/scene", Method.GET);
-                response = await _client.ExecuteGetTaskAsync(request, _cancellation.Token);
-            } while (response.StatusCode != HttpStatusCode.OK);
+            }
         }
 
-        public async Task<ProceduralNode> RefreshTopology()
+        public async Task<bool> IsConnected()
         {
-            var request = new RestRequest("/scene/services/worldgeometryservice/topology", Method.GET);
-            var response = await Request<ProceduralNode>(request);
-
-            if (response.ResponseStatus == ResponseStatus.Completed)
-                Topology = response.Data;
-            return Topology;
-        }
-
-        public async Task ClearTopology()
-        {
-            var request = new RestRequest("/scene/services/worldgeometryservice/topology", Method.DELETE);
-            var response = await Request(request);
-
-            if (response.ResponseStatus == ResponseStatus.Completed)
-                Topology = null;
+            var request = new RestRequest("/scene", Method.GET);
+            var response = await _client.ExecuteGetTaskAsync(request, _cancellation.Token);
+            return response.StatusCode == HttpStatusCode.OK;
         }
 
         internal async Task<IRestResponse> Request(IRestRequest request)

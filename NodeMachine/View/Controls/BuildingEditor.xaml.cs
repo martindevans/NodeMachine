@@ -1,66 +1,34 @@
-﻿using NodeMachine.Annotations;
+﻿using NodeMachine.Connection;
 using NodeMachine.Model;
+using NodeMachine.Model.Project;
 using NodeMachine.ViewModel.Tabs;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Windows.Controls;
+using System.Collections.Generic;
 
 namespace NodeMachine.View.Controls
 {
     /// <summary>
     /// Interaction logic for BuildingEditor.xaml
     /// </summary>
-    public partial class BuildingEditor : UserControl, ITabName
+    public partial class BuildingEditor : BaseEditorControl<Building>, ITabName
     {
-        private Building _building;
-        public Building Building
+        public BuildingEditor(IProjectManager manager, IGameConnection connection, Building value)
+            : base(manager, connection, value)
+        {
+        }
+
+        protected override ICollection<Building> ProjectDataModelCollection
         {
             get
             {
-                return _building;
-            }
-            set
-            {
-                if (_building != null)
-                    _building.PropertyChanged -= BlockPropertyChanged;
-                _building = value;
-                if (_building != null)
-                    _building.PropertyChanged += BlockPropertyChanged;
-                
-                OnPropertyChanged();
-                OnPropertyChanged("TabName");
+                return ProjectManager.CurrentProject.ProjectData.Buildings;
             }
         }
 
-        public string TabName
+        protected override string ValueName
         {
             get
             {
-                return _building == null ? "Block Editor" : string.Format("{0}.building", _building.Name);
-            }
-        }
-
-        public BuildingEditor(Building building)
-        {
-            InitializeComponent();
-
-            Building = building;
-        }
-
-        private void BlockPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == "Name")
-                OnPropertyChanged("TabName");
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
+                return Value.Name;
             }
         }
     }

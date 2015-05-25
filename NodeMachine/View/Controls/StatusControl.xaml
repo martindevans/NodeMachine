@@ -13,6 +13,7 @@
     </Control.Resources>
     
     <StackPanel Orientation="Vertical" x:Name="Stack">
+        <Button Click="ForceGC">Force GC</Button>
         <TextBlock Text="{Binding Process.WorkingSet64, Mode=OneWay, Converter={StaticResource LongToFileSizeConverter}, StringFormat='Memory Usage: {0:#,#}'}"></TextBlock>
         <TextBlock>
             <TextBlock.Text>

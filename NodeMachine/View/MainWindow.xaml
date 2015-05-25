@@ -8,7 +8,7 @@
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         BorderBrush="{DynamicResource AccentColorBrush}"
         BorderThickness="1"
-        Title="NODE/MACHINE"
+        Title="{Binding ProjectManager.CurrentProject.ProjectData.Name, TargetNullValue='NODE/MACHINE', StringFormat='{}{0} - NODE/MACHINE'}"
         ShowIconOnTitleBar="False"
         ResizeMode="CanResizeWithGrip"
         Closing="WindowClosing">
