@@ -58,24 +58,9 @@
             <controls:Flyout x:Name="SettingsFlyout" Header="Settings" Position="Right" Width="250" Theme="Accent">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel Orientation="Vertical">
-                        <!--<controls:ToggleSwitch Header="Paranoid Logout" IsChecked="{Binding Path=Settings.ParanoidLogout, Mode=TwoWay}">
+                        <!--<controls:ToggleSwitch Header="Color Scheme" IsChecked="{Binding Path=IsDarkTheme, Mode=OneWayToSource}">
                             <controls:ToggleSwitch.ToolTip>
-                                <TextBlock>Log Out All Keybase Sessions</TextBlock>
-                            </controls:ToggleSwitch.ToolTip>
-                        </controls:ToggleSwitch>
-                        <controls:ToggleSwitch Header="Paranoid Locking" IsChecked="{Binding Path=Settings.ParanoidLocking, Mode=TwoWay}">
-                            <controls:ToggleSwitch.ToolTip>
-                                <TextBlock>Log Out Whenever The Application Loses Focus</TextBlock>
-                            </controls:ToggleSwitch.ToolTip>
-                        </controls:ToggleSwitch>
-                        <controls:ToggleSwitch Header="Paranoid Verification" IsChecked="{Binding Path=Settings.ParanoidVerification, Mode=TwoWay}">
-                            <controls:ToggleSwitch.ToolTip>
-                                <TextBlock>Verify All Messages From The Server</TextBlock>
-                            </controls:ToggleSwitch.ToolTip>
-                        </controls:ToggleSwitch>
-                        <controls:ToggleSwitch Header="Save Username" IsChecked="{Binding Path=Settings.SaveMostRecentUser, Mode=TwoWay}">
-                            <controls:ToggleSwitch.ToolTip>
-                                <TextBlock>Save The Most Recently Logged In User</TextBlock>
+                                <TextBlock>Light Or Dark?</TextBlock>
                             </controls:ToggleSwitch.ToolTip>
                         </controls:ToggleSwitch>-->
                     </StackPanel>

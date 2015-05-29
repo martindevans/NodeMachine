@@ -1,12 +1,11 @@
 ﻿using Dragablz;
-using MahApps.Metro.Controls;
 using Ninject;
-using System.Windows;
 using NodeMachine.Connection;
 using NodeMachine.Model.Project;
 using NodeMachine.View;
 using NodeMachine.View.Controls;
 using NodeMachine.ViewModel.Tabs;
+using System.Windows;
 
 namespace NodeMachine
 {

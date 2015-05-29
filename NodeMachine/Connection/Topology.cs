@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using JetBrains.Annotations;
 using NodeMachine.Model;
 using RestSharp;
+using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 namespace NodeMachine.Connection
 {
@@ -15,6 +13,20 @@ namespace NodeMachine.Connection
         : ITopology, INotifyPropertyChanged
     {
         private readonly GameConnection _connection;
+
+        private bool _hasLiveConnection;
+        public bool HasLiveConnection
+        {
+            get
+            {
+                return _hasLiveConnection;
+            }
+            set
+            {
+                _hasLiveConnection = value;
+                OnPropertyChanged();
+            }
+        }
 
         private ProceduralNode _root;
         public ProceduralNode Root
@@ -27,6 +39,19 @@ namespace NodeMachine.Connection
             {
                 _root = value;
                 OnPropertyChanged();
+
+                if (HasLiveConnection)
+                {
+                    throw new NotImplementedException("Close existing live connection");
+                }
+
+                var kvp = _root.Metadata.SingleOrDefault(a => a.Key == "live_connection_address");
+                if (kvp.Key == null)
+                    HasLiveConnection = false;
+                else
+                {
+                    throw new NotImplementedException("Open Live Connection");
+                }
             }
         }
 

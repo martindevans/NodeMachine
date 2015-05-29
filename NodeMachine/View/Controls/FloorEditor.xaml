@@ -9,6 +9,5 @@
              d:DesignHeight="300" d:DesignWidth="300"
              DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <Grid>
-            
     </Grid>
 </controls:BaseEditorControl>

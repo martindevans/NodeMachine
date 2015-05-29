@@ -15,5 +15,9 @@ namespace NodeMachine.Connection
         Task Clear();
 
         Task<bool> SetRoot(Guid scriptId);
+
+        bool HasLiveConnection { get; }
+
+
     }
 }

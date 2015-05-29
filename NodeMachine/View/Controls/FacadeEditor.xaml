@@ -6,6 +6,9 @@
              xmlns:converter="clr-namespace:NodeMachine.ViewModel.Converter"
              xmlns:controls="clr-namespace:NodeMachine.View.Controls"
              xmlns:model="clr-namespace:NodeMachine.Model"
+             xmlns:avalonedit="http://icsharpcode.net/sharpdevelop/avalonedit"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:controls1="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              DataContext="{Binding RelativeSource={RelativeSource Self}}">
@@ -17,10 +20,11 @@
         </converter:ValueConverterChain>
     </Control.Resources>
 
-        <StackPanel>
-        <Grid>
+    <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="Auto">
+        <Grid DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
@@ -47,7 +51,14 @@
                     </Rectangle.Fill>
                 </Rectangle>
             </Button>
-            <Button Style="{DynamicResource MetroCircleButtonStyle}" Width="50" Height="50" Grid.Column="2" ToolTip="Send To Game" Click="SendToGame">
+            <Button Style="{DynamicResource MetroCircleButtonStyle}" Width="50" Height="50" Grid.Column="2" ToolTip="Check" Click="CheckMarkup">
+                <Rectangle Width="20" Height="25">
+                    <Rectangle.Fill>
+                        <VisualBrush Stretch="UniformToFill" Visual="{StaticResource appbar_page_check}" />
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Button>
+            <Button Style="{DynamicResource MetroCircleButtonStyle}" Width="50" Height="50" Grid.Column="3" ToolTip="Send To Game" Click="SendToGame">
                 <Rectangle Width="20" Height="25" Margin="5 0 0 0">
                     <Rectangle.Fill>
                         <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_control_play}" />
@@ -55,5 +66,70 @@
                 </Rectangle>
             </Button>
         </Grid>
-    </StackPanel>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="5*"></RowDefinition>
+                <RowDefinition Height="5"></RowDefinition>
+                <RowDefinition Height="5*"></RowDefinition>
+                <RowDefinition Height="5"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                
+                <Canvas Name="PreviewCanvas" Width="0" Height="0" RenderTransform="1 0 0 -1 0 0" SnapsToDevicePixels="False" Grid.Row="0" >
+                    <Rectangle
+                            Width="100"
+                            Height="100"
+                            Fill="Blue"
+                            Canvas.Left="-50"
+                            Canvas.Top="-50" />
+                </Canvas>
+
+                <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center" Margin="1">
+                    <TextBlock Text="Width (cm):" />
+                    <xctk:IntegerUpDown Name="PreviewWidthValue" ValueChanged="PreviewSizeChanged" FormatString="#,#" Value="1000" Increment="1" />
+
+                    <TextBlock Text="Height (cm):" Margin="5 0 0 0" />
+                    <xctk:IntegerUpDown Name="PreviewHeightValue" ValueChanged="PreviewSizeChanged" FormatString="#,#" Value="100" Increment="1" Margin="0 0 5 0" />
+
+                    <TextBlock Text="Show All:" Margin="5 0 0 0" />
+                    <CheckBox Name="ShowAllNodes" Unchecked="ShowAllCheckedChanged" Checked="ShowAllCheckedChanged" />
+                </StackPanel>
+            </Grid>
+
+            <GridSplitter Grid.Row="1"
+                          HorizontalAlignment="Stretch"
+                          VerticalAlignment="Stretch"
+                          ShowsPreview="True"
+                          Width="Auto"
+                          Background="{DynamicResource AccentColorBrush}">
+            </GridSplitter>
+            
+            <Border BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="1" Padding="1" Margin="1" Grid.Row="2">
+                <RichTextBox Name="Editor" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible" AcceptsReturn="True" FontFamily="Consolas" PreviewKeyDown="Editor_OnPreviewKeyDown">
+                    <RichTextBox.Resources>
+                        <Style TargetType="{x:Type Paragraph}">
+                            <Setter Property="Margin" Value="0"/>
+                        </Style>
+                    </RichTextBox.Resources>
+                </RichTextBox>
+            </Border>
+
+            <GridSplitter Grid.Row="3"
+                          HorizontalAlignment="Stretch"
+                          VerticalAlignment="Stretch"
+                          ShowsPreview="True"
+                          Width="Auto"
+                          Background="{DynamicResource AccentColorBrush}">
+            </GridSplitter>
+            
+            <TextBlock Name="CompilationOutput" Grid.Row="4"></TextBlock>
+        </Grid>
+    </DockPanel>
 </controls:BaseEditorControl>
