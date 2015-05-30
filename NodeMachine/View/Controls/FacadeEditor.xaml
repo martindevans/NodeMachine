@@ -6,9 +6,7 @@
              xmlns:converter="clr-namespace:NodeMachine.ViewModel.Converter"
              xmlns:controls="clr-namespace:NodeMachine.View.Controls"
              xmlns:model="clr-namespace:NodeMachine.Model"
-             xmlns:avalonedit="http://icsharpcode.net/sharpdevelop/avalonedit"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-             xmlns:controls1="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              DataContext="{Binding RelativeSource={RelativeSource Self}}">

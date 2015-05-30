@@ -7,6 +7,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using BeautifulBlueprints.Elements;
 using BeautifulBlueprints.Layout;
 using EpimetheusPlugins.Procedural;
 using NodeMachine.Connection;
@@ -116,7 +117,8 @@ namespace NodeMachine.View.Controls
                 {
                     foreach (var sol in solution)
                     {
-                        if (!ShowAllNodes.IsChecked.Value && sol.Element.Children.Any())
+                        var container = sol.Element as BaseContainerElement;
+                        if (!ShowAllNodes.IsChecked.Value && container != null && container.Children.Any())
                             continue;
 
                         output.AppendLine(string.Format("{0}\tL{1:0.0}\tR{2:0.0}\tT{3:0.0}\tB{4:0.0}", sol.Element.Name, sol.Left, sol.Right, sol.Top, sol.Bottom));
