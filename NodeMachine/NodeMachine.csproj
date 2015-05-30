@@ -38,9 +38,9 @@
     </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BeautifulBlueprints, Version=0.0.9.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="BeautifulBlueprints, Version=0.0.10.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BeautifulBlueprints.0.0.9.0\lib\net40-Client\BeautifulBlueprints.dll</HintPath>
+      <HintPath>..\packages\BeautifulBlueprints.0.0.10.0\lib\net40-Client\BeautifulBlueprints.dll</HintPath>
     </Reference>
     <Reference Include="Dragablz">
       <HintPath>..\packages\Dragablz.0.0.1.110\lib\net45\Dragablz.dll</HintPath>
