@@ -1,4 +1,5 @@
-﻿using NodeMachine.Connection;
+﻿using System.Collections.ObjectModel;
+using NodeMachine.Connection;
 using NodeMachine.Model;
 using NodeMachine.Model.Project;
 using NodeMachine.ViewModel.Tabs;
@@ -16,7 +17,7 @@ namespace NodeMachine.View.Controls
         {
         }
 
-        protected override ICollection<Building> ProjectDataModelCollection
+        protected override ObservableCollection<Building> ProjectDataModelCollection
         {
             get
             {

@@ -46,6 +46,7 @@
                                 <TextBlock.ContextMenu>
                                     <ContextMenu>
                                         <MenuItem Header="Open Editor" Click="OpenInEditor" />
+                                        <MenuItem Header="Delete" Click="DeleteItem" />
                                     </ContextMenu>
                                 </TextBlock.ContextMenu>
                             </TextBlock>

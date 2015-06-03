@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using EpimetheusPlugins.Procedural;
 using NodeMachine.Annotations;
@@ -57,7 +58,7 @@ namespace NodeMachine.View.Controls
         public IProjectManager ProjectManager { get; private set; }
         public IGameConnection Connection { get; private set; }
 
-        protected abstract ICollection<TModel> ProjectDataModelCollection { get; }
+        protected abstract ObservableCollection<TModel> ProjectDataModelCollection { get; }
         protected abstract string ValueName { get; }
 
         public string TabName
@@ -68,12 +69,22 @@ namespace NodeMachine.View.Controls
             }
         }
 
-        public BaseEditorControl(IProjectManager manager, IGameConnection connection, TModel value)
+        protected BaseEditorControl(IProjectManager manager, IGameConnection connection, TModel value)
         {
             ProjectManager = manager;
             Connection = connection;
 
             Value = value ?? new TModel();
+        }
+
+        protected override void OnInitialized(EventArgs e)
+        {
+            base.OnInitialized(e);
+
+            ProjectDataModelCollection.CollectionChanged += (sender, args) => {
+                if (args.OldItems != null && args.OldItems.Contains(Value))
+                    Unsaved = true;
+            };
         }
 
         private void FacadePropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -96,7 +107,6 @@ namespace NodeMachine.View.Controls
         protected void DeleteFromProject(object sender, RoutedEventArgs e)
         {
             ProjectDataModelCollection.Remove(Value);
-            Unsaved = true;
         }
 
         protected void AddToProject(object sender, RoutedEventArgs e)

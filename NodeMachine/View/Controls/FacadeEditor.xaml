@@ -98,6 +98,9 @@
 
                     <TextBlock Text="Show All:" Margin="5 0 0 0" />
                     <CheckBox Name="ShowAllNodes" Unchecked="ShowAllCheckedChanged" Checked="ShowAllCheckedChanged" />
+
+                    <TextBlock Text="Show Shapes:" Margin="5 0 0 0" />
+                    <CheckBox Name="ShowShapeNodes" Unchecked="ShowShapesCheckedChanged" Checked="ShowShapesCheckedChanged" />
                 </StackPanel>
             </Grid>
 
@@ -110,7 +113,7 @@
             </GridSplitter>
             
             <Border BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="1" Padding="1" Margin="1" Grid.Row="2">
-                <RichTextBox Name="Editor" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible" AcceptsReturn="True" FontFamily="Consolas" PreviewKeyDown="Editor_OnPreviewKeyDown">
+                <RichTextBox Loaded="Editor_OnLoaded" TextChanged="Editor_OnTextChanged" Name="Editor" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible" AcceptsReturn="True" FontFamily="Consolas" PreviewKeyDown="Editor_OnPreviewKeyDown">
                     <RichTextBox.Resources>
                         <Style TargetType="{x:Type Paragraph}">
                             <Setter Property="Margin" Value="0"/>

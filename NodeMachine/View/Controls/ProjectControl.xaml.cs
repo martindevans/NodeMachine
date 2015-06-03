@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
@@ -216,6 +217,48 @@ namespace NodeMachine.View.Controls
                 return false;
 
             window.TabContents.Add(new TabContent(_kernel.Get<TEditor>(new ConstructorArgument(argName, arg))));
+            return true;
+        }
+
+        private void DeleteItem(object sender, RoutedEventArgs e)
+        {
+            var context = ((Control)sender).DataContext;
+            var window = (MainWindow)Window.GetWindow(this);
+            if (window == null)
+                throw new NullReferenceException();
+
+            //if (DeleteItem<City>(window, context, p => p.Cities))
+            //    return;
+
+            if (DeleteItem<Block>(window, context, p => p.Blocks))
+                return;
+
+            if (DeleteItem<Building>(window, context, p => p.Buildings))
+                return;
+
+            if (DeleteItem<Floor>(window, context, p => p.Floors))
+                return;
+
+            //if (DeleteItem<Room>(window, context, p => p.Rooms))
+            //    return;
+
+            //if (DeleteItem<MiscNode>(window, context, p => p.Misc))
+            //    return;
+
+            if (DeleteItem<Facade>(window, context, p => p.Facades))
+                return;
+
+            throw new NotImplementedException();
+        }
+
+        private bool DeleteItem<TArg>(MainWindow window, object context, Func<ProjectData, ObservableCollection<TArg>> collection)
+            where TArg : class
+        {
+            var arg = context as TArg;
+            if (arg == null)
+                return false;
+
+            collection(ProjectManager.CurrentProject.ProjectData).Remove(arg);
             return true;
         }
     }
