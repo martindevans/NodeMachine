@@ -1,5 +1,8 @@
 ﻿using System.Linq;
+using System.Text;
+using Construct_Gamemode.Map;
 using JetBrains.Annotations;
+using Newtonsoft.Json;
 using NodeMachine.Model;
 using RestSharp;
 using System;
@@ -45,6 +48,12 @@ namespace NodeMachine.Connection
                     throw new NotImplementedException("Close existing live connection");
                 }
 
+                if (_root == null)
+                {
+                    HasLiveConnection = false;
+                    return;
+                }
+
                 var kvp = _root.Metadata.SingleOrDefault(a => a.Key == "live_connection_address");
                 if (kvp.Key == null)
                     HasLiveConnection = false;
@@ -79,10 +88,12 @@ namespace NodeMachine.Connection
                 Root = null;
         }
 
-        public async Task<bool> SetRoot(Guid scriptId)
+        public async Task<bool> SetRoot(Guid scriptId, RemoteRootInit data)
         {
             var request = new RestRequest("/scene/services/worldgeometryservice/topology", Method.PUT);
-            request.AddParameter("text", scriptId.ToString(), ParameterType.RequestBody);
+
+            var body = scriptId + Environment.NewLine + JsonConvert.SerializeObject(data);
+            request.AddParameter("text", body, ParameterType.RequestBody);
 
             var response = await _connection.Request(request);
 

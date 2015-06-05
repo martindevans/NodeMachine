@@ -1,27 +1,31 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using BeautifulBlueprints.Elements;
+using BeautifulBlueprints.Layout;
+using BeautifulBlueprints.Layout.Svg;
+using BeautifulBlueprints.Serialization;
+using Construct_Gamemode.Map;
+using Construct_Gamemode.Map.Facade;
+using Construct_Gamemode.Map.Models;
+using Newtonsoft.Json;
+using NodeMachine.Connection;
+using NodeMachine.Model;
+using NodeMachine.Model.Project;
+using NodeMachine.ViewModel.Tabs;
+using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using BeautifulBlueprints.Elements;
-using BeautifulBlueprints.Layout;
-using BeautifulBlueprints.Layout.Svg;
-using BeautifulBlueprints.Serialization;
-using EpimetheusPlugins.Procedural;
-using NodeMachine.Connection;
-using NodeMachine.Model;
-using NodeMachine.Model.Project;
-using NodeMachine.ViewModel.Tabs;
-using System.Collections.Generic;
-using System.Windows;
-using Block = System.Windows.Documents.Block;
-using Geometry = SupersonicSound.LowLevel.Geometry;
+using Color = System.Windows.Media.Color;
 using Path = BeautifulBlueprints.Elements.Path;
+using Point = System.Windows.Point;
+using Rectangle = System.Windows.Shapes.Rectangle;
 
 namespace NodeMachine.View.Controls
 {
@@ -57,8 +61,75 @@ namespace NodeMachine.View.Controls
             if (!await Connection.IsConnected())
                 return;
 
-            //todo: pass in a procedural script
-            await SendToGame(new Prism(), (ProceduralScript)null);
+            //Preconditions for subdivision
+            if (PreviewWidthValue == null || PreviewHeightValue == null || ShowAllNodes == null)
+                return;
+            if (!PreviewWidthValue.Value.HasValue || !PreviewHeightValue.Value.HasValue || !ShowAllNodes.IsChecked.HasValue)
+                return;
+
+            //Layout facade
+            var text = new TextRange(Editor.Document.ContentStart, Editor.Document.ContentEnd).Text;
+            var node = Yaml.Deserialize(new StringReader(text));
+            var w = PreviewWidthValue.Value.Value;
+            var h = PreviewHeightValue.Value.Value;
+            var solution = Solver.Solve(-w / 2m, w / 2m, h / 2m, -h / 2m, node).ToArray();
+            var paths = solution.Where(a => a.Tag is PathLayout).ToArray();
+
+            //Create the facade in game
+            await Connection.Topology.SetRoot(Guid.Parse("CFF595C4-4C67-4CCB-9E5F-AB9AE0F9AF54"), new RemoteRootInit {
+                Children = new ChildDefinition[] {
+                    new ChildDefinition {
+                        Prism = new PrismModel(new[] {new Point2(-w / 200f, 0.1f), new Point2(w / 200f, 0.1f), new Point2(w / 200f, -0.1f), new Point2(-w / 200f, -0.1f)}, h / 100f),
+                        ChildType = "Construct_Gamemode.Map.Facade.RemoteFacade",
+                        Center = new Point3(1, 1, 1),
+                        ChildData = JsonConvert.SerializeObject(new RemoteFacadeInit {
+                            Stamps = paths.SelectMany(a => Convert((PathLayout)a.Tag, (Path)a.Element)).ToArray()
+                        })
+                    }
+                }
+            });
+        }
+
+        private IEnumerable<RemoteStamp> Convert(PathLayout path, Path element)
+        {
+            var shapes = ExtractShapes(path);
+
+            foreach (var shape in shapes)
+            {
+                yield return new RemoteStamp() {
+                    Additive = element.Additive,
+                    StartDepth = (float)element.StartDepth,
+                    EndDepth = (float)(element.StartDepth + element.Thickness),
+                    Material = element.Brush,
+                    Shape = shape.ToArray()
+                };
+            }
+        }
+
+        private IEnumerable<List<Point2>> ExtractShapes(PathLayout path)
+        {
+            List<List<Point2>> collection = new List<List<Point2>>();
+
+            List<Point2> polygon = null;
+            foreach (var point in path.Points)
+            {
+                if (point.StartOfLine)
+                {
+                    if (polygon != null)
+                        collection.Add(polygon);
+                    polygon = new List<Point2>();
+                }
+
+// ReSharper disable PossibleNullReferenceException
+                var p = new Point2((float)point.X / 100f, (float)point.Y / 100f);
+                if (!polygon.Contains(p))
+// ReSharper restore PossibleNullReferenceException
+                    polygon.Add(p);
+            }
+
+            if (polygon != null)
+                collection.Add(polygon);
+            return collection;
         }
 
         private void CheckMarkup(object sender, RoutedEventArgs e)
@@ -156,7 +227,7 @@ namespace NodeMachine.View.Controls
                     {
                         var path = sol.Tag as PathLayout;
                         if (path != null)
-                            RenderPath(path, ((Path)sol.Element).Fill);
+                            RenderPath(path, (Path)sol.Element);
                     }
                 }
                 else
@@ -172,7 +243,7 @@ namespace NodeMachine.View.Controls
             }
         }
 
-        private void RenderPath(PathLayout path, decimal fill)
+        private void RenderPath(PathLayout path, Path fill)
         {
             if (ShowShapeNodes.IsChecked.HasValue && !ShowShapeNodes.IsChecked.Value)
                 return;
@@ -189,10 +260,18 @@ namespace NodeMachine.View.Controls
                 {
                     if (polygon != null)
                         PreviewCanvas.Children.Add(polygon);
+
+                    SolidColorBrush brush;
+                    var b = Math.Max(-255, Math.Min(255, fill.Thickness * 255));
+                    if (fill.Thickness < 0)
+                        brush = new SolidColorBrush(Color.FromRgb((byte)-b, 0, (byte)-b));
+                    else
+                        brush = new SolidColorBrush(Color.FromRgb((byte)b, (byte)b, (byte)b));
+
                     polygon = new Polygon() {
                         Stroke = Brushes.DarkBlue,
                         StrokeThickness = 2,
-                        Fill = new SolidColorBrush(Color.FromRgb((byte)(fill * 255), (byte)(fill * 255), (byte)(fill * 255)))
+                        Fill = brush
                     };
                 }
 

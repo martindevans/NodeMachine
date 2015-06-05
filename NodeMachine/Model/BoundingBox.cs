@@ -1,4 +1,6 @@
 ﻿
+using Microsoft.Xna.Framework;
+
 namespace NodeMachine.Model
 {
     public struct BoundingBox

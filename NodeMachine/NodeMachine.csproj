@@ -38,16 +38,37 @@
     </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BeautifulBlueprints, Version=0.0.23.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Base-CityGeneration, Version=1.0.5634.29064, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BeautifulBlueprints.0.0.23.0\lib\net40-Client\BeautifulBlueprints.dll</HintPath>
+      <HintPath>..\packages\Base-CityGeneration.1.0.5634.29064\lib\net40-Client\Base-CityGeneration.dll</HintPath>
+    </Reference>
+    <Reference Include="BeautifulBlueprints, Version=0.0.29.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\BeautifulBlueprints.0.0.29.0\lib\net40-Client\BeautifulBlueprints.dll</HintPath>
+    </Reference>
+    <Reference Include="BinarySearch">
+      <HintPath>..\packages\BinarySearch.2.1.0.0\lib\net35-Client\BinarySearch.dll</HintPath>
+    </Reference>
+    <Reference Include="Cassowary">
+      <HintPath>..\packages\Cassowary.4.0.0.0\lib\net35-Client\Cassowary.dll</HintPath>
+    </Reference>
+    <Reference Include="Character Controllers">
+      <HintPath>..\packages\character-controllers.1.0.5603.29651\lib\net40-Client\Character Controllers.exe</HintPath>
+    </Reference>
+    <Reference Include="Construct Gamemode, Version=1.0.5634.28107, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Construct-Gamemode.1.0.5634.28107\lib\net40-Client\Construct Gamemode.dll</HintPath>
     </Reference>
     <Reference Include="Dragablz, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Dragablz.0.0.2.112\lib\net45\Dragablz.dll</HintPath>
     </Reference>
-    <Reference Include="EpimetheusPlugins">
-      <HintPath>..\packages\EpimetheusPlugins.1.0.5618.28790\lib\net40-Client\EpimetheusPlugins.dll</HintPath>
+    <Reference Include="EpimetheusPlugins, Version=1.0.5634.3434, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EpimetheusPlugins.1.0.5634.3434\lib\net40-Client\EpimetheusPlugins.dll</HintPath>
+    </Reference>
+    <Reference Include="Fleck">
+      <HintPath>..\packages\Fleck.0.13.0.48\lib\net40\Fleck.dll</HintPath>
     </Reference>
     <Reference Include="HandyCollections">
       <HintPath>..\packages\HandyCollections.1.1.0.0\lib\net40\HandyCollections.dll</HintPath>
@@ -58,6 +79,10 @@
     <Reference Include="MahApps.Metro">
       <HintPath>..\packages\MahApps.Metro.1.1.2.0\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
+    <Reference Include="Mercurial.Net">
+      <HintPath>..\packages\Mercurial.Net.1.1.1.607\lib\net35-Client\Mercurial.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Myre">
       <HintPath>..\packages\Myre.4.0.0.0\lib\net40-Client\Myre.dll</HintPath>
     </Reference>
@@ -191,7 +216,6 @@
     <Compile Include="CancelDialogException.cs" />
     <Compile Include="Connection\IScreenCollection.cs" />
     <Compile Include="Connection\ITopology.cs" />
-    <Compile Include="Connection\RemoteSubdivisionContext.cs" />
     <Compile Include="Connection\ScreenCollection.cs" />
     <Compile Include="Connection\Topology.cs" />
     <Compile Include="Model\Facade.cs" />
@@ -297,7 +321,6 @@
     <Compile Include="Model\BoundingBox.cs" />
     <Compile Include="Model\ProceduralNode.cs" />
     <Compile Include="Model\PropertyValue.cs" />
-    <Compile Include="Model\Vector3.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

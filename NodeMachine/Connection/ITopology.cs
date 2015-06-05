@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using Construct_Gamemode.Map;
 using NodeMachine.Model;
 using System;
 using System.Threading.Tasks;
@@ -14,10 +15,8 @@ namespace NodeMachine.Connection
 
         Task Clear();
 
-        Task<bool> SetRoot(Guid scriptId);
+        Task<bool> SetRoot(Guid scriptId, RemoteRootInit data);
 
         bool HasLiveConnection { get; }
-
-
     }
 }

@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
-using EpimetheusPlugins.Procedural;
-using NodeMachine.Annotations;
+﻿using NodeMachine.Annotations;
 using NodeMachine.Connection;
 using NodeMachine.Model.Project;
 using NodeMachine.ViewModel.Tabs;
-using System.Collections.Generic;
+using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -114,22 +111,6 @@ namespace NodeMachine.View.Controls
             if (!ProjectDataModelCollection.Contains(Value))
                 ProjectDataModelCollection.Add(Value);
             Unsaved = false;
-        }
-
-        protected async Task SendToGame(Prism bounds,  ProceduralScript script)
-        {
-            //Clear Game Scene
-            await Connection.Topology.Clear();
-
-            //Set the root node to WSRoot
-            if (!await Connection.Topology.SetRoot(Guid.Parse("697CDD8D-48C8-4D7E-8844-D7A592DF9D80")))
-                return;
-
-            //Create a context which does all work over a websocket, with a real node on the other end
-            var context = RemoteSubdivisionContext.Connect(Connection.Topology.Root);
-
-            //Create a WS Node to edit
-            //script.Subdivide(bounds, context.Geometry, context.HierarchicalParameters);
         }
     }
 }
