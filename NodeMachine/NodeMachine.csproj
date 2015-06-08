@@ -42,9 +42,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Base-CityGeneration.1.0.5634.29064\lib\net40-Client\Base-CityGeneration.dll</HintPath>
     </Reference>
-    <Reference Include="BeautifulBlueprints, Version=0.0.29.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="BeautifulBlueprints, Version=0.0.33.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BeautifulBlueprints.0.0.29.0\lib\net40-Client\BeautifulBlueprints.dll</HintPath>
+      <HintPath>..\packages\BeautifulBlueprints.0.0.33.0\lib\net40-Client\BeautifulBlueprints.dll</HintPath>
     </Reference>
     <Reference Include="BinarySearch">
       <HintPath>..\packages\BinarySearch.2.1.0.0\lib\net35-Client\BinarySearch.dll</HintPath>
@@ -230,6 +230,7 @@
     <Compile Include="Model\Project\ProjectManager.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ViewModel\Converter\BooleanInverter.cs" />
+    <Compile Include="ViewModel\Converter\CommaSeparatedStringList.cs" />
     <Compile Include="ViewModel\Converter\IsStringNullConverter.cs" />
     <Compile Include="ViewModel\Converter\LongToFileSizeConverter.cs" />
     <Compile Include="ViewModel\Converter\ValueConverterChain.cs" />

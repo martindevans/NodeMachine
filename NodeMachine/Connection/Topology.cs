@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using System.Text;
-using Construct_Gamemode.Map;
+﻿using Construct_Gamemode.Map;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 using NodeMachine.Model;
@@ -17,20 +15,6 @@ namespace NodeMachine.Connection
     {
         private readonly GameConnection _connection;
 
-        private bool _hasLiveConnection;
-        public bool HasLiveConnection
-        {
-            get
-            {
-                return _hasLiveConnection;
-            }
-            set
-            {
-                _hasLiveConnection = value;
-                OnPropertyChanged();
-            }
-        }
-
         private ProceduralNode _root;
         public ProceduralNode Root
         {
@@ -42,25 +26,6 @@ namespace NodeMachine.Connection
             {
                 _root = value;
                 OnPropertyChanged();
-
-                if (HasLiveConnection)
-                {
-                    throw new NotImplementedException("Close existing live connection");
-                }
-
-                if (_root == null)
-                {
-                    HasLiveConnection = false;
-                    return;
-                }
-
-                var kvp = _root.Metadata.SingleOrDefault(a => a.Key == "live_connection_address");
-                if (kvp.Key == null)
-                    HasLiveConnection = false;
-                else
-                {
-                    throw new NotImplementedException("Open Live Connection");
-                }
             }
         }
 

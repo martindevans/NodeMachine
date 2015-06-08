@@ -1,6 +1,6 @@
-﻿using System.ComponentModel;
+﻿using NodeMachine.Annotations;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using NodeMachine.Annotations;
 
 namespace NodeMachine.Model
 {

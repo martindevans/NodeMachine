@@ -56,6 +56,37 @@ namespace NodeMachine.View.Controls
             }
         }
 
+        private LayoutContainer Deserialize(string text)
+        {
+            return Yaml.Deserialize(new StringReader(text));
+        }
+
+        private Solver.Solution[] Layout(decimal width, decimal height, LayoutContainer layout)
+        {
+            var solution = Solver.Solve(-width / 2m, width / 2m, height / 2m, -height / 2m, layout.Root, new Solver.SolverOptions(
+                subsectionFinder: FindSubsection
+            )).ToArray();
+
+            return solution;
+        }
+
+        private readonly Random _random = new Random();
+        private BaseElement FindSubsection(string name, KeyValuePair<string, string>[] tags)
+        {
+            List<LayoutContainer> possibilities = new List<LayoutContainer>();
+            foreach (var facade in ProjectDataModelCollection)
+            {
+                var n = Deserialize(facade.Markup);
+                
+                if (tags.Where(a => a.Key != "cache_id").Select(t => new { expected = t.Value, actual = n[t.Key] }).All(a => a.expected.Equals(a.actual, StringComparison.InvariantCultureIgnoreCase)))
+                    possibilities.Add(n);
+            }
+
+            if (possibilities.Count == 0)
+                return null;
+            return possibilities[_random.Next(possibilities.Count)].Root;
+        }
+
         protected async void SendToGame(object sender, RoutedEventArgs e)
         {
             if (!await Connection.IsConnected())
@@ -68,11 +99,9 @@ namespace NodeMachine.View.Controls
                 return;
 
             //Layout facade
-            var text = new TextRange(Editor.Document.ContentStart, Editor.Document.ContentEnd).Text;
-            var node = Yaml.Deserialize(new StringReader(text));
             var w = PreviewWidthValue.Value.Value;
             var h = PreviewHeightValue.Value.Value;
-            var solution = Solver.Solve(-w / 2m, w / 2m, h / 2m, -h / 2m, node).ToArray();
+            var solution = Layout(w, h, Deserialize(new TextRange(Editor.Document.ContentStart, Editor.Document.ContentEnd).Text));
             var paths = solution.Where(a => a.Tag is PathLayout).ToArray();
 
             //Create the facade in game
@@ -141,16 +170,31 @@ namespace NodeMachine.View.Controls
         {
             if (e.Key == Key.Tab && (Keyboard.Modifiers & ModifierKeys.Control) != ModifierKeys.Control)
             {
-                var richTextBox = (RichTextBox) sender;
+                var richTextBox = (RichTextBox)sender;
                 if (richTextBox == null)
                     return;
 
-                richTextBox.Selection.Text = string.Empty;
+                var start = richTextBox.Selection.Start;
+                var end = richTextBox.Selection.End;
 
-                var caretPosition = richTextBox.CaretPosition.GetPositionAtOffset(0, LogicalDirection.Forward);
+                //No text is selected, simply insert 2 spaces
+                if (start.CompareTo(end) == 0)
+                {
+                    start.InsertTextInRun("  ");
+                    return;
+                }
 
-                richTextBox.CaretPosition.InsertTextInRun("  ");
-                richTextBox.CaretPosition = caretPosition;
+                //A run of text is selected, insert spcaes at the start og all the lines
+                var current = start;
+                while (current != null && current.CompareTo(end) < 0)
+                {
+                    var lineStart = current.GetLineStartPosition(0);
+                    if (lineStart != null)
+                        lineStart.InsertTextInRun("  ");
+
+                    current = current.GetLineStartPosition(1);
+                }
+
                 e.Handled = true;
             }
         }
@@ -186,17 +230,13 @@ namespace NodeMachine.View.Controls
             if (!PreviewWidthValue.Value.HasValue || !PreviewHeightValue.Value.HasValue || !ShowAllNodes.IsChecked.HasValue)
                 return;
 
-            var text = new TextRange(Editor.Document.ContentStart, Editor.Document.ContentEnd).Text;
-
             try
             {
                 PreviewCanvas.Children.Clear();
 
-                var node = Yaml.Deserialize(new StringReader(text));
-
                 var w = PreviewWidthValue.Value.Value;
                 var h = PreviewHeightValue.Value.Value;
-                var solution = Solver.Solve(-w / 2m, w / 2m, h / 2m, -h / 2m, node).ToArray();
+                var solution = Layout(w, h, Deserialize(new TextRange(Editor.Document.ContentStart, Editor.Document.ContentEnd).Text));
 
                 StringBuilder output = new StringBuilder();
                 if (solution.Length > 0)

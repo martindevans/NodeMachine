@@ -3,7 +3,6 @@ using NodeMachine.Connection;
 using NodeMachine.Model;
 using NodeMachine.Model.Project;
 using NodeMachine.ViewModel.Tabs;
-using System.Collections.Generic;
 
 namespace NodeMachine.View.Controls
 {

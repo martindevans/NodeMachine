@@ -2,7 +2,6 @@
 using NodeMachine.Connection;
 using NodeMachine.Model.Project;
 using NodeMachine.ViewModel.Tabs;
-using System.Collections.Generic;
 using Block = NodeMachine.Model.Block;
 
 namespace NodeMachine.View.Controls
