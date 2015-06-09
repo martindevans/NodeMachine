@@ -7,7 +7,7 @@ namespace NodeMachine.Model
     public class Building
         : INotifyPropertyChanged
     {
-        private string _name;
+        private string _name = "Unnamed Building";
         public string Name
         {
             get

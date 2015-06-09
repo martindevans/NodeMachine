@@ -7,7 +7,7 @@ namespace NodeMachine.Model
     public class Facade
         : INotifyPropertyChanged
     {
-        private string _name;
+        private string _name = "Unnamed Facade";
         public string Name
         {
             get

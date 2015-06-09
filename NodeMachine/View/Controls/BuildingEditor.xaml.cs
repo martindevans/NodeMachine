@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Windows;
 using NodeMachine.Connection;
 using NodeMachine.Model;
 using NodeMachine.Model.Project;
@@ -14,6 +15,7 @@ namespace NodeMachine.View.Controls
         public BuildingEditor(IProjectManager manager, IGameConnection connection, Building value)
             : base(manager, connection, value)
         {
+            InitializeComponent();
         }
 
         protected override ObservableCollection<Building> ProjectDataModelCollection
@@ -30,6 +32,16 @@ namespace NodeMachine.View.Controls
             {
                 return Value.Name;
             }
+        }
+
+        private void CheckMarkup(object sender, RoutedEventArgs e)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private void SendToGame(object sender, RoutedEventArgs e)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

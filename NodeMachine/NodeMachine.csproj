@@ -230,7 +230,6 @@
     <Compile Include="Model\Project\ProjectManager.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ViewModel\Converter\BooleanInverter.cs" />
-    <Compile Include="ViewModel\Converter\CommaSeparatedStringList.cs" />
     <Compile Include="ViewModel\Converter\IsStringNullConverter.cs" />
     <Compile Include="ViewModel\Converter\LongToFileSizeConverter.cs" />
     <Compile Include="ViewModel\Converter\ValueConverterChain.cs" />

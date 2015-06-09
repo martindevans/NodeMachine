@@ -5,10 +5,67 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:model="clr-namespace:NodeMachine.Model"
              xmlns:controls="clr-namespace:NodeMachine.View.Controls"
+             xmlns:converter="clr-namespace:NodeMachine.ViewModel.Converter"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              DataContext="{Binding RelativeSource={RelativeSource Self}}">
-    <Grid>
-            
-    </Grid>
+
+    <Control.Resources>
+        <converter:ValueConverterChain x:Key="InvertedBooleanToVisibilityConverter">
+            <converter:BooleanInverter/>
+            <BooleanToVisibilityConverter/>
+        </converter:ValueConverterChain>
+    </Control.Resources>
+
+    <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="Auto">
+        <Grid DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBox 
+                    Grid.Column="0"
+                    VerticalAlignment="Center"
+                    Text="{Binding Path=Value.Name, TargetNullValue='Unnamed Building', UpdateSourceTrigger=PropertyChanged}"
+                    FontWeight="Light"
+                    Foreground="{DynamicResource WindowTitleColorBrush}"
+                    FontSize="24"
+                    FontFamily="Segoe UI">
+            </TextBox>
+            <Button Style="{DynamicResource MetroCircleButtonStyle}" Width="50" Height="50" Grid.Column="1" ToolTip="Add Building" Click="AddToProject" Visibility="{Binding Path=Unsaved, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Rectangle Width="25" Height="25">
+                    <Rectangle.Fill>
+                        <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_add}" />
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Button>
+            <Button Style="{DynamicResource MetroCircleButtonStyle}" Width="50" Height="50" Grid.Column="1" ToolTip="Delete Building" Click="DeleteFromProject" Visibility="{Binding Path=Unsaved, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
+                <Rectangle Width="25" Height="25">
+                    <Rectangle.Fill>
+                        <VisualBrush Stretch="None" Visual="{StaticResource appbar_minus}" />
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Button>
+            <Button Style="{DynamicResource MetroCircleButtonStyle}" Width="50" Height="50" Grid.Column="2" ToolTip="Check" Click="CheckMarkup">
+                <Rectangle Width="20" Height="25">
+                    <Rectangle.Fill>
+                        <VisualBrush Stretch="UniformToFill" Visual="{StaticResource appbar_page_check}" />
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Button>
+            <Button Style="{DynamicResource MetroCircleButtonStyle}" Width="50" Height="50" Grid.Column="3" ToolTip="Send To Game" Click="SendToGame">
+                <Rectangle Width="20" Height="25" Margin="5 0 0 0">
+                    <Rectangle.Fill>
+                        <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_control_play}" />
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Button>
+        </Grid>
+
+        <Grid>
+            <TextBlock>Hello</TextBlock>
+        </Grid>
+    </DockPanel>
 </controls:BaseEditorControl>
