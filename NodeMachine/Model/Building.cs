@@ -21,6 +21,20 @@ namespace NodeMachine.Model
             }
         }
 
+        private string _markup;
+        public string Markup
+        {
+            get
+            {
+                return _markup;
+            }
+            set
+            {
+                _markup = value;
+                OnPropertyChanged();
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

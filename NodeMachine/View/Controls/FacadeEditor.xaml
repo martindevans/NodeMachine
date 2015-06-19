@@ -1,4 +1,4 @@
-﻿<controls:BaseEditorControl x:TypeArguments="model:Facade" x:Class="NodeMachine.View.Controls.FacadeEditor"
+﻿<controls:BaseYamlEditorControl x:TypeArguments="model:Facade" x:Class="NodeMachine.View.Controls.FacadeEditor"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -133,4 +133,4 @@
             <TextBlock Name="CompilationOutput" Grid.Row="4"></TextBlock>
         </Grid>
     </DockPanel>
-</controls:BaseEditorControl>
+</controls:BaseYamlEditorControl>

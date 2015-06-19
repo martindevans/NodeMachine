@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using BeautifulBlueprints.Elements;
+﻿using BeautifulBlueprints.Elements;
 using BeautifulBlueprints.Layout;
 using BeautifulBlueprints.Layout.Svg;
 using BeautifulBlueprints.Serialization;
@@ -12,6 +11,7 @@ using NodeMachine.Model;
 using NodeMachine.Model.Project;
 using NodeMachine.ViewModel.Tabs;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -19,7 +19,6 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using Color = System.Windows.Media.Color;
@@ -32,7 +31,7 @@ namespace NodeMachine.View.Controls
     /// <summary>
     /// Interaction logic for FacadeEditor.xaml
     /// </summary>
-    public partial class FacadeEditor : BaseEditorControl<Facade>, ITabName
+    public partial class FacadeEditor : BaseYamlEditorControl<Facade>, ITabName
     {
         public FacadeEditor(IProjectManager manager, IGameConnection connection, Facade facade)
             : base(manager, connection, facade)
@@ -53,6 +52,18 @@ namespace NodeMachine.View.Controls
             get
             {
                 return Value.Name;
+            }
+        }
+
+        protected override string ValueMarkup
+        {
+            get
+            {
+                return Value.Markup;
+            }
+            set
+            {
+                Value.Markup = value;
             }
         }
 
@@ -164,39 +175,6 @@ namespace NodeMachine.View.Controls
         private void CheckMarkup(object sender, RoutedEventArgs e)
         {
             RenderPreview();
-        }
-
-        private void Editor_OnPreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Tab && (Keyboard.Modifiers & ModifierKeys.Control) != ModifierKeys.Control)
-            {
-                var richTextBox = (RichTextBox)sender;
-                if (richTextBox == null)
-                    return;
-
-                var start = richTextBox.Selection.Start;
-                var end = richTextBox.Selection.End;
-
-                //No text is selected, simply insert 2 spaces
-                if (start.CompareTo(end) == 0)
-                {
-                    start.InsertTextInRun("  ");
-                    return;
-                }
-
-                //A run of text is selected, insert spcaes at the start og all the lines
-                var current = start;
-                while (current != null && current.CompareTo(end) < 0)
-                {
-                    var lineStart = current.GetLineStartPosition(0);
-                    if (lineStart != null)
-                        lineStart.InsertTextInRun("  ");
-
-                    current = current.GetLineStartPosition(1);
-                }
-
-                e.Handled = true;
-            }
         }
 
         private void PreviewSizeChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -336,32 +314,6 @@ namespace NodeMachine.View.Controls
                 Canvas.SetTop(r, (double)point.Y - 1.5);
                 PreviewCanvas.Children.Add(r);
             }
-        }
-
-        private void SaveToModel()
-        {
-            Value.Markup = new TextRange(Editor.Document.ContentStart, Editor.Document.ContentEnd).Text.TrimEnd('\r', '\n');
-        }
-
-        private bool _suppressSave = false;
-        private void Editor_OnLoaded(object sender, EventArgs e)
-        {
-            _suppressSave = true;
-            try
-            {
-                Editor.Document.Blocks.Clear();
-                Editor.Document.Blocks.Add(new Paragraph(new Run(Value.Markup)));
-            }
-            finally
-            {
-                _suppressSave = false;
-            }
-        }
-
-        private void Editor_OnTextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (Editor.IsLoaded && !_suppressSave)
-                SaveToModel();
         }
     }
 }
