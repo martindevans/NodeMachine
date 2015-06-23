@@ -74,13 +74,7 @@
             </Grid.RowDefinitions>
 
             <ScrollViewer Grid.Row="0">
-                <DataGrid Name="PreviewGrid" AutoGenerateColumns="False" ItemsSource="{Binding PreviewRows}">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Height" Width="Auto" Binding="{Binding Height, StringFormat=F1}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="Cumulative Height" Width="*" Binding="{Binding CumulativeHeight, StringFormat=F1}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="Tags" Width="*" Binding="{Binding Tags}"></DataGridTextColumn>
-                    </DataGrid.Columns>
-                </DataGrid>
+                <DataGrid Name="PreviewGrid" AutoGenerateColumns="False" ItemsSource="{Binding PreviewRows}" IsReadOnly="True"/>
             </ScrollViewer>
             
             <GridSplitter Grid.Row="1"

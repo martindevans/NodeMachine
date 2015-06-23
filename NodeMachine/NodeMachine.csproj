@@ -38,9 +38,9 @@
     </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Base-CityGeneration, Version=1.0.5648.4766, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Base-CityGeneration, Version=1.0.5652.28153, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Base-CityGeneration.1.0.5648.4766\lib\net40-Client\Base-CityGeneration.dll</HintPath>
+      <HintPath>..\packages\Base-CityGeneration.1.0.5652.28153\lib\net40-Client\Base-CityGeneration.dll</HintPath>
     </Reference>
     <Reference Include="BeautifulBlueprints, Version=0.0.33.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -96,8 +96,9 @@
     <Reference Include="Myre.Graphics">
       <HintPath>..\packages\Myre.Graphics.5.2.0.0\lib\net40-Client\Myre.Graphics.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Ninject">
       <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>

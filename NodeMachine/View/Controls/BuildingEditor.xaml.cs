@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Base_CityGeneration.Elements.Building.Internals.Floors.Selection;
+﻿using Base_CityGeneration.Elements.Building.Internals.Floors.Selection;
 using Construct_Gamemode.Map;
 using Construct_Gamemode.Map.Building;
 using Construct_Gamemode.Map.Models;
@@ -11,10 +10,13 @@ using NodeMachine.Model;
 using NodeMachine.Model.Project;
 using NodeMachine.ViewModel.Tabs;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Documents;
 
 namespace NodeMachine.View.Controls
@@ -96,19 +98,43 @@ namespace NodeMachine.View.Controls
                 var totalHeight = selection.AboveGroundFloors.Select(a => a.Height).Sum();
                 var height = totalHeight;
 
+                CreateColumns(selection.Verticals.Select(a => a.Script.Name));
                 _preview.Clear();
+
                 foreach (var floor in selection.AboveGroundFloors.Append(selection.BelowGroundFloors))
                 {
                     height -= floor.Height;
                     if (Math.Abs(height) < 0.0001)
                         height = 0;
 
-                    _preview.Add(new PreviewRow { Height = floor.Height, CumulativeHeight = height, Tags = floor.Script.Name });
+                    bool[] v = selection.Verticals.Select(a => a.Bottom <= floor.Index && a.Top >= floor.Index).ToArray();
+                    _preview.Add(new PreviewRow { Height = floor.Height, CumulativeHeight = height, Tags = floor.Script.Name, Verticals = v });
                 }
             }
             catch (Exception err)
             {
                 CompilationOutput.Text = err.ToString();
+            }
+        }
+
+        private void CreateColumns(IEnumerable<string> verticals)
+        {
+            PreviewGrid.Columns.Clear();
+
+            PreviewGrid.Columns.Add(new DataGridTextColumn { Binding = new Binding("Height"), Header = "Height" });
+            PreviewGrid.Columns.Add(new DataGridTextColumn { Binding = new Binding("CumulativeHeight"), Header = "Cumulative Height" });
+            PreviewGrid.Columns.Add(new DataGridTextColumn { Binding = new Binding("Tags"), Header = "Tags" });
+
+            int i = 0;
+            foreach (var name in verticals)
+            {
+                PreviewGrid.Columns.Add(new DataGridCheckBoxColumn {
+                    Binding = new Binding(string.Format("Verticals[{0}]", i)),
+                    CanUserSort = false,
+                    Header = name
+                });
+
+                i++;
             }
         }
 
@@ -144,6 +170,8 @@ namespace NodeMachine.View.Controls
             public float CumulativeHeight { get; set; }
 
             public string Tags { get; set; }
+
+            public bool[] Verticals { get; set; }
         }
     }
 }
