@@ -25,6 +25,7 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <TextBox 
                     Grid.Column="0"
@@ -56,7 +57,14 @@
                     </Rectangle.Fill>
                 </Rectangle>
             </Button>
-            <Button Style="{DynamicResource MetroCircleButtonStyle}" Width="50" Height="50" Grid.Column="3" ToolTip="Send To Game" Click="SendToGame">
+            <Button Style="{DynamicResource MetroCircleButtonStyle}" Width="50" Height="50" Grid.Column="3" ToolTip="Help" Click="OpenHelpUrl">
+                <Rectangle Width="25" Height="25">
+                    <Rectangle.Fill>
+                        <VisualBrush Stretch="Uniform" Visual="{StaticResource appbar_book_perspective_help}" />
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Button>
+            <Button Style="{DynamicResource MetroCircleButtonStyle}" Width="50" Height="50" Grid.Column="4" ToolTip="Send To Game" Click="SendToGame">
                 <Rectangle Width="20" Height="25" Margin="5 0 0 0">
                     <Rectangle.Fill>
                         <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_control_play}" />

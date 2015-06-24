@@ -1,4 +1,5 @@
-﻿using BeautifulBlueprints.Elements;
+﻿using System.Diagnostics;
+using BeautifulBlueprints.Elements;
 using BeautifulBlueprints.Layout;
 using BeautifulBlueprints.Layout.Svg;
 using BeautifulBlueprints.Serialization;
@@ -314,6 +315,11 @@ namespace NodeMachine.View.Controls
                 Canvas.SetTop(r, (double)point.Y - 1.5);
                 PreviewCanvas.Children.Add(r);
             }
+        }
+
+        private void OpenHelpUrl(object sender, RoutedEventArgs e)
+        {
+            Process.Start("https://github.com/martindevans/BeautifulBlueprints/wiki/Quickstart");
         }
     }
 }
