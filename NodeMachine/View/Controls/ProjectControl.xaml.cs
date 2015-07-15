@@ -184,8 +184,8 @@ namespace NodeMachine.View.Controls
             if (window == null)
                 throw new NullReferenceException();
 
-            //if (OpenEditor<CityEditor, City>(window, context, "city"))
-            //    return;
+            if (OpenEditor<CityEditor, City>(window, context, "city"))
+                return;
 
             if (OpenEditor<BlockEditor, Block>(window, context, "block"))
                 return;

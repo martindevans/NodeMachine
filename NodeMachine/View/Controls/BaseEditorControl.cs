@@ -72,6 +72,8 @@ namespace NodeMachine.View.Controls
             Connection = connection;
 
             Value = value ?? new TModel();
+
+            DataContext = this;
         }
 
         protected override void OnInitialized(EventArgs e)

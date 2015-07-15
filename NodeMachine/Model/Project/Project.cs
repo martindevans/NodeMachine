@@ -42,7 +42,7 @@ namespace NodeMachine.Model.Project
                     _projectData.PropertyChanged += ProjectDataPropertyChanged;
                     SubscribeToCollectionUpdates(_projectData.Blocks);
                     SubscribeToCollectionUpdates(_projectData.Buildings);
-                    //SubscribeToCollectionUpdates(_projectData.Cities);
+                    SubscribeToCollectionUpdates(_projectData.Cities);
                     SubscribeToCollectionUpdates(_projectData.Facades);
                     SubscribeToCollectionUpdates(_projectData.Floors);
                     //SubscribeToCollectionUpdates(_projectData.Misc);

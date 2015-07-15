@@ -49,12 +49,11 @@ namespace NodeMachine.View.Controls
                 yield return new TileOption("Project", () => _kernel.Get<ProjectControl>());
                 yield return new TileOption("Status Monitor", () => _kernel.Get<StatusControl>());
                 yield return new TileOption("Topology Tree", () => _kernel.Get<NodeTree>());
-
-                yield return new TileOption("City Editor", () => null);
-                yield return new TileOption("Block Editor", () => _kernel.Get<BlockEditor>());
+                yield return new TileOption("City Editor", () => _kernel.Get<CityEditor>());
+                //yield return new TileOption("Block Editor", () => _kernel.Get<BlockEditor>());
                 yield return new TileOption("Building Editor", () => _kernel.Get<BuildingEditor>());
-                yield return new TileOption("Floor Editor", () => _kernel.Get<FloorEditor>());
-                yield return new TileOption("Room Editor", () => null);
+                //yield return new TileOption("Floor Editor", () => _kernel.Get<FloorEditor>());
+                //yield return new TileOption("Room Editor", () => null);
                 yield return new TileOption("Facade Editor", () => _kernel.Get<FacadeEditor>());
             }
         }
