@@ -180,6 +180,7 @@ namespace NodeMachine.View.Controls
         private void OpenInEditor(object sender, RoutedEventArgs e)
         {
             var context = ((Control)sender).DataContext;
+
             var window = (MainWindow)Window.GetWindow(this);
             if (window == null)
                 throw new NullReferenceException();
@@ -223,9 +224,7 @@ namespace NodeMachine.View.Controls
         private void DeleteItem(object sender, RoutedEventArgs e)
         {
             var context = ((Control)sender).DataContext;
-            var window = (MainWindow)Window.GetWindow(this);
-            if (window == null)
-                throw new NullReferenceException();
+            var window = (MainWindow)Application.Current.MainWindow;
 
             //if (DeleteItem<City>(window, context, p => p.Cities))
             //    return;

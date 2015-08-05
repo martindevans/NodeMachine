@@ -17,7 +17,7 @@ namespace NodeMachine.ViewModel.Tabs
         public INewTabHost<Window> GetNewHost(IInterTabClient interTabClient, object partition, TabablzControl source)
         {
             var view = _kernel.Get<MainWindow>();
-            return new NewTabHost<Window>(view, view.InitialTabablzControl);
+            return new NewTabHost<MainWindow>(view, view.InitialTabablzControl);
         }
 
         public TabEmptiedResponse TabEmptiedHandler(TabablzControl tabControl, Window window)

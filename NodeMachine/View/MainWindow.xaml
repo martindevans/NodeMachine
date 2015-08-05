@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
+        xmlns:dockablz="clr-namespace:Dragablz.Dockablz;assembly=Dragablz"
         Height="350" Width="525"
         Margin="15"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
@@ -12,7 +13,7 @@
         ShowIconOnTitleBar="False"
         ResizeMode="CanResizeWithGrip"
         Closing="WindowClosing">
-    
+
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
             <Button x:Name="RefreshConnection" Click="OnRefreshConnectionClick">
@@ -69,10 +70,17 @@
         </controls:FlyoutsControl>
     </controls:MetroWindow.Flyouts>
 
-    <dragablz:TabablzControl ItemsSource="{Binding TabContents}" x:Name="InitialTabablzControl" Margin="4 0 4 4">
-        <dragablz:TabablzControl.InterTabController>
-            <dragablz:InterTabController InterTabClient="{Binding InterTabClient}" />
-        </dragablz:TabablzControl.InterTabController>
-    </dragablz:TabablzControl>
+    <dockablz:Layout
+        FloatingItemHeaderMemberPath="Header"
+        FloatingItemDisplayMemberPath="Content"
+        FloatingItemContainerStyle="{DynamicResource MahAppsToolDragablzItemStyle}"
+        InterLayoutClient="{Binding InterLayoutClient}">
+        
+        <dragablz:TabablzControl ItemsSource="{Binding TabContents}" x:Name="InitialTabablzControl" Margin="4 0 4 4">
+            <dragablz:TabablzControl.InterTabController>
+                <dragablz:InterTabController InterTabClient="{Binding InterTabClient}" />
+            </dragablz:TabablzControl.InterTabController>
+        </dragablz:TabablzControl>
+    </dockablz:Layout>
 
 </controls:MetroWindow>

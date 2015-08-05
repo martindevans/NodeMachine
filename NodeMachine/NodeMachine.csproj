@@ -38,9 +38,9 @@
     </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Base-CityGeneration, Version=1.0.5674.33277, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Base-CityGeneration, Version=1.0.5677.2413, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Base-CityGeneration.1.0.5674.33277\lib\net40-Client\Base-CityGeneration.dll</HintPath>
+      <HintPath>..\packages\Base-CityGeneration.1.0.5677.2413\lib\net40-Client\Base-CityGeneration.dll</HintPath>
     </Reference>
     <Reference Include="BeautifulBlueprints, Version=0.0.33.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -55,21 +55,21 @@
     <Reference Include="Character Controllers">
       <HintPath>..\packages\character-controllers.1.0.5603.29651\lib\net40-Client\Character Controllers.exe</HintPath>
     </Reference>
-    <Reference Include="Construct Gamemode, Version=1.0.5648.4848, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Construct Gamemode, Version=1.0.5676.33328, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Construct-Gamemode.1.0.5648.4848\lib\net40-Client\Construct Gamemode.dll</HintPath>
+      <HintPath>..\packages\Construct-Gamemode.1.0.5676.33328\lib\net40-Client\Construct Gamemode.dll</HintPath>
     </Reference>
     <Reference Include="Dragablz, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Dragablz.0.0.2.115\lib\net45\Dragablz.dll</HintPath>
     </Reference>
-    <Reference Include="EpimetheusPlugins, Version=1.0.5646.32114, Culture=neutral, processorArchitecture=x86">
+    <Reference Include="EpimetheusPlugins, Version=1.0.5674.34586, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EpimetheusPlugins.Testing.1.0.5646.32114\lib\net40\EpimetheusPlugins.dll</HintPath>
+      <HintPath>..\packages\EpimetheusPlugins.Testing.1.0.5674.34587\lib\net40\EpimetheusPlugins.dll</HintPath>
     </Reference>
-    <Reference Include="EpimetheusPlugins.Testing, Version=1.0.5646.32114, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="EpimetheusPlugins.Testing, Version=1.0.5674.34587, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EpimetheusPlugins.Testing.1.0.5646.32114\lib\net40\EpimetheusPlugins.Testing.dll</HintPath>
+      <HintPath>..\packages\EpimetheusPlugins.Testing.1.0.5674.34587\lib\net40\EpimetheusPlugins.Testing.dll</HintPath>
     </Reference>
     <Reference Include="HandyCollections, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -241,12 +241,14 @@
     <Compile Include="Model\Project\Project.cs" />
     <Compile Include="Model\Project\ProjectData.cs" />
     <Compile Include="Model\Project\ProjectManager.cs" />
+    <Compile Include="Model\ScriptReference.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ViewModel\Converter\BooleanInverter.cs" />
     <Compile Include="ViewModel\Converter\IsStringNullConverter.cs" />
     <Compile Include="ViewModel\Converter\LongToFileSizeConverter.cs" />
     <Compile Include="ViewModel\Converter\ValueConverterChain.cs" />
     <Compile Include="ViewModel\Nodes\ProceduralNodeViewModel.cs" />
+    <Compile Include="ViewModel\Tabs\InterLayoutClient.cs" />
     <Compile Include="ViewModel\Tabs\InterTabClient.cs" />
     <Compile Include="ViewModel\Tabs\ITabName.cs" />
     <Compile Include="ViewModel\Tabs\TabContent.cs" />

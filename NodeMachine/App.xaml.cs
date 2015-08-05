@@ -36,6 +36,7 @@ namespace NodeMachine
             _container.Bind<IProjectManager>().ToConstant(_container.Get<ProjectManager>());
 
             _container.Bind<IInterTabClient>().To<InterTabClient>();
+            _container.Bind<IInterLayoutClient>().To<InterLayoutClient>();
         }
 
         private void ComposeObjects()

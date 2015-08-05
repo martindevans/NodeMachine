@@ -1,4 +1,5 @@
-﻿using NodeMachine.Annotations;
+﻿using Construct_Gamemode.Map;
+using NodeMachine.Annotations;
 using NodeMachine.Connection;
 using NodeMachine.ViewModel.Nodes;
 using System;
@@ -79,6 +80,13 @@ namespace NodeMachine.View.Controls
         private async void ClearTopology(object sender, RoutedEventArgs e)
         {
             await Connection.Topology.Clear();
+        }
+
+        private void RebuildTopology(object sender, RoutedEventArgs e)
+        {
+            //Set the root to whatever the root currently is - this will start a new build with the same root
+            var root = Connection.Topology.Root.Script.Guid;
+            Connection.Topology.SetRoot(root, new RemoteRootInit());
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

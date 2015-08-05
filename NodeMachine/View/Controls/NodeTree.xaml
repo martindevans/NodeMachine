@@ -35,7 +35,7 @@
                     </Rectangle.OpacityMask>
                 </Rectangle>
             </Button>
-            <Button Style="{DynamicResource MetroCircleButtonStyle}" Width="50" Height="50" ToolTip="Rebuild">
+            <Button Style="{DynamicResource MetroCircleButtonStyle}" Width="50" Height="50" ToolTip="Rebuild" Click="RebuildTopology">
                 <Rectangle Width="25" Height="25" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
                     <Rectangle.OpacityMask>
                         <VisualBrush Stretch="UniformToFill" Visual="{StaticResource appbar_brick}" />

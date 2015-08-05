@@ -55,11 +55,21 @@ namespace NodeMachine.View
             get { return _tabContents; }
         }
 
-        public MainWindow(IKernel kernel, IGameConnection connection, IInterTabClient interTab, IProjectManager projectManager)
+        private readonly IInterLayoutClient _interLayoutClient;
+        public IInterLayoutClient InterLayoutClient
+        {
+            get
+            {
+                return _interLayoutClient;
+            }
+        }
+
+        public MainWindow(IKernel kernel, IGameConnection connection, IInterTabClient interTab, IInterLayoutClient interLayout, IProjectManager projectManager)
         {
             _kernel = kernel;
             _connection = connection;
             _interTabClient = interTab;
+            _interLayoutClient = interLayout;
             _projectManager = projectManager;
 
             InitializeComponent();
@@ -136,6 +146,7 @@ namespace NodeMachine.View
         }
 
         private bool _suppressClosingSave = false;
+
         private async void WindowClosing(object sender, CancelEventArgs e)
         {
             //We only want to do this if we're the last window!

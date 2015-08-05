@@ -18,6 +18,8 @@ namespace NodeMachine.Model
         public List<ProceduralNode> Children { get; set; }
 
         public List<PropertyValue> Metadata { get; set; }
+
+        public ScriptReference Script { get; set; }
     }
 
     public enum SubdivisionState

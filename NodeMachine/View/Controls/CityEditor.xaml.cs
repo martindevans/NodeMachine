@@ -1,6 +1,10 @@
 ﻿using Base_CityGeneration.Elements.Roads.Hyperstreamline;
 using Base_CityGeneration.Elements.Roads.Hyperstreamline.Tracing;
+using Construct_Gamemode.Map;
+using Construct_Gamemode.Map.City;
+using Construct_Gamemode.Map.Models;
 using Microsoft.Xna.Framework;
+using Newtonsoft.Json;
 using NodeMachine.Connection;
 using NodeMachine.Model;
 using NodeMachine.Model.Project;
@@ -100,7 +104,7 @@ namespace NodeMachine.View.Controls
                     //Generate major roads
                     _networkBuilder = new NetworkBuilder();
                     Random rand = new Random(Seed.Value.Value);
-                    _networkBuilder.Build(_config.Major(rand.NextDouble), rand, new Vector2(0, 0), new Vector2(PreviewSizeValue.Value.Value, PreviewSizeValue.Value.Value));
+                    _networkBuilder.Build(_config.Major(rand.NextDouble), rand.NextDouble, new Vector2(0, 0), new Vector2(PreviewSizeValue.Value.Value, PreviewSizeValue.Value.Value));
                     _networkBuilder.Reduce();
 
                     //Extract results
@@ -118,7 +122,7 @@ namespace NodeMachine.View.Controls
                         {
                             Region region1 = region;
                             await Task.Factory.StartNew(() => {
-                                _networkBuilder.Build(_config.Minor(rand.NextDouble), rand, region1);
+                                _networkBuilder.Build(_config.Minor(rand.NextDouble), rand.NextDouble, region1);
 
                                 network = _networkBuilder.Result;
                             });
@@ -129,7 +133,7 @@ namespace NodeMachine.View.Controls
 
                         _networkBuilder.Reduce();
                         network = _networkBuilder.Result;
-                        RenderNetwork(PreviewCanvas, network, _regionsToRender, _renderOffset);
+                        RenderNetwork(PreviewCanvas, network, _networkBuilder.Regions(), _renderOffset);
                     }
                 }
 
@@ -185,7 +189,7 @@ namespace NodeMachine.View.Controls
             return NetworkDescriptor.Deserialize(new StringReader(text));
         }
 
-        private static void RenderPath(Canvas canvas, IEnumerable<Vector2> path, int hash, float offsetX, float offsetY)
+        private static void RenderPath(Panel canvas, IEnumerable<Vector2> path, int hash, float offsetX, float offsetY)
         {
             //Create polygon
             Polygon polygon = new Polygon {
@@ -201,9 +205,35 @@ namespace NodeMachine.View.Controls
         }
         #endregion
 
-        private void SendToGame(object sender, RoutedEventArgs e)
+        private async void SendToGame(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            if (!await Connection.IsConnected())
+                return;
+
+            //Preconditions for subdivision
+            if (Seed == null || PreviewSizeValue == null || AutoGenerateMinorRoads == null)
+                return;
+            if (!Seed.Value.HasValue || !PreviewSizeValue.Value.HasValue || !AutoGenerateMinorRoads.IsChecked.HasValue)
+                return;
+
+            var s = PreviewSizeValue.Value.Value / 2f;
+
+            //Send network config to game
+            await Connection.Topology.SetRoot(Guid.Parse("CFF595C4-4C67-4CCB-9E5F-AB9AE0F9AF54"), new RemoteRootInit
+            {
+                Children = new ChildDefinition[] {
+                    new ChildDefinition {
+                        Prism = new PrismModel(new[] { new Point2(-s, -s), new Point2(s, -s), new Point2(s, s), new Point2(-s, s) }, 1000f),
+                        ChildType = "Construct_Gamemode.Map.City.RemoteCityContainer",
+                        Center = new Point3(1, 1, 1),
+                        ChildData = JsonConvert.SerializeObject(new RemoteCityInit {
+                            Script = new TextRange(Editor.Document.ContentStart, Editor.Document.ContentEnd).Text,
+                            Seed = Seed.Value.Value,
+                            Size = PreviewSizeValue.Value.Value
+                        })
+                    }
+                }
+            });
         }
 
         private void OpenHelpUrl(object sender, RoutedEventArgs e)
@@ -245,7 +275,7 @@ namespace NodeMachine.View.Controls
             _regionsToRender.Remove(r);
 
             Random rand = new Random();
-            _networkBuilder.Build(_config.Minor(rand.NextDouble), rand, r);
+            _networkBuilder.Build(_config.Minor(rand.NextDouble), rand.NextDouble, r);
             var network = _networkBuilder.Result;
 
             RenderNetwork(canvas, network, _regionsToRender, _renderOffset);
