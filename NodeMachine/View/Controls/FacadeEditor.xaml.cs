@@ -99,7 +99,7 @@ namespace NodeMachine.View.Controls
             return possibilities[_random.Next(possibilities.Count)].Root;
         }
 
-        protected async void SendToGame(object sender, RoutedEventArgs e)
+        protected override async void SendToGame(object sender, RoutedEventArgs e)
         {
             if (!await Connection.IsConnected())
                 return;
@@ -128,7 +128,7 @@ namespace NodeMachine.View.Controls
                         })
                     }
                 }
-            });
+            }, 0);
         }
 
         private IEnumerable<RemoteStamp> Convert(PathLayout path, Path element)
@@ -173,7 +173,7 @@ namespace NodeMachine.View.Controls
             return collection;
         }
 
-        private void CheckMarkup(object sender, RoutedEventArgs e)
+        protected override void CheckMarkup(object sender, RoutedEventArgs e)
         {
             RenderPreview();
         }

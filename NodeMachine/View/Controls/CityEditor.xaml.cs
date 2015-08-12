@@ -66,7 +66,7 @@ namespace NodeMachine.View.Controls
             }
         }
 
-        private async void CheckMarkup(object sender, RoutedEventArgs e)
+        protected override async void CheckMarkup(object sender, RoutedEventArgs e)
         {
             await RenderPreview();
         }
@@ -205,7 +205,7 @@ namespace NodeMachine.View.Controls
         }
         #endregion
 
-        private async void SendToGame(object sender, RoutedEventArgs e)
+        protected override async void SendToGame(object sender, RoutedEventArgs e)
         {
             if (!await Connection.IsConnected())
                 return;
@@ -233,7 +233,7 @@ namespace NodeMachine.View.Controls
                         })
                     }
                 }
-            });
+            }, Seed.Value.Value);
         }
 
         private void OpenHelpUrl(object sender, RoutedEventArgs e)

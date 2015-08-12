@@ -15,6 +15,6 @@ namespace NodeMachine.Connection
 
         Task Clear();
 
-        Task<bool> SetRoot(Guid scriptId, RemoteRootInit data);
+        Task<bool> SetRoot(Guid scriptId, RemoteRootInit data, int seed);
     }
 }

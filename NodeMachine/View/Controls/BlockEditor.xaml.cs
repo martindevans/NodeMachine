@@ -1,19 +1,46 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Windows;
+using System.Windows.Documents;
+using System.Windows.Media;
+using System.Windows.Shapes;
+using Base_CityGeneration.Elements.Blocks.Spec;
+using Base_CityGeneration.Parcels.Parcelling;
+using Microsoft.Xna.Framework;
 using NodeMachine.Connection;
 using NodeMachine.Model.Project;
 using NodeMachine.ViewModel.Tabs;
+using SharpYaml;
 using Block = NodeMachine.Model.Block;
+using Point = System.Windows.Point;
 
 namespace NodeMachine.View.Controls
 {
     /// <summary>
     /// Interaction logic for BlockEditor.xaml
     /// </summary>
-    public partial class BlockEditor : BaseEditorControl<Block>, ITabName
+    public partial class BlockEditor : BaseYamlEditorControl<Block>, ITabName
     {
-        public BlockEditor(IProjectManager manager, IGameConnection connection, Block value)
-            : base(manager, connection, value)
+        protected override string ValueMarkup
         {
+            get { return Value.Markup; }
+            set { Value.Markup = value; }
+        }
+
+        protected override string ValueName
+        {
+            get
+            {
+                return Value.Name;
+            }
+        }
+
+        public BlockEditor(IProjectManager manager, IGameConnection connection, Block block)
+            : base(manager, connection, block)
+        {
+            InitializeComponent();
         }
 
         protected override ObservableCollection<Block> ProjectDataModelCollection
@@ -24,12 +51,67 @@ namespace NodeMachine.View.Controls
             }
         }
 
-        protected override string ValueName
+        protected override void CheckMarkup(object sender, RoutedEventArgs e)
         {
-            get
+            RenderPreview();
+        }
+
+        private void RenderPreview()
+        {
+            CompilationOutput.Text = "";
+            PreviewCanvas.Children.Clear();
+
+            try
             {
-                return Value.Name;
+                var spec = Deserialize(new TextRange(Editor.Document.ContentStart, Editor.Document.ContentEnd).Text);
+
+                Random r = new Random(1);
+
+                var parcels = spec.CreateParcels(RootShape(), r.NextDouble);
+
+                RenderParcels(parcels);
             }
+            catch (Exception err)
+            {
+                CompilationOutput.Text = err.ToString();
+            }
+        }
+
+        private Parcel RootShape()
+        {
+            return new Parcel(new Parcel.Edge[] {
+                new Parcel.Edge { Start = new Vector2(-100, 50), End = new Vector2(100, 50), Resources = new [] { "road" } },
+                new Parcel.Edge { Start = new Vector2(100, 50), End = new Vector2(100, -50), Resources = new [] { "road" } },
+                new Parcel.Edge { Start = new Vector2(100, -50), End = new Vector2(-100, -50), Resources = new [] { "road" } },
+                new Parcel.Edge { Start = new Vector2(-100, -50), End = new Vector2(-100, 50), Resources = new [] { "road" } },
+            });
+        }
+
+        private void RenderParcels(IEnumerable<Parcel> parcels)
+        {
+            foreach (var parcel in parcels)
+            {
+                var p = new Polygon()
+                {
+                    Stroke = Brushes.DarkBlue,
+                    StrokeThickness = 2
+                };
+
+                foreach (var point in parcel.Points())
+                    p.Points.Add(new Point(point.X, point.Y));
+
+                PreviewCanvas.Children.Add(p);
+            }
+        }
+
+        private static BlockSpec Deserialize(string markup)
+        {
+            return BlockSpec.Deserialize(new StringReader(markup));
+        }
+
+        protected override void SendToGame(object sender, RoutedEventArgs e)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

@@ -1,17 +1,17 @@
 ﻿
+using NodeMachine.Annotations;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Windows.Controls;
-using NodeMachine.Annotations;
+using System.Windows;
 
 namespace NodeMachine.ViewModel.Tabs
 {
     public class TabContent
         : INotifyPropertyChanged
     {
-        private readonly Control _content;
+        private readonly UIElement _content;
 
-        public TabContent(Control content)
+        public TabContent(UIElement content)
         {
             _content = content;
 
@@ -37,7 +37,7 @@ namespace NodeMachine.ViewModel.Tabs
             }
         }
 
-        public Control Content
+        public UIElement Content
         {
             get
             {

@@ -42,6 +42,14 @@
                     </Rectangle.OpacityMask>
                 </Rectangle>
             </Button>
+            <Button Style="{DynamicResource MetroCircleButtonStyle}" Width="50" Height="50" ToolTip="Randomize Seed" Click="RebuildTopologyRandomSeed">
+                <Rectangle Width="25" Height="25" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_shuffle}" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+            </Button>
+            <TextBox Text="{Binding Seed}" Width="150" FontSize="25" VerticalContentAlignment="Center" x:Name="SeedInputField" />
         </StackPanel>
 
         <TreeView Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Topology}" Name="NodeTreeView" SelectedItemChanged="NodeSelected">

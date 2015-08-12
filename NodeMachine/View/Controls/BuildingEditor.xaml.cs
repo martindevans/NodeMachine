@@ -60,7 +60,7 @@ namespace NodeMachine.View.Controls
             }
         }
 
-        private void CheckMarkup(object sender, RoutedEventArgs e)
+        protected override void CheckMarkup(object sender, RoutedEventArgs e)
         {
             RenderPreview();
         }
@@ -70,9 +70,10 @@ namespace NodeMachine.View.Controls
             return FloorSelector.Deserialize(new StringReader(markup));
         }
 
+        private int _seed = 0;  //todo: expose changing seed in UI
         private FloorSelector.Selection Layout(FloorSelector selector)
         {
-            Random r = new Random();
+            Random r = new Random(_seed);
             return selector.Select(r.NextDouble, a => ScriptReferenceFactory.Create(null, Guid.Empty, string.Join(",", a)));
         }
 
@@ -138,7 +139,7 @@ namespace NodeMachine.View.Controls
             }
         }
 
-        private async void SendToGame(object sender, RoutedEventArgs e)
+        protected override async void SendToGame(object sender, RoutedEventArgs e)
         {
             if (!await Connection.IsConnected())
                 return;
@@ -160,7 +161,7 @@ namespace NodeMachine.View.Controls
                         })
                     }
                 }
-            });
+            }, _seed);
         }
 
         public class PreviewRow

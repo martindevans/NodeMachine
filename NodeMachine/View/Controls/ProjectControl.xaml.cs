@@ -211,7 +211,7 @@ namespace NodeMachine.View.Controls
 
         private bool OpenEditor<TEditor, TArg>(MainWindow window, object context, string argName)
             where TArg : class
-            where TEditor : Control
+            where TEditor : UIElement
         {
             var arg = context as TArg;
             if (arg == null)
@@ -226,8 +226,8 @@ namespace NodeMachine.View.Controls
             var context = ((Control)sender).DataContext;
             var window = (MainWindow)Application.Current.MainWindow;
 
-            //if (DeleteItem<City>(window, context, p => p.Cities))
-            //    return;
+            if (DeleteItem<City>(window, context, p => p.Cities))
+                return;
 
             if (DeleteItem<Block>(window, context, p => p.Blocks))
                 return;

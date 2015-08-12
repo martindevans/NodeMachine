@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -78,5 +79,9 @@ namespace NodeMachine.View.Controls
             if (editor.IsLoaded && !_suppressSave)
                 ValueMarkup = new TextRange(editor.Document.ContentStart, editor.Document.ContentEnd).Text.TrimEnd('\r', '\n');
         }
+
+        protected abstract void CheckMarkup(object sender, RoutedEventArgs e);
+
+        protected abstract void SendToGame(object sender, RoutedEventArgs e);
     }
 }

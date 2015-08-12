@@ -38,9 +38,9 @@
     </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Base-CityGeneration, Version=1.0.5677.2413, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Base-CityGeneration.1.0.5677.2413\lib\net40-Client\Base-CityGeneration.dll</HintPath>
+    <Reference Include="Base-CityGeneration, Version=1.0.5702.562, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Base-CityGeneration.1.0.5702.562\lib\net40-Client\Base-CityGeneration.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="BeautifulBlueprints, Version=0.0.33.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -52,24 +52,25 @@
     <Reference Include="Cassowary">
       <HintPath>..\packages\Cassowary.4.0.0.0\lib\net35-Client\Cassowary.dll</HintPath>
     </Reference>
-    <Reference Include="Character Controllers">
-      <HintPath>..\packages\character-controllers.1.0.5603.29651\lib\net40-Client\Character Controllers.exe</HintPath>
+    <Reference Include="Character Controllers, Version=1.0.5697.28328, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\character-controllers.1.0.5697.28328\lib\net40-Client\Character Controllers.exe</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Construct Gamemode, Version=1.0.5676.33328, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Construct-Gamemode.1.0.5676.33328\lib\net40-Client\Construct Gamemode.dll</HintPath>
+    <Reference Include="Construct Gamemode, Version=1.0.5681.62, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Construct-Gamemode.1.0.5681.62\lib\net40-Client\Construct Gamemode.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Dragablz, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Dragablz.0.0.2.115\lib\net45\Dragablz.dll</HintPath>
+    <Reference Include="Dragablz, Version=0.0.2.117, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dragablz.0.0.2.117\lib\net45\Dragablz.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="EpimetheusPlugins, Version=1.0.5674.34586, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EpimetheusPlugins.Testing.1.0.5674.34587\lib\net40\EpimetheusPlugins.dll</HintPath>
+    <Reference Include="EpimetheusPlugins, Version=1.0.5701.43099, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\EpimetheusPlugins.Testing.1.0.5701.43100\lib\net40\EpimetheusPlugins.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="EpimetheusPlugins.Testing, Version=1.0.5674.34587, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EpimetheusPlugins.Testing.1.0.5674.34587\lib\net40\EpimetheusPlugins.Testing.dll</HintPath>
+    <Reference Include="EpimetheusPlugins.Testing, Version=1.0.5701.43100, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\EpimetheusPlugins.Testing.1.0.5701.43100\lib\net40\EpimetheusPlugins.Testing.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="HandyCollections, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -124,13 +125,13 @@
     <Reference Include="Placeholder.AI.Planning.Parsing">
       <HintPath>..\packages\Placeholder.AI.Planning.Parsing.4.1.2.0\lib\net40\Placeholder.AI.Planning.Parsing.dll</HintPath>
     </Reference>
-    <Reference Include="Placeholder.Audio2, Version=4.4.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Placeholder.Audio2.4.4.3.0\lib\net40-Client\Placeholder.Audio2.dll</HintPath>
+    <Reference Include="Placeholder.Audio2, Version=4.4.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Placeholder.Audio2.4.4.4.0\lib\net40-Client\Placeholder.Audio2.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Placeholder.ConstructiveSolidGeometry, Version=8.2.1.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Placeholder.ConstructiveSolidGeometry.8.2.1.0\lib\net40-Client\Placeholder.ConstructiveSolidGeometry.dll</HintPath>
+    <Reference Include="Placeholder.ConstructiveSolidGeometry, Version=8.4.5.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\Placeholder.ConstructiveSolidGeometry.8.4.5.0\lib\net40-Client\Placeholder.ConstructiveSolidGeometry.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Placeholder.Content">
       <HintPath>..\packages\Placeholder.Content.1.2.3.0\lib\net40-Client\Placeholder.Content.dll</HintPath>
@@ -151,8 +152,9 @@
     <Reference Include="RestSharp">
       <HintPath>..\packages\RestSharp.105.1.0\lib\net45\RestSharp.dll</HintPath>
     </Reference>
-    <Reference Include="SharpYaml">
-      <HintPath>..\packages\SharpYaml.1.4.0\lib\SharpYaml.dll</HintPath>
+    <Reference Include="SharpYaml, Version=1.5.0.22228, Culture=neutral, PublicKeyToken=1ced8108e942bc02, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpYaml.1.5.0\lib\SharpYaml.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="SupersonicSound">
       <HintPath>..\packages\SupersonicSound.1.2.0.0\lib\net40-Client\SupersonicSound.dll</HintPath>
@@ -160,9 +162,9 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.IO.Abstractions, Version=2.0.0.115, Culture=neutral, PublicKeyToken=d480b5b72fb413da, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\System.IO.Abstractions.2.0.0.115\lib\net40\System.IO.Abstractions.dll</HintPath>
+    <Reference Include="System.IO.Abstractions, Version=2.0.0.116, Culture=neutral, PublicKeyToken=d480b5b72fb413da, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Abstractions.2.0.0.116\lib\net40\System.IO.Abstractions.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Reactive.Core">
       <HintPath>..\packages\Rx-Core.2.2.5\lib\net45\System.Reactive.Core.dll</HintPath>

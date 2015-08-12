@@ -1,4 +1,5 @@
-﻿using NodeMachine.Annotations;
+﻿using System.Windows.Controls;
+using NodeMachine.Annotations;
 using NodeMachine.Connection;
 using NodeMachine.Model.Project;
 using NodeMachine.ViewModel.Tabs;
@@ -7,7 +8,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace NodeMachine.View.Controls
 {
@@ -25,11 +25,11 @@ namespace NodeMachine.View.Controls
             set
             {
                 if (_value != null)
-                    _value.PropertyChanged -= FacadePropertyChanged;
+                    _value.PropertyChanged -= ModelPropertyChanged;
                 _value = value;
                 if (_value != null)
                 {
-                    _value.PropertyChanged += FacadePropertyChanged;
+                    _value.PropertyChanged += ModelPropertyChanged;
                     Unsaved = !ProjectDataModelCollection.Contains(_value);
                 }
 
@@ -86,7 +86,7 @@ namespace NodeMachine.View.Controls
             };
         }
 
-        private void FacadePropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void ModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "Name")
                 OnPropertyChanged("TabName");

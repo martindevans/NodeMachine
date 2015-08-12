@@ -20,6 +20,8 @@ namespace NodeMachine.Model
         public List<PropertyValue> Metadata { get; set; }
 
         public ScriptReference Script { get; set; }
+
+        public int InitialSeed { get; set; }
     }
 
     public enum SubdivisionState

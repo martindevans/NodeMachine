@@ -53,11 +53,13 @@ namespace NodeMachine.Connection
                 Root = null;
         }
 
-        public async Task<bool> SetRoot(Guid scriptId, RemoteRootInit data)
+        public async Task<bool> SetRoot(Guid scriptId, RemoteRootInit data, int seed)
         {
             var request = new RestRequest("/scene/services/worldgeometryservice/topology", Method.PUT);
 
-            var body = scriptId + Environment.NewLine + JsonConvert.SerializeObject(data);
+            var body = scriptId + Environment.NewLine +
+                       seed + Environment.NewLine +
+                       JsonConvert.SerializeObject(data);
             request.AddParameter("text", body, ParameterType.RequestBody);
 
             var response = await _connection.Request(request);

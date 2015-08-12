@@ -1,4 +1,7 @@
-﻿using Construct_Gamemode.Map;
+﻿using System.Threading.Tasks;
+using Construct_Gamemode.Map;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using NodeMachine.Annotations;
 using NodeMachine.Connection;
 using NodeMachine.ViewModel.Nodes;
@@ -34,6 +37,17 @@ namespace NodeMachine.View.Controls
             }
         }
 
+        private int _seed;
+        public int Seed
+        {
+            get { return _seed; }
+            set
+            {
+                _seed = value;
+                OnPropertyChanged();
+            }
+        }
+
         public NodeTree(IGameConnection connection)
         {
             Connection = connection;
@@ -65,6 +79,9 @@ namespace NodeMachine.View.Controls
         private async void RefreshTopology()
         {
             await Connection.Topology.Refresh();
+
+            if (Connection.Topology != null && Connection.Topology.Root != null)
+                Seed = Connection.Topology.Root.InitialSeed;
         }
 
         private void RefreshTopology(object sender, RoutedEventArgs e)
@@ -82,11 +99,35 @@ namespace NodeMachine.View.Controls
             await Connection.Topology.Clear();
         }
 
-        private void RebuildTopology(object sender, RoutedEventArgs e)
+        private async void RebuildTopology(object sender, RoutedEventArgs e)
         {
-            //Set the root to whatever the root currently is - this will start a new build with the same root
-            var root = Connection.Topology.Root.Script.Guid;
-            Connection.Topology.SetRoot(root, new RemoteRootInit());
+            await Rebuild();
+        }
+
+        private async void RebuildTopologyRandomSeed(object sender, RoutedEventArgs e)
+        {
+            Seed = new Random().Next();
+            await Rebuild();
+        }
+
+        private async Task Rebuild()
+        {
+            if (Connection.Topology == null || Connection.Topology.Root == null)
+            {
+                var window = (MetroWindow)Window.GetWindow(this);
+
+                var connected = await Connection.IsConnected();
+                if (!connected)
+                    await window.ShowMessageAsync("Cannot Rebuild", "Not Connected");
+                else
+                    await window.ShowMessageAsync("Cannot Rebuild", "No Root Node");
+            }
+            else
+            {
+                //Set the root to whatever the root currently is - this will start a new build with the same root
+                var root = Connection.Topology.Root.Script.Guid;
+                await Connection.Topology.SetRoot(root, new RemoteRootInit(), Seed);
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
