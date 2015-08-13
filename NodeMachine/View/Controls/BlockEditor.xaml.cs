@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Documents;
@@ -58,6 +59,13 @@ namespace NodeMachine.View.Controls
 
         private void RenderPreview()
         {
+            if (Seed == null || !Seed.Value.HasValue)
+                return;
+            if (CompilationOutput == null)
+                return;
+            if (PreviewCanvas == null)
+                return;
+
             CompilationOutput.Text = "";
             PreviewCanvas.Children.Clear();
 
@@ -65,7 +73,7 @@ namespace NodeMachine.View.Controls
             {
                 var spec = Deserialize(new TextRange(Editor.Document.ContentStart, Editor.Document.ContentEnd).Text);
 
-                Random r = new Random(1);
+                Random r = new Random(Seed.Value.Value);
 
                 var parcels = spec.CreateParcels(RootShape(), r.NextDouble);
 
@@ -112,6 +120,16 @@ namespace NodeMachine.View.Controls
         protected override void SendToGame(object sender, RoutedEventArgs e)
         {
             throw new System.NotImplementedException();
+        }
+
+        private void SeedChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            RenderPreview();
+        }
+
+        private void OpenHelpUrl(object sender, RoutedEventArgs e)
+        {
+            Process.Start("https://bitbucket.org/martindevans/base-citygeneration/src/default/Base-CityGeneration/Elements/Blocks/Spec/BlockSpec.md");
         }
     }
 }

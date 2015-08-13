@@ -38,8 +38,8 @@
     </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Base-CityGeneration, Version=1.0.5702.562, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Base-CityGeneration.1.0.5702.562\lib\net40-Client\Base-CityGeneration.dll</HintPath>
+    <Reference Include="Base-CityGeneration, Version=1.0.5703.4249, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Base-CityGeneration.1.0.5703.4249\lib\net40-Client\Base-CityGeneration.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="BeautifulBlueprints, Version=0.0.33.0, Culture=neutral, processorArchitecture=MSIL">

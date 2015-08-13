@@ -6,6 +6,7 @@
              xmlns:model="clr-namespace:NodeMachine.Model"
              xmlns:controls="clr-namespace:NodeMachine.View.Controls"
              xmlns:converter="clr-namespace:NodeMachine.ViewModel.Converter"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 
@@ -20,6 +21,7 @@
         <Grid DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
@@ -54,7 +56,14 @@
                     </Rectangle.Fill>
                 </Rectangle>
             </Button>
-            <Button Style="{DynamicResource MetroCircleButtonStyle}" Width="50" Height="50" Grid.Column="3" ToolTip="Send To Game" Click="SendToGame">
+            <Button Style="{DynamicResource MetroCircleButtonStyle}" Width="50" Height="50" Grid.Column="3" ToolTip="Help" Click="OpenHelpUrl">
+                <Rectangle Width="25" Height="25">
+                    <Rectangle.Fill>
+                        <VisualBrush Stretch="Uniform" Visual="{StaticResource appbar_book_perspective_help}" />
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Button>
+            <Button Style="{DynamicResource MetroCircleButtonStyle}" Width="50" Height="50" Grid.Column="4" ToolTip="Send To Game" Click="SendToGame">
                 <Rectangle Width="20" Height="25" Margin="5 0 0 0">
                     <Rectangle.Fill>
                         <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_control_play}" />
@@ -72,14 +81,26 @@
                 <RowDefinition Height="1*"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <Canvas Name="PreviewCanvas" Width="0" Height="0" RenderTransform="1 0 0 -1 0 0" SnapsToDevicePixels="False" Grid.Row="0" >
-                <Rectangle
-                    Width="100"
-                    Height="100"
-                    Fill="Orange"
-                    Canvas.Left="-50"
-                    Canvas.Top="-50" />
-            </Canvas>
+            <Grid Grid.Row="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Canvas Name="PreviewCanvas" Width="0" Height="0" RenderTransform="1 0 0 -1 0 0" SnapsToDevicePixels="False" Grid.Row="0" >
+                    <Rectangle
+                            Width="100"
+                            Height="100"
+                            Fill="DarkOrange"
+                            Canvas.Left="-50"
+                            Canvas.Top="-50" />
+                </Canvas>
+
+                <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center" Margin="1">
+                    <TextBlock Text="Seed:" />
+                    <xctk:IntegerUpDown Name="Seed" ValueChanged="SeedChanged" FormatString="#" Value="1" Increment="1" />
+                </StackPanel>
+            </Grid>
 
             <GridSplitter Grid.Row="1"
                           HorizontalAlignment="Stretch"
