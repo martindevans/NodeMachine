@@ -87,7 +87,7 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <Canvas Name="PreviewCanvas" Width="0" Height="0" RenderTransform="1 0 0 -1 0 0" SnapsToDevicePixels="False" Grid.Row="0" MouseLeftButtonUp="OnCanvasClicked">
+                <Canvas Name="PreviewCanvas" Width="0" Height="0" RenderTransform="1 0 0 -1 0 0" SnapsToDevicePixels="False" Grid.Row="0">
                     <Rectangle
                             Width="100"
                             Height="100"

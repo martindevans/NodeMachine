@@ -1,4 +1,15 @@
-﻿using System;
+﻿using Base_CityGeneration.Elements.Blocks.Spec;
+using Base_CityGeneration.Parcels.Parcelling;
+using Construct_Gamemode.Map;
+using Construct_Gamemode.Map.Block;
+using Construct_Gamemode.Map.Models;
+using Microsoft.Xna.Framework;
+using Myre.Collections;
+using Newtonsoft.Json;
+using NodeMachine.Connection;
+using NodeMachine.Model.Project;
+using NodeMachine.ViewModel.Tabs;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -7,13 +18,6 @@ using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using Base_CityGeneration.Elements.Blocks.Spec;
-using Base_CityGeneration.Parcels.Parcelling;
-using Microsoft.Xna.Framework;
-using NodeMachine.Connection;
-using NodeMachine.Model.Project;
-using NodeMachine.ViewModel.Tabs;
-using SharpYaml;
 using Block = NodeMachine.Model.Block;
 using Point = System.Windows.Point;
 
@@ -75,7 +79,7 @@ namespace NodeMachine.View.Controls
 
                 Random r = new Random(Seed.Value.Value);
 
-                var parcels = spec.CreateParcels(RootShape(), r.NextDouble);
+                var parcels = spec.CreateParcels(RootShape(), r.NextDouble, new NamedBoxCollection());
 
                 RenderParcels(parcels);
             }
@@ -87,11 +91,18 @@ namespace NodeMachine.View.Controls
 
         private Parcel RootShape()
         {
+            var shape = new[] {
+                new Vector2(-100, 50),
+                new Vector2(100, 50),
+                new Vector2(100, -50),
+                new Vector2(-100, -50)
+            };
+
             return new Parcel(new Parcel.Edge[] {
-                new Parcel.Edge { Start = new Vector2(-100, 50), End = new Vector2(100, 50), Resources = new [] { "road" } },
-                new Parcel.Edge { Start = new Vector2(100, 50), End = new Vector2(100, -50), Resources = new [] { "road" } },
-                new Parcel.Edge { Start = new Vector2(100, -50), End = new Vector2(-100, -50), Resources = new [] { "road" } },
-                new Parcel.Edge { Start = new Vector2(-100, -50), End = new Vector2(-100, 50), Resources = new [] { "road" } },
+                new Parcel.Edge { Start = shape[0], End = shape[1], Resources = new [] { "road" } },
+                new Parcel.Edge { Start = shape[1], End = shape[2], Resources = new [] { "road" } },
+                new Parcel.Edge { Start = shape[2], End = shape[3], Resources = new [] { "road" } },
+                new Parcel.Edge { Start = shape[3], End = shape[0], Resources = new [] { "road" } },
             });
         }
 
@@ -117,9 +128,34 @@ namespace NodeMachine.View.Controls
             return BlockSpec.Deserialize(new StringReader(markup));
         }
 
-        protected override void SendToGame(object sender, RoutedEventArgs e)
+        protected override async void SendToGame(object sender, RoutedEventArgs e)
         {
-            throw new System.NotImplementedException();
+            if (!await Connection.IsConnected())
+                return;
+
+            //Preconditions for subdivision
+            if (Seed == null || !Seed.Value.HasValue)
+                return;
+
+            var shape = RootShape().Points();
+            var bounds = Base_CityGeneration.Datastructures.Rectangle.FromPoints(shape);
+
+            //Send network config to game
+            await Connection.Topology.SetRoot(Guid.Parse("CFF595C4-4C67-4CCB-9E5F-AB9AE0F9AF54"), new RemoteRootInit
+            {
+                Children = new ChildDefinition[] {
+                    new ChildDefinition {
+                        Prism = new PrismModel(new[] { new Point2(bounds.Left, bounds.Bottom), new Point2(bounds.Left, bounds.Top), new Point2(bounds.Right, bounds.Top), new Point2(bounds.Right, bounds.Bottom) }, 1000f),
+                        ChildType = typeof(RemoteBlockContainer).AssemblyQualifiedName,
+                        Center = new Point3(0, 0, 0),
+                        ChildData = JsonConvert.SerializeObject(new RemoteBlockInit {
+                            Script = new TextRange(Editor.Document.ContentStart, Editor.Document.ContentEnd).Text,
+                            Seed = Seed.Value.Value,
+                            Footprint = shape
+                        })
+                    }
+                }
+            }, Seed.Value.Value);
         }
 
         private void SeedChanged(object sender, RoutedPropertyChangedEventArgs<object> e)

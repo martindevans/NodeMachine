@@ -4,6 +4,7 @@ using Construct_Gamemode.Map;
 using Construct_Gamemode.Map.City;
 using Construct_Gamemode.Map.Models;
 using Microsoft.Xna.Framework;
+using Myre.Collections;
 using Newtonsoft.Json;
 using NodeMachine.Connection;
 using NodeMachine.Model;
@@ -20,7 +21,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using Color = System.Windows.Media.Color;
@@ -104,7 +104,8 @@ namespace NodeMachine.View.Controls
                     //Generate major roads
                     _networkBuilder = new NetworkBuilder();
                     Random rand = new Random(Seed.Value.Value);
-                    _networkBuilder.Build(_config.Major(rand.NextDouble), rand.NextDouble, new Vector2(0, 0), new Vector2(PreviewSizeValue.Value.Value, PreviewSizeValue.Value.Value));
+                    var m = new NamedBoxCollection();
+                    _networkBuilder.Build(_config.Major(rand.NextDouble, m), rand.NextDouble, m, new Vector2(0, 0), new Vector2(PreviewSizeValue.Value.Value, PreviewSizeValue.Value.Value));
                     _networkBuilder.Reduce();
 
                     //Extract results
@@ -122,7 +123,7 @@ namespace NodeMachine.View.Controls
                         {
                             Region region1 = region;
                             await Task.Factory.StartNew(() => {
-                                _networkBuilder.Build(_config.Minor(rand.NextDouble), rand.NextDouble, region1);
+                                _networkBuilder.Build(_config.Minor(rand.NextDouble, m), rand.NextDouble, m, region1);
 
                                 network = _networkBuilder.Result;
                             });
@@ -255,30 +256,6 @@ namespace NodeMachine.View.Controls
                 return;
 
             await RenderPreview();
-        }
-
-        private async void OnCanvasClicked(object sender, MouseButtonEventArgs e)
-        {
-            if (_regionsToRender == null || _regionsToRender.Count == 0)
-                return;
-
-            var canvas = (Canvas)sender;
-
-            var p = Mouse.GetPosition(canvas);
-            p.X -= _renderOffset;
-            p.Y -= _renderOffset;
-
-            var r = _regionsToRender.SingleOrDefault(a => a.PointInPolygon(new Vector2((float)p.X, (float)p.Y)));
-            if (r == null)
-                return;
-
-            _regionsToRender.Remove(r);
-
-            Random rand = new Random();
-            _networkBuilder.Build(_config.Minor(rand.NextDouble), rand.NextDouble, r);
-            var network = _networkBuilder.Result;
-
-            RenderNetwork(canvas, network, _regionsToRender, _renderOffset);
         }
     }
 }

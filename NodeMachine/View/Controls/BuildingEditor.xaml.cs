@@ -3,6 +3,7 @@ using Construct_Gamemode.Map;
 using Construct_Gamemode.Map.Building;
 using Construct_Gamemode.Map.Models;
 using EpimetheusPlugins.Testing.MockScripts;
+using Myre.Collections;
 using Myre.Extensions;
 using Newtonsoft.Json;
 using NodeMachine.Connection;
@@ -74,7 +75,7 @@ namespace NodeMachine.View.Controls
         private FloorSelector.Selection Layout(FloorSelector selector)
         {
             Random r = new Random(_seed);
-            return selector.Select(r.NextDouble, a => ScriptReferenceFactory.Create(null, Guid.Empty, string.Join(",", a)));
+            return selector.Select(r.NextDouble, new NamedBoxCollection(), a => ScriptReferenceFactory.Create(null, Guid.Empty, string.Join(",", a)));
         }
 
         private readonly ObservableCollection<PreviewRow> _preview = new ObservableCollection<PreviewRow>();
