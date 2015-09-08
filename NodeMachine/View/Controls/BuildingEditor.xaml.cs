@@ -1,11 +1,13 @@
-﻿using Base_CityGeneration.Elements.Building.Internals.Floors.Selection;
+﻿using System.Diagnostics;
+using System.Threading.Tasks;
+using Base_CityGeneration.Elements.Building.Design;
 using Construct_Gamemode.Map;
 using Construct_Gamemode.Map.Building;
 using Construct_Gamemode.Map.Models;
 using EpimetheusPlugins.Testing.MockScripts;
 using Myre.Collections;
-using Myre.Extensions;
 using Newtonsoft.Json;
+using NodeMachine.Annotations;
 using NodeMachine.Connection;
 using NodeMachine.Model;
 using NodeMachine.Model.Project;
@@ -61,21 +63,25 @@ namespace NodeMachine.View.Controls
             }
         }
 
-        protected override void CheckMarkup(object sender, RoutedEventArgs e)
+        protected override async void CheckMarkup(object sender, RoutedEventArgs e)
         {
-            RenderPreview();
+            await RenderPreview();
         }
 
-        private FloorSelector Deserialize(string markup)
+        private BuildingDesigner Deserialize(string markup)
         {
-            return FloorSelector.Deserialize(new StringReader(markup));
+            return BuildingDesigner.Deserialize(new StringReader(markup));
         }
 
-        private int _seed = 0;  //todo: expose changing seed in UI
-        private FloorSelector.Selection Layout(FloorSelector selector)
+        private Design Layout(BuildingDesigner designer, int seed)
         {
-            Random r = new Random(_seed);
-            return selector.Select(r.NextDouble, new NamedBoxCollection(), a => ScriptReferenceFactory.Create(null, Guid.Empty, string.Join(",", a)));
+            Random r = new Random(seed);
+            var m = new NamedBoxCollection();
+            Func<string[], EpimetheusPlugins.Scripts.ScriptReference> s = a => ScriptReferenceFactory.Create(null, Guid.Empty, string.Join(",", a));
+
+            return designer
+                .Internals(r.NextDouble, m, s)
+                .Externals(r.NextDouble, m, s, new[] { 0f });
         }
 
         private readonly ObservableCollection<PreviewRow> _preview = new ObservableCollection<PreviewRow>();
@@ -88,67 +94,81 @@ namespace NodeMachine.View.Controls
             }
         }
 
-        private void RenderPreview()
+        private async Task RenderPreview()
         {
+            if (!Seed.Value.HasValue)
+                return;
+
             CompilationOutput.Text = "";
 
             try
             {
                 var selector = Deserialize(new TextRange(Editor.Document.ContentStart, Editor.Document.ContentEnd).Text);
-                var selection = Layout(selector);
+                var design = Layout(selector, Seed.Value.Value);
 
-                var totalHeight = selection.AboveGroundFloors.Select(a => a.Height).Sum();
+                var totalHeight = design.Floors.Where(a => a.Index >= 0).Select(a => a.Height).Sum();
                 var height = totalHeight;
 
-                CreateColumns(selection.Verticals.Select(a => a.Script.Name));
                 _preview.Clear();
+                CreateColumns(design.Verticals.Select(a => a.Script.Name));
 
-                foreach (var floor in selection.AboveGroundFloors.Append(selection.BelowGroundFloors))
+                foreach (var floor in design.Floors.OrderByDescending(a => a.Index))
                 {
                     height -= floor.Height;
                     if (Math.Abs(height) < 0.0001)
                         height = 0;
 
-                    bool[] v = selection.Verticals.Select(a => a.Bottom <= floor.Index && a.Top >= floor.Index).ToArray();
-                    _preview.Add(new PreviewRow { Height = floor.Height, CumulativeHeight = height, Tags = floor.Script.Name, Verticals = v });
+                    var f = design.Facades.Single().SingleOrDefault(a => a.Bottom <= floor.Index && a.Top >= floor.Index);
+
+                    bool[] v = design.Verticals.Select(a => a.Bottom <= floor.Index && a.Top >= floor.Index).ToArray();
+                    _preview.Add(new PreviewRow(floor.Height, height, floor.Script.Name, v, f == null ? "" : string.Format("{0} {1}-{2}", string.IsNullOrWhiteSpace(f.Script.Name) ? "Null" : f.Script.Name, f.Bottom, f.Top)));
                 }
             }
             catch (Exception err)
             {
+                _preview.Clear();
+
                 CompilationOutput.Text = err.ToString();
             }
         }
 
         private void CreateColumns(IEnumerable<string> verticals)
         {
-            PreviewGrid.Columns.Clear();
-
-            PreviewGrid.Columns.Add(new DataGridTextColumn { Binding = new Binding("Height"), Header = "Height" });
-            PreviewGrid.Columns.Add(new DataGridTextColumn { Binding = new Binding("CumulativeHeight"), Header = "Cumulative Height" });
-            PreviewGrid.Columns.Add(new DataGridTextColumn { Binding = new Binding("Tags"), Header = "Tags" });
-
-            int i = 0;
-            foreach (var name in verticals)
+            using (Dispatcher.DisableProcessing())
             {
-                PreviewGrid.Columns.Add(new DataGridCheckBoxColumn {
-                    Binding = new Binding(string.Format("Verticals[{0}]", i)),
-                    CanUserSort = false,
-                    Header = name
-                });
+                Dispatcher.Invoke(() => {
+                    PreviewGrid.Columns.Clear();
 
-                i++;
+                    PreviewGrid.Columns.Add(new DataGridTextColumn { Binding = new Binding("Height"), Header = "Height" });
+                    PreviewGrid.Columns.Add(new DataGridTextColumn { Binding = new Binding("CumulativeHeight"), Header = "Cumulative Height" });
+                    PreviewGrid.Columns.Add(new DataGridTextColumn { Binding = new Binding("Tags"), Header = "Tags" });
+                    PreviewGrid.Columns.Add(new DataGridTextColumn { Binding = new Binding("Facade"), Header = "Facade" });
+
+                    int i = 0;
+                    foreach (var name in verticals)
+                    {
+                        PreviewGrid.Columns.Add(new DataGridCheckBoxColumn {
+                            Binding = new Binding(string.Format("Verticals[{0}]", i)),
+                            CanUserSort = false,
+                            Header = name
+                        });
+
+                        i++;
+                    }
+                });
             }
         }
 
         protected override async void SendToGame(object sender, RoutedEventArgs e)
         {
+            if (!Seed.Value.HasValue)
+                return;
             if (!await Connection.IsConnected())
                 return;
 
-            //Layout building
-            var solution = Layout(Deserialize(new TextRange(Editor.Document.ContentStart, Editor.Document.ContentEnd).Text));
+            var script = new TextRange(Editor.Document.ContentStart, Editor.Document.ContentEnd).Text;
 
-            //Create the facade in game
+            //Create the building in game
             await Connection.Topology.SetRoot(Guid.Parse("CFF595C4-4C67-4CCB-9E5F-AB9AE0F9AF54"), new RemoteRootInit
             {
                 Children = new ChildDefinition[] {
@@ -157,23 +177,42 @@ namespace NodeMachine.View.Controls
                         ChildType = "Construct_Gamemode.Map.Building.RemoteBuildingContainer",
                         Center = new Point3(1, 1, 1),
                         ChildData = JsonConvert.SerializeObject(new RemoteBuildingInit {
-                            AboveGroundFloors = solution.AboveGroundFloors.Select(a => new RemoteFloor { Height = a.Height, Tags = a.Script.Name.Split(',') }).ToArray(),
-                            BelowGroundFloors = solution.BelowGroundFloors.Select(a => new RemoteFloor { Height = a.Height, Tags = a.Script.Name.Split(',') }).ToArray()
+                            Seed = Seed.Value.Value,
+                            Script = script
                         })
                     }
                 }
-            }, _seed);
+            }, Seed.Value.Value);
         }
 
         public class PreviewRow
         {
-            public float Height { get; set; }
+            public float Height { [UsedImplicitly]get; private set; }
 
-            public float CumulativeHeight { get; set; }
+            public float CumulativeHeight { [UsedImplicitly]get; private set; }
 
-            public string Tags { get; set; }
+            public string Tags { [UsedImplicitly]get; private set; }
 
-            public bool[] Verticals { get; set; }
+            public bool[] Verticals { [UsedImplicitly]get; private set; }
+
+            public string Facade { [UsedImplicitly]get; private set; }
+
+            public PreviewRow(float height, float cumulativeHeight, string tags, bool[] verticals, string facade)
+            {
+                Height = height;
+                CumulativeHeight = cumulativeHeight;
+                Tags = tags;
+                Verticals = verticals;
+                Facade = facade;
+            }
+        }
+
+        private async void SeedChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            if (!IsInitialized)
+                return;
+
+            await RenderPreview();
         }
     }
 }

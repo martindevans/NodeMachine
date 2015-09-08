@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -37,7 +38,8 @@ namespace NodeMachine.View.Controls
                 if (start.CompareTo(end) == 0)
                 {
                     start.InsertTextInRun("  ");
-                    var afterSpaces = end.GetPositionAtOffset(2);
+                    var afterSpaces = start.GetPositionAtOffset(2);
+                    Debug.Assert(afterSpaces != null, "afterSpaces != null");
                     richTextBox.Selection.Select(afterSpaces, afterSpaces);
                     return;
                 }

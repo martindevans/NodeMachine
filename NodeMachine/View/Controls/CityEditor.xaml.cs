@@ -1,9 +1,9 @@
-﻿using Base_CityGeneration.Elements.Roads.Hyperstreamline;
+﻿using System.Numerics;
+using Base_CityGeneration.Elements.Roads.Hyperstreamline;
 using Base_CityGeneration.Elements.Roads.Hyperstreamline.Tracing;
 using Construct_Gamemode.Map;
 using Construct_Gamemode.Map.City;
 using Construct_Gamemode.Map.Models;
-using Microsoft.Xna.Framework;
 using Myre.Collections;
 using Newtonsoft.Json;
 using NodeMachine.Connection;
