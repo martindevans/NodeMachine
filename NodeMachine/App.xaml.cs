@@ -1,4 +1,6 @@
-﻿using Dragablz;
+﻿using System.IO;
+using System.Threading.Tasks;
+using Dragablz;
 using Ninject;
 using NodeMachine.Connection;
 using NodeMachine.Model.Project;
@@ -27,6 +29,9 @@ namespace NodeMachine
 
             ConfigureContainer();
             ComposeObjects();
+
+            LoadStartupFile(e, _container);
+
             Current.MainWindow.Show();
         }
 
@@ -50,6 +55,25 @@ namespace NodeMachine
             base.OnExit(e);
 
             _container.Get<IGameConnection>().Disconnect();
+        }
+
+        private void LoadStartupFile(StartupEventArgs e, IKernel container)
+        {
+            //Check that there is a file arg
+            if (e.Args.Length == 0)
+                return;
+
+            //Check the file really exists
+            FileInfo file = new FileInfo(e.Args[0]);
+            if (!file.Exists)
+                return;
+
+            //Check that it has the right extension
+            if (file.Extension != ".nmproj")
+                return;
+
+            var manager = container.Get<IProjectManager>();
+            Task.Run(() => manager.OpenProject(file.FullName)).Wait();
         }
     }
 }

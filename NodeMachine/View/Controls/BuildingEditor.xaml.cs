@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Numerics;
 using System.Threading.Tasks;
 using Base_CityGeneration.Elements.Building.Design;
 using Construct_Gamemode.Map;
@@ -73,15 +74,32 @@ namespace NodeMachine.View.Controls
             return BuildingDesigner.Deserialize(new StringReader(markup));
         }
 
+        private Vector2[] Footprint()
+        {
+            return new Vector2[] {
+                new Vector2(-30, -30),
+                new Vector2(-30, 30f),
+                new Vector2(30, 30f),
+                new Vector2(30, -30f)
+            };
+        }
+
         private Design Layout(BuildingDesigner designer, int seed)
         {
             Random r = new Random(seed);
             var m = new NamedBoxCollection();
             Func<string[], EpimetheusPlugins.Scripts.ScriptReference> s = a => ScriptReferenceFactory.Create(null, Guid.Empty, string.Join(",", a));
 
+            var lot = Footprint();
+
             return designer
                 .Internals(r.NextDouble, m, s)
-                .Externals(r.NextDouble, m, s, new[] { 0f });
+                .Externals(r.NextDouble, m, s, new BuildingSideInfo[] {
+                    new BuildingSideInfo(lot[0], lot[1], new BuildingSideInfo.NeighbourInfo[0]),
+                    new BuildingSideInfo(lot[1], lot[2], new BuildingSideInfo.NeighbourInfo[0]),
+                    new BuildingSideInfo(lot[2], lot[3], new BuildingSideInfo.NeighbourInfo[0]),
+                    new BuildingSideInfo(lot[3], lot[0], new BuildingSideInfo.NeighbourInfo[0]),
+                });
         }
 
         private readonly ObservableCollection<PreviewRow> _preview = new ObservableCollection<PreviewRow>();
@@ -118,7 +136,10 @@ namespace NodeMachine.View.Controls
                     if (Math.Abs(height) < 0.0001)
                         height = 0;
 
-                    var f = design.Facades.Single().SingleOrDefault(a => a.Bottom <= floor.Index && a.Top >= floor.Index);
+                    FloorSelection floor1 = floor;
+                    var f = design.Walls.GroupBy(a => a.BottomIndex).Select(a => a.First())
+                                  .SelectMany(a => a.Facades)
+                                  .Single(a => a.Bottom <= floor1.Index && a.Top >= floor1.Index);
 
                     bool[] v = design.Verticals.Select(a => a.Bottom <= floor.Index && a.Top >= floor.Index).ToArray();
                     _preview.Add(new PreviewRow(floor.Height, height, floor.Script.Name, v, f == null ? "" : string.Format("{0} {1}-{2}", string.IsNullOrWhiteSpace(f.Script.Name) ? "Null" : f.Script.Name, f.Bottom, f.Top)));
@@ -167,13 +188,14 @@ namespace NodeMachine.View.Controls
                 return;
 
             var script = new TextRange(Editor.Document.ContentStart, Editor.Document.ContentEnd).Text;
+            var lot = Footprint();
 
             //Create the building in game
             await Connection.Topology.SetRoot(Guid.Parse("CFF595C4-4C67-4CCB-9E5F-AB9AE0F9AF54"), new RemoteRootInit
             {
                 Children = new ChildDefinition[] {
                     new ChildDefinition {
-                        Prism = new PrismModel(new[] {new Point2(-10, 10), new Point2(10, 10f), new Point2(10, -10f), new Point2(-10, -10f)}, 1000),
+                        Prism = new PrismModel(new[] { (Point2)lot[0], (Point2)lot[1], (Point2)lot[2], (Point2)lot[3] }, 1000),
                         ChildType = "Construct_Gamemode.Map.Building.RemoteBuildingContainer",
                         Center = new Point3(1, 1, 1),
                         ChildData = JsonConvert.SerializeObject(new RemoteBuildingInit {
