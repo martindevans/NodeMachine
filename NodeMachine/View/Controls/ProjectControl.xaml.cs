@@ -260,5 +260,10 @@ namespace NodeMachine.View.Controls
             collection(ProjectManager.CurrentProject.ProjectData).Remove(arg);
             return true;
         }
+
+        private void CompileProject(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

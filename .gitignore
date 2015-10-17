@@ -5,10 +5,9 @@
 *.resx
 
 _ReSharper.NodeMachine
-
+_ReSharper.Caches
 packages
 
 NodeMachine/bin
 NodeMachine/obj
-
 /NodeMachine/Properties/Settings.settings

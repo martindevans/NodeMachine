@@ -98,8 +98,7 @@ namespace NodeMachine.Model.Project
                 using (var writer = new StreamWriter(file))
                 using (JsonWriter jsonWriter = new JsonTextWriter(writer))
                 {
-                    JsonSerializer j = new JsonSerializer()
-                    {
+                    JsonSerializer j = new JsonSerializer {
                         Formatting = Formatting.Indented,
                     };
 
@@ -118,8 +117,7 @@ namespace NodeMachine.Model.Project
                 using (var reader = new StreamReader(file))
                 using (JsonReader jsonReader = new JsonTextReader(reader))
                 {
-                    JsonSerializer j = new JsonSerializer()
-                    {
+                    JsonSerializer j = new JsonSerializer {
                         Formatting = Formatting.Indented,
                     };
 

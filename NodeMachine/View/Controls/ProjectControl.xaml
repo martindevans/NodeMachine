@@ -139,6 +139,13 @@
                     </Rectangle.Fill>
                 </Rectangle>
             </Button>
+            <Button Style="{DynamicResource MetroCircleButtonStyle}" Width="50" Height="50" ToolTip="Compile" Click="CompileProject">
+                <Rectangle Width="25" Height="25" >
+                    <Rectangle.Fill>
+                        <VisualBrush Stretch="UniformToFill" Visual="{StaticResource appbar_cupcake}" />
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Button>
         </WrapPanel>
 
         <Expander Tag="Cities" DataContext="{Binding ProjectManager.CurrentProject.ProjectData.Cities}" Template="{StaticResource ElementListTemplate}" />

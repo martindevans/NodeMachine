@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Numerics;
+﻿using System.Numerics;
 using System.Threading.Tasks;
 using Base_CityGeneration.Elements.Building.Design;
 using Construct_Gamemode.Map;

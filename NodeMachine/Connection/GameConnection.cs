@@ -33,8 +33,9 @@ namespace NodeMachine.Connection
 
         public async Task<bool> IsConnected()
         {
-            var request = new RestRequest("/scene", Method.GET);
-            request.Timeout = 500;
+            var request = new RestRequest("/scene", Method.GET) {
+                Timeout = 500
+            };
             var response = await _client.ExecuteGetTaskAsync(request, _cancellation.Token);
             return response.StatusCode == HttpStatusCode.OK;
         }

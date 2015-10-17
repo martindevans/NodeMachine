@@ -110,8 +110,7 @@ namespace NodeMachine.View.Controls
         {
             foreach (var parcel in parcels)
             {
-                var p = new Polygon()
-                {
+                var p = new Polygon {
                     Stroke = Brushes.DarkBlue,
                     StrokeThickness = 2
                 };

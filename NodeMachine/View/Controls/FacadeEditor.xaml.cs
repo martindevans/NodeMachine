@@ -137,7 +137,7 @@ namespace NodeMachine.View.Controls
 
             foreach (var shape in shapes)
             {
-                yield return new RemoteStamp() {
+                yield return new RemoteStamp {
                     Additive = element.Additive,
                     StartDepth = (float)element.StartDepth,
                     EndDepth = (float)(element.StartDepth + element.Thickness),
@@ -287,7 +287,7 @@ namespace NodeMachine.View.Controls
                     else
                         brush = new SolidColorBrush(Color.FromRgb((byte)b, (byte)b, (byte)b));
 
-                    polygon = new Polygon() {
+                    polygon = new Polygon {
                         Stroke = Brushes.DarkBlue,
                         StrokeThickness = 2,
                         Fill = brush
