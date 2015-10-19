@@ -64,7 +64,7 @@ namespace NodeMachine.View.Controls
             //Show a progress dialog whilst compiling
             var window = (MetroWindow)Window.GetWindow(this);
             var progress = await window.ShowProgressAsync("Compiling...", string.Format("Compiling Project \"{0}\"", ProjectManager.CurrentProject.ProjectData.Name), false, new MetroDialogSettings {
-                AnimateHide = false,
+                AnimateHide = true,
                 AnimateShow = true,
             });
             progress.SetIndeterminate();
@@ -73,22 +73,22 @@ namespace NodeMachine.View.Controls
             await Task.Delay(100);
 
             //Compile the project
-            var compiler = new ProjectCompiler(ProjectManager.CurrentProject, new CompileSettings());
+            var compiler = new ProjectCompiler(ProjectManager.CurrentProject);
             var errors = new List<string>();
             var success = await compiler.Compile(errors);
 
             //Show progress bar as completed
             progress.SetProgress(1);
 
-            //Begin closing the progress display in the background
-            var pClose = progress.CloseAsync();
+            //Close the progress display
+            await progress.CloseAsync();
 
             //Display completion messages
             if (success)
             {
                 await ((MetroWindow)Window.GetWindow(this)).ShowMessageAsync("Complete", string.Format("Project \"{0}\" Compiled Successfully", ProjectManager.CurrentProject.ProjectData.Name), MessageDialogStyle.Affirmative, new MetroDialogSettings {
                     AnimateHide = true,
-                    AnimateShow = false,
+                    AnimateShow = true,
                 });
             }
             else
@@ -100,12 +100,14 @@ namespace NodeMachine.View.Controls
                     ), MessageDialogStyle.Affirmative, new MetroDialogSettings
                 {
                     AnimateHide = true,
-                    AnimateShow = false,
+                    AnimateShow = true,
                 });
             }
+        }
 
-            //Finish closing the progress display
-            await pClose;
+        private void CopyProjectId(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetText(ProjectManager.CurrentProject.ProjectData.Guid.ToString());
         }
     }
 }

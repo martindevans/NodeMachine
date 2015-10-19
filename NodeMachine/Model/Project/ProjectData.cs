@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -52,7 +51,6 @@ namespace NodeMachine.Model.Project
         public ObservableCollection<Building> Buildings { get; private set; }
         public ObservableCollection<Floor> Floors { get; private set; }
         public ObservableCollection<string> Rooms { get; private set; }
-        public ObservableCollection<string> Misc { get; private set; }
         public ObservableCollection<Facade> Facades { get; private set; }
 
         public ProjectData()
@@ -64,7 +62,6 @@ namespace NodeMachine.Model.Project
             Buildings = new ObservableCollection<Building>();
             Floors = new ObservableCollection<Floor>();
             Rooms = new ObservableCollection<string>();
-            Misc = new ObservableCollection<string>();
             Facades = new ObservableCollection<Facade>();
         }
 

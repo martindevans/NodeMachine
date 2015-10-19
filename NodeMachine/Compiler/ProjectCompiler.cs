@@ -12,12 +12,10 @@ namespace NodeMachine.Compiler
     public class ProjectCompiler
     {
         private readonly IProject _project;
-        private readonly CompileSettings _settings;
 
-        public ProjectCompiler(IProject project, CompileSettings settings = null)
+        public ProjectCompiler(IProject project)
         {
             _project = project;
-            _settings = settings ?? CompileSettings.Default();
         }
 
         public async Task<bool> Compile(List<string> outputMessages)
@@ -37,11 +35,18 @@ namespace NodeMachine.Compiler
                     return false;
                 }
 
-                if (_settings.CompileBuildings)
-                {
-                    foreach (var building in _project.ProjectData.Buildings)
-                        trees.Add(new BuildingBuilder(building, _settings, templateNamespace).Build(outputMessages, tags));
-                }
+                foreach (var building in _project.ProjectData.Buildings)
+                    trees.Add(new BuildingBuilder(building, templateNamespace).Build(tags));
+                //foreach (var block in _project.ProjectData.Blocks)
+                //    trees.Add(new BlockBuilder(block, templateNamespace).Build(tags));
+                //foreach (var city in _project.ProjectData.Cities)
+                //    trees.Add(new CityBuilder(city, templateNamespace).Build(tags));
+                //foreach (var facade in _project.ProjectData.Facades)
+                //    trees.Add(new FacadeBuilder(facade, templateNamespace).Build(tags));
+                //foreach (var floor in _project.ProjectData.Floors)
+                //    trees.Add(new FloorBuilder(floor, templateNamespace).Build(tags));
+                //foreach (var room in _project.ProjectData.Rooms)
+                //    trees.Add(new RoomBuilder(room, templateNamespace).Build(tags));
 
                 //Convert all the tags we've discovered into syntax trees of empty interfaces
                 trees.AddRange(tags.Select(t => TagToSyntaxTree(t, templateNamespace)));
@@ -106,7 +111,7 @@ namespace NodeMachine.Compiler
             return references;
         }
 
-        private SyntaxTree TagToSyntaxTree(string iname, string templateNamespace)
+        private static SyntaxTree TagToSyntaxTree(string iname, string templateNamespace)
         {
             var template =
 @"namespace /*TEMPLATED_NAMESPACE*/
@@ -121,6 +126,40 @@ namespace NodeMachine.Compiler
                 .Replace("/*TEMPLATED_INTERFACE_NAME*/", iname);
 
             return CSharpSyntaxTree.ParseText(template);
+        }
+
+        internal static string BuildTagsList(IEnumerable<KeyValuePair<string, string>> tagsValues, ISet<string> outputTagNames)
+        {
+            if (outputTagNames == null || outputTagNames.Count == 0)
+                return "";
+
+            var interfaces = new List<string>();
+
+            foreach (var interfaceName in tagsValues.Distinct().SelectMany(InterfaceNameForTag))
+            {
+                outputTagNames.Add(interfaceName);
+                interfaces.Add(interfaceName);
+            }
+
+            return ", " + string.Join(",", interfaces);
+        }
+
+        internal static string EscapeCSharpStringLiteral(string str)
+        {
+            //Convert into a verbatim C# string
+            return str.Replace("\"", "\"\"");
+        }
+
+        internal static IEnumerable<string> InterfaceNameForTag(KeyValuePair<string, string> tag)
+        {
+            //Allows us to search for Key = Value
+            yield return string.Format("ITag_Key_{0}_Value_{1}", tag.Key, tag.Value);
+
+            //Allows us to search for HasKey(Key)
+            yield return string.Format("ITag_Key_{0}", tag.Key);
+
+            //Allows us to search for HasValue(Value)
+            yield return string.Format("ITag_Value_{0}", tag.Value);
         }
     }
 }

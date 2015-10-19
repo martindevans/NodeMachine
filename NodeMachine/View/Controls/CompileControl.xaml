@@ -67,7 +67,7 @@
                     <TextBlock.ContextMenu>
                         <ContextMenu>
                             <MenuItem Header="Regenerate" Click="RegenerateProjectGuid"></MenuItem>
-                            <MenuItem Header="Copy"></MenuItem>
+                            <MenuItem Header="Copy" Click="CopyProjectId"></MenuItem>
                         </ContextMenu>
                     </TextBlock.ContextMenu>
                 </TextBlock>

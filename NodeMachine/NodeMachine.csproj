@@ -264,9 +264,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="CancelDialogException.cs" />
+    <Compile Include="Compiler\BaseTemplatedScriptBuilder.cs" />
     <Compile Include="Compiler\BuildingBuilder.cs" />
     <EmbeddedResource Include="Compiler\BuildingTemplate.cs" />
-    <Compile Include="Compiler\CompileSettings.cs" />
     <Compile Include="Compiler\IBuilder.cs" />
     <Compile Include="Compiler\ProjectCompiler.cs" />
     <Compile Include="Connection\IScreenCollection.cs" />

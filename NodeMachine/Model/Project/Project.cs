@@ -32,7 +32,6 @@ namespace NodeMachine.Model.Project
                     _projectData.Cities.CollectionChanged -= ProjectDataCollectionChanged;
                     _projectData.Facades.CollectionChanged -= ProjectDataCollectionChanged;
                     _projectData.Floors.CollectionChanged -= ProjectDataCollectionChanged;
-                    _projectData.Misc.CollectionChanged -= ProjectDataCollectionChanged;
                     _projectData.Rooms.CollectionChanged -= ProjectDataCollectionChanged;
                     _projectData.Metadata.CollectionChanged -= ProjectDataCollectionChanged;
                 }
@@ -48,7 +47,6 @@ namespace NodeMachine.Model.Project
                     SubscribeToCollectionUpdates(_projectData.Cities);
                     SubscribeToCollectionUpdates(_projectData.Facades);
                     SubscribeToCollectionUpdates(_projectData.Floors);
-                    //SubscribeToCollectionUpdates(_projectData.Misc);
                     //SubscribeToCollectionUpdates(_projectData.Rooms);
                     SubscribeToCollectionUpdates(_projectData.Metadata);
                 }
