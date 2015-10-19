@@ -55,6 +55,7 @@ namespace NodeMachine.View.Controls
                 //yield return new TileOption("Floor Editor", () => _kernel.Get<FloorEditor>());
                 //yield return new TileOption("Room Editor", () => null);
                 yield return new TileOption("Facade Editor", () => _kernel.Get<FacadeEditor>());
+                yield return new TileOption("Compile", () => _kernel.Get<CompileControl>());
             }
         }
 
@@ -148,12 +149,13 @@ namespace NodeMachine.View.Controls
             SetContent(clicked);
         }
 
-        private void SetContent(TileOption option)
+        public void SetContent(TileOption option)
         {
             var content = option.Control();
             if (content == null)
                 return;
 
+            Container.Children.Clear();
             Container.Children.Add(content);
             TabName = option.Title;
 

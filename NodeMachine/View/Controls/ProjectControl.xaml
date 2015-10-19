@@ -93,7 +93,7 @@
                 FontFamily="Segoe UI"
                 Padding="0 0 6 0"
                 Text="no file" />
-        </StackPanel>
+            </StackPanel>
         </Grid>
 
         <WrapPanel>

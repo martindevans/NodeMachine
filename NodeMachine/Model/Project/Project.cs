@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
@@ -32,6 +34,7 @@ namespace NodeMachine.Model.Project
                     _projectData.Floors.CollectionChanged -= ProjectDataCollectionChanged;
                     _projectData.Misc.CollectionChanged -= ProjectDataCollectionChanged;
                     _projectData.Rooms.CollectionChanged -= ProjectDataCollectionChanged;
+                    _projectData.Metadata.CollectionChanged -= ProjectDataCollectionChanged;
                 }
 
                 _projectData = value;
@@ -47,6 +50,7 @@ namespace NodeMachine.Model.Project
                     SubscribeToCollectionUpdates(_projectData.Floors);
                     //SubscribeToCollectionUpdates(_projectData.Misc);
                     //SubscribeToCollectionUpdates(_projectData.Rooms);
+                    SubscribeToCollectionUpdates(_projectData.Metadata);
                 }
 
                 OnPropertyChanged();
@@ -124,6 +128,9 @@ namespace NodeMachine.Model.Project
                     return j.Deserialize<ProjectData>(jsonReader) ?? new ProjectData();
                 }
             });
+
+            if (ProjectData.CompileOutputDirectory == null)
+                ProjectData.CompileOutputDirectory = Path.GetDirectoryName(ProjectFile);
 
             UnsavedChanges = false;
         }

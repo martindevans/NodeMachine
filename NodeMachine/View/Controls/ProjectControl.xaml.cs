@@ -261,9 +261,29 @@ namespace NodeMachine.View.Controls
             return true;
         }
 
-        private void CompileProject(object sender, RoutedEventArgs e)
+        private async void CompileProject(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            //Get the parent window of this control
+            var window = (MainWindow)Window.GetWindow(this);
+
+            //Find the tab which we are currently in and replace it with a compile control
+            var p = this.TryFindParent<NewTabControl>();
+            p.SetContent(new NewTabControl.TileOption(
+                string.Format("Compile @ {0}", DateTime.Now.ToString("H:mm:ss")),
+                () => _kernel.Get<CompileControl>()
+            ));
+
+            //Create a new project tab (this provides the appearance that we created a new tab for the compile control and focused it)
+            window.TabContents.Add(
+                new TabContent(
+                    new NewTabControl(
+                        new NewTabControl.TileOption(
+                            "Project",
+                            () => _kernel.Get<ProjectControl>()
+                        )
+                    )
+                )
+            );
         }
     }
 }

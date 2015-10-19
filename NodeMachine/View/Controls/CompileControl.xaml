@@ -1,0 +1,97 @@
+﻿<UserControl x:Class="NodeMachine.View.Controls.CompileControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    
+    <UserControl.Resources>
+        <DataTemplate x:Key="ValueTemplate">
+            <TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" />
+        </DataTemplate>
+        <DataTemplate x:Key="KeyTemplate">
+            <TextBox Text="{Binding Key, UpdateSourceTrigger=PropertyChanged}" />
+        </DataTemplate>
+    </UserControl.Resources>
+    
+    <Grid>
+        <StackPanel>
+            <WrapPanel>
+                <Button Style="{DynamicResource MetroCircleButtonStyle}" Width="50" Height="50" ToolTip="Compile" Click="CompileProject">
+                    <Rectangle Width="20" Height="25" Margin="5 0 0 0">
+                        <Rectangle.Fill>
+                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_control_play}" />
+                        </Rectangle.Fill>
+                    </Rectangle>
+                </Button>
+            </WrapPanel>
+            
+            <Grid>
+                <TextBlock 
+                VerticalAlignment="Center"
+                Text="{Binding Path=ProjectManager.CurrentProject.ProjectData.CompileOutputDirectory, TargetNullValue='Unnamed Project', UpdateSourceTrigger=PropertyChanged}"
+                FontWeight="Light"
+                Foreground="{DynamicResource WindowTitleColorBrush}"
+                FontSize="24"
+                FontFamily="Segoe UI">
+                    <TextBlock.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Change Location" Click="ChangeProjectCompileLocation"></MenuItem>
+                            <MenuItem Header="Copy" Click="CopyProjectCompileLocation"></MenuItem>
+                        </ContextMenu>
+                    </TextBlock.ContextMenu>
+                </TextBlock>
+                <StackPanel Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right">
+                    <Button Style="{DynamicResource MetroCircleButtonStyle}" Width="28" Height="28" ToolTip="Location" Click="ChangeProjectCompileLocation">
+                        <Rectangle Width="11" Height="12" Margin="0 0 0 0">
+                            <Rectangle.Fill>
+                                <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_save}" />
+                            </Rectangle.Fill>
+                        </Rectangle>
+                    </Button>
+                </StackPanel>
+            </Grid>
+
+            <Grid>
+                <TextBlock 
+                    Grid.Column="0"
+                    Grid.Row="0"
+                    VerticalAlignment="Center"
+                    Text="{Binding Path=ProjectManager.CurrentProject.ProjectData.Guid, TargetNullValue='00000000-0000-0000-0000-000000000000', UpdateSourceTrigger=PropertyChanged}"
+                    FontWeight="Light"
+                    Foreground="{DynamicResource WindowTitleColorBrush}"
+                    FontSize="16"
+                    FontFamily="Segoe UI">
+                    <TextBlock.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Regenerate" Click="RegenerateProjectGuid"></MenuItem>
+                            <MenuItem Header="Copy"></MenuItem>
+                        </ContextMenu>
+                    </TextBlock.ContextMenu>
+                </TextBlock>
+                <StackPanel Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right">
+                    <Button Style="{DynamicResource MetroCircleButtonStyle}" Width="28" Height="28" ToolTip="Regenerate" Click="RegenerateProjectGuid">
+                        <Rectangle Width="13" Height="15" Margin="0 0 0 0">
+                            <Rectangle.Fill>
+                                <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_refresh}" />
+                            </Rectangle.Fill>
+                        </Rectangle>
+                    </Button>
+                </StackPanel>
+            </Grid>
+
+            <TextBlock FontSize="24">Metadata</TextBlock>
+            <ListView ItemsSource="{Binding ProjectManager.CurrentProject.ProjectData.Metadata}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn CellTemplate="{StaticResource KeyTemplate}" Header="Key" Width="Auto"/>
+                        <GridViewColumn CellTemplate="{StaticResource ValueTemplate}" Header="Value" Width="Auto"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+        </StackPanel>
+    </Grid>
+</UserControl>

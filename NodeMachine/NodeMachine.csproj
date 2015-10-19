@@ -39,8 +39,8 @@
     </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Base-CityGeneration, Version=1.0.5739.32114, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Base-CityGeneration.1.0.5739.32114\lib\net46\Base-CityGeneration.dll</HintPath>
+    <Reference Include="Base-CityGeneration, Version=1.0.5769.30533, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Base-CityGeneration.1.0.5769.30533\lib\net46\Base-CityGeneration.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="BeautifulBlueprints, Version=0.0.33.0, Culture=neutral, processorArchitecture=MSIL">
@@ -55,24 +55,24 @@
       <HintPath>..\packages\Cassowary.4.0.0.0\lib\net35-Client\Cassowary.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Character Controllers, Version=1.0.5719.31018, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\character-controllers.1.0.5719.31018\lib\net46\Character Controllers.exe</HintPath>
+    <Reference Include="Character Controllers, Version=1.0.5763.26751, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\character-controllers.1.0.5763.26751\lib\net46\Character Controllers.exe</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Construct Gamemode, Version=1.0.5739.31702, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Construct-Gamemode.1.0.5739.31702\lib\net46\Construct Gamemode.dll</HintPath>
+    <Reference Include="Construct Gamemode, Version=1.0.5767.33118, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Construct-Gamemode.1.0.5767.33118\lib\net46\Construct Gamemode.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Dragablz, Version=0.0.2.123, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dragablz.0.0.2.123\lib\net45\Dragablz.dll</HintPath>
+    <Reference Include="Dragablz, Version=0.0.2.127, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dragablz.0.0.2.127\lib\net45\Dragablz.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="EpimetheusPlugins, Version=1.0.5735.28271, Culture=neutral, processorArchitecture=x86">
-      <HintPath>..\packages\EpimetheusPlugins.Testing.1.0.5735.28272\lib\net46\EpimetheusPlugins.dll</HintPath>
+    <Reference Include="EpimetheusPlugins, Version=1.0.5766.32682, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\EpimetheusPlugins.Testing.1.0.5766.32683\lib\net46\EpimetheusPlugins.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="EpimetheusPlugins.Testing, Version=1.0.5735.28272, Culture=neutral, processorArchitecture=x86">
-      <HintPath>..\packages\EpimetheusPlugins.Testing.1.0.5735.28272\lib\net46\EpimetheusPlugins.Testing.dll</HintPath>
+    <Reference Include="EpimetheusPlugins.Testing, Version=1.0.5766.32683, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\EpimetheusPlugins.Testing.1.0.5766.32683\lib\net46\EpimetheusPlugins.Testing.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="HandyCollections, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -91,9 +91,17 @@
       <HintPath>..\packages\Mercurial.Net.1.1.1.607\lib\net35-Client\Mercurial.Net.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.CodeAnalysis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeAnalysis.Common.1.0.0\lib\net45\Microsoft.CodeAnalysis.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.CSharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeAnalysis.CSharp.1.0.0\lib\net45\Microsoft.CodeAnalysis.CSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
-    <Reference Include="Myre, Version=6.2.0.0, Culture=neutral, processorArchitecture=x86">
-      <HintPath>..\packages\Myre.6.2.0.0\lib\net46\Myre.dll</HintPath>
+    <Reference Include="Myre, Version=6.3.0.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\Myre.6.3.0.0\lib\net46\Myre.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Myre.Debugging, Version=4.0.3.0, Culture=neutral, processorArchitecture=x86">
@@ -104,8 +112,8 @@
       <HintPath>..\packages\Myre.Entities.7.2.0.0\lib\net46\Myre.Entities.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Myre.Graphics, Version=6.3.0.0, Culture=neutral, processorArchitecture=x86">
-      <HintPath>..\packages\Myre.Graphics.6.3.0.0\lib\net46\Myre.Graphics.dll</HintPath>
+    <Reference Include="Myre.Graphics, Version=9.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\Myre.Graphics.9.0.0.0\lib\net46\Myre.Graphics.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -117,7 +125,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.1.1\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.1.2\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Placeholder, Version=3.1.1.0, Culture=neutral, processorArchitecture=x86">
@@ -132,8 +140,8 @@
       <HintPath>..\packages\Placeholder.AI.Pathfinding.9.1.0.0\lib\net46\Placeholder.AI.Pathfinding.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Placeholder.Audio2, Version=5.1.1.0, Culture=neutral, processorArchitecture=x86">
-      <HintPath>..\packages\Placeholder.Audio2.5.1.1.0\lib\net46\Placeholder.Audio2.dll</HintPath>
+    <Reference Include="Placeholder.Audio2, Version=5.2.4.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\Placeholder.Audio2.5.2.4.0\lib\net46\Placeholder.Audio2.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Placeholder.ConstructiveSolidGeometry, Version=9.1.0.0, Culture=neutral, processorArchitecture=x86">
@@ -148,8 +156,8 @@
       <HintPath>..\packages\Placeholder.Networking.2.1.1.0\lib\net46\Placeholder.Networking.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Placeholder.Serialization, Version=2.1.1.0, Culture=neutral, processorArchitecture=x86">
-      <HintPath>..\packages\Placeholder.Serialization.2.1.1.0\lib\net46\Placeholder.Serialization.dll</HintPath>
+    <Reference Include="Placeholder.Serialization, Version=2.2.0.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\Placeholder.Serialization.2.2.0.0\lib\net46\Placeholder.Serialization.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Poly2Tri, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
@@ -164,15 +172,19 @@
       <HintPath>..\packages\SharpYaml.1.5.1\lib\SharpYaml.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SupersonicSound, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SupersonicSound.2.0.0.0\lib\net46\SupersonicSound.dll</HintPath>
+    <Reference Include="SupersonicSound, Version=4.1.1.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\SupersonicSound.4.1.1.0\lib\net46\SupersonicSound.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SwizzleMyVectors, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SwizzleMyVectors.1.2.1.0\lib\net46\SwizzleMyVectors.dll</HintPath>
+    <Reference Include="SwizzleMyVectors, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SwizzleMyVectors.1.5.0.0\lib\net46\SwizzleMyVectors.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Collections.Immutable, Version=1.1.36.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Collections.Immutable.1.1.36\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Abstractions, Version=2.0.0.116, Culture=neutral, PublicKeyToken=d480b5b72fb413da, processorArchitecture=MSIL">
@@ -195,6 +207,10 @@
     </Reference>
     <Reference Include="System.Reactive.PlatformServices, Version=2.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Rx-PlatformServices.2.3.0-beta2\lib\net46\System.Reactive.PlatformServices.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Reflection.Metadata, Version=1.0.21.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reflection.Metadata.1.0.21\lib\portable-net45+win8\System.Reflection.Metadata.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Windows.Forms" />
@@ -248,6 +264,11 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="CancelDialogException.cs" />
+    <Compile Include="Compiler\BuildingBuilder.cs" />
+    <EmbeddedResource Include="Compiler\BuildingTemplate.cs" />
+    <Compile Include="Compiler\CompileSettings.cs" />
+    <Compile Include="Compiler\IBuilder.cs" />
+    <Compile Include="Compiler\ProjectCompiler.cs" />
     <Compile Include="Connection\IScreenCollection.cs" />
     <Compile Include="Connection\ITopology.cs" />
     <Compile Include="Connection\ScreenCollection.cs" />
@@ -286,6 +307,9 @@
     <Compile Include="View\Controls\CityEditor.xaml.cs">
       <DependentUpon>CityEditor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Controls\CompileControl.xaml.cs">
+      <DependentUpon>CompileControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Controls\FacadeEditor.xaml.cs">
       <DependentUpon>FacadeEditor.xaml</DependentUpon>
     </Compile>
@@ -321,6 +345,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Controls\CityEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Controls\CompileControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
