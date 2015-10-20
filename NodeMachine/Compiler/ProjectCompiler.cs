@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Base_CityGeneration.Elements.Building.Design;
+using EpimetheusPlugins.Scripts;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using NodeMachine.Model.Project;
@@ -130,12 +133,12 @@ namespace NodeMachine.Compiler
 
         internal static string BuildTagsList(IEnumerable<KeyValuePair<string, string>> tagsValues, ISet<string> outputTagNames)
         {
-            if (outputTagNames == null || outputTagNames.Count == 0)
+            if (tagsValues == null || !tagsValues.Any())
                 return "";
 
             var interfaces = new List<string>();
 
-            foreach (var interfaceName in tagsValues.Distinct().SelectMany(InterfaceNameForTag))
+            foreach (var interfaceName in tagsValues.Distinct().SelectMany(InterfaceNamesForTag))
             {
                 outputTagNames.Add(interfaceName);
                 interfaces.Add(interfaceName);
@@ -150,16 +153,19 @@ namespace NodeMachine.Compiler
             return str.Replace("\"", "\"\"");
         }
 
-        internal static IEnumerable<string> InterfaceNameForTag(KeyValuePair<string, string> tag)
+        private static IEnumerable<string> InterfaceNamesForTag(KeyValuePair<string, string> tag)
         {
+            var k = TaggingExtensions.CanonicalizeTagString(tag.Key);
+            var v = TaggingExtensions.CanonicalizeTagString(tag.Value);
+
             //Allows us to search for Key = Value
-            yield return string.Format("ITag_Key_{0}_Value_{1}", tag.Key, tag.Value);
+            yield return string.Format("ITag_Key_{0}_Value_{1}", k, v);
 
             //Allows us to search for HasKey(Key)
-            yield return string.Format("ITag_Key_{0}", tag.Key);
+            yield return string.Format("ITag_Key_{0}", k);
 
             //Allows us to search for HasValue(Value)
-            yield return string.Format("ITag_Value_{0}", tag.Value);
+            yield return string.Format("ITag_Value_{0}", v);
         }
     }
 }
