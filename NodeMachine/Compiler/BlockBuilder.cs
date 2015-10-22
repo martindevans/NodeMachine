@@ -1,22 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Base_CityGeneration.Elements.Building.Design;
+using Base_CityGeneration.Elements.Blocks.Spec;
 using NodeMachine.Model;
 
 namespace NodeMachine.Compiler
 {
-    public class BuildingBuilder
-        : BaseTemplatedScriptBuilder<Building, BuildingDesigner>
+    public class BlockBuilder
+        : BaseTemplatedScriptBuilder<Block, BlockSpec>
     {
-        public BuildingBuilder(Building building, string templateNamespace)
-            : base(building, "NodeMachine.Compiler.BuildingTemplate.cs", templateNamespace)
+        public BlockBuilder(Block block, string templateNamespace)
+            : base(block, "NodeMachine.Compiler.BlockTemplate.cs", templateNamespace)
         {
+            throw new NotImplementedException("Write the template referred to above");
         }
 
-        protected override BuildingDesigner Deserialize(Building input)
+        protected override BlockSpec Deserialize(Block input)
         {
-            return BuildingDesigner.Deserialize(new StringReader(input.Markup));
+            return BlockSpec.Deserialize(new StringReader(input.Markup));
         }
 
         protected override IEnumerable<KeyValuePair<string, string>> Tags()

@@ -39,8 +39,8 @@
     </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Base-CityGeneration, Version=1.0.5769.30533, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Base-CityGeneration.1.0.5769.30533\lib\net46\Base-CityGeneration.dll</HintPath>
+    <Reference Include="Base-CityGeneration, Version=1.0.5771.4717, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Base-CityGeneration.1.0.5771.4717\lib\net46\Base-CityGeneration.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="BeautifulBlueprints, Version=0.0.33.0, Culture=neutral, processorArchitecture=MSIL">
@@ -187,8 +187,8 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.IO.Abstractions, Version=2.0.0.116, Culture=neutral, PublicKeyToken=d480b5b72fb413da, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.IO.Abstractions.2.0.0.116\lib\net40\System.IO.Abstractions.dll</HintPath>
+    <Reference Include="System.IO.Abstractions, Version=2.0.0.117, Culture=neutral, PublicKeyToken=d480b5b72fb413da, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Abstractions.2.0.0.117\lib\net40\System.IO.Abstractions.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Numerics" />
@@ -265,6 +265,7 @@
     </ApplicationDefinition>
     <Compile Include="CancelDialogException.cs" />
     <Compile Include="Compiler\BaseTemplatedScriptBuilder.cs" />
+    <Compile Include="Compiler\BlockBuilder.cs" />
     <Compile Include="Compiler\BuildingBuilder.cs" />
     <EmbeddedResource Include="Compiler\BuildingTemplate.cs" />
     <Compile Include="Compiler\IBuilder.cs" />

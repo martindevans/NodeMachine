@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Base_CityGeneration.Elements.Building.Design;
@@ -58,14 +59,19 @@ namespace NodeMachine.Compiler
                 var compilation = CSharpCompilation.Create(
                     _project.ProjectData.Name,
                     syntaxTrees: trees,
-                    references: MetadataReferences(),
-                    options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary)
+                    references: References().Select(a => MetadataReference.CreateFromFile(a)),
+                    options: new CSharpCompilationOptions(
+                        outputKind: OutputKind.DynamicallyLinkedLibrary,
+                        optimizationLevel: OptimizationLevel.Release,
+                        platform: Platform.X86
+                    )
                 );
 
                 //Write compile result into memory
-                using (var ms = new MemoryStream())
+                using (var msDll = new MemoryStream())
+                using (var msPdb = new MemoryStream())
                 {
-                    var result = compilation.Emit(ms);
+                    var result = compilation.Emit(msDll, msPdb);
 
                     //If we fail, write out errors
                     if (!result.Success)
@@ -77,7 +83,9 @@ namespace NodeMachine.Compiler
 
                     //If we succeeded, write out results to dll
                     using (var file = File.Create(Path.Combine(dir, string.Format("{0}.dll", templateNamespace))))
-                        ms.CopyTo(file);
+                        msDll.CopyTo(file);
+                    using (var file = File.Create(Path.Combine(dir, string.Format("{0}.pdb", templateNamespace))))
+                        msPdb.CopyTo(file);
 
                     //Also write out the _Config.ini
                     using (var file = File.Create(Path.Combine(dir, "_Config.ini")))
@@ -101,17 +109,59 @@ namespace NodeMachine.Compiler
                 .Replace(" ", "_");
         }
 
-        private static IEnumerable<MetadataReference> MetadataReferences()
+        private static IEnumerable<string> References()
         {
-            var references = new MetadataReference[] {
-                MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
-                MetadataReference.CreateFromFile(typeof(Enumerable).Assembly.Location),
-                MetadataReference.CreateFromFile(typeof(BuildingDesigner).Assembly.Location),
-                MetadataReference.CreateFromFile(typeof(EpimetheusPlugins.Names).Assembly.Location),
-                MetadataReference.CreateFromFile(typeof(SharpYaml.IParser).Assembly.Location),
-                MetadataReference.CreateFromFile(typeof(Cassowary.CassowaryException).Assembly.Location),
-            };
-            return references;
+            //System
+            yield return typeof(object).Assembly.Location;
+            yield return typeof(Enumerable).Assembly.Location;
+
+            //Base-CityGeneration
+            yield return typeof(BuildingDesigner).Assembly.Location;
+            yield return typeof(Cassowary.CassowaryException).Assembly.Location;
+            yield return typeof(EpimetheusPlugins.Names).Assembly.Location;
+            yield return typeof(HandyCollections.RecentlyUsedQueue<>).Assembly.Location;
+            yield return typeof(ICSharpCode.SharpZipLib.SharpZipBaseException).Assembly.Location;
+            yield return typeof(Mercurial.AddCommand).Assembly.Location;
+            yield return typeof(Myre.ActionDisposable).Assembly.Location;
+            yield return typeof(Myre.Debugging.CommandAttribute).Assembly.Location;
+            yield return typeof(Myre.Entities.BehaviourData).Assembly.Location;
+            yield return typeof(Myre.Graphics.Camera).Assembly.Location;
+            yield return typeof(Newtonsoft.Json.ConstructorHandling).Assembly.Location;
+            yield return typeof(Ninject.ActivationException).Assembly.Location;
+            yield return typeof(NLog.GlobalDiagnosticsContext).Assembly.Location;
+            yield return typeof(Placeholder.Configuration).Assembly.Location;
+            yield return typeof(Placeholder.AI.Control.BehaviourTree.BaseStateHandlingNode).Assembly.Location;
+            yield return typeof(Placeholder.AI.Pathfinding.BasePathEnumerable<>).Assembly.Location;
+            yield return typeof(Placeholder.Audio2.Names).Assembly.Location;
+            yield return typeof(Placeholder.ConstructiveSolidGeometry.Configuration).Assembly.Location;
+            yield return typeof(Placeholder.Entities.Names).Assembly.Location;
+            yield return typeof(Placeholder.Networking.Names).Assembly.Location;
+            yield return typeof(Placeholder.Serialization.Configuration).Assembly.Location;
+            yield return typeof(Poly2Tri.P2T).Assembly.Location;
+            yield return typeof(SharpYaml.IParser).Assembly.Location;
+            yield return typeof(SupersonicSound.FmodException).Assembly.Location;
+            yield return typeof(SwizzleMyVectors.Matrix4x4Extensions).Assembly.Location;
+
+            ////Base-CityGeneration (Transitive Closure)
+            //var allCitygenReferences = new HashSet<Assembly>();
+            //var processingStack = new Stack<Assembly>();
+            //processingStack.Push(typeof(BuildingDesigner).Assembly);
+
+            ////Process until stack is empty
+            //while (processingStack.Count > 0)
+            //{
+            //    var a = processingStack.Pop();
+
+            //    if (allCitygenReferences.Add(a))
+            //    {
+            //        yield return a.Location;
+
+            //        foreach (var referencedAssembly in a.GetReferencedAssemblies())
+            //        {
+            //            //processingStack.Push(referencedAssembly.
+            //        }
+            //    }
+            //}
         }
 
         private static SyntaxTree TagToSyntaxTree(string iname, string templateNamespace)
