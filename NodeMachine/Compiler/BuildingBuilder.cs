@@ -29,7 +29,7 @@ namespace NodeMachine.Compiler
             return Input.Markup;
         }
 
-        protected override string Name()
+        public override string Name()
         {
             return Input.Name;
         }

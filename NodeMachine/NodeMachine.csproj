@@ -274,6 +274,7 @@
     <Compile Include="Connection\ITopology.cs" />
     <Compile Include="Connection\ScreenCollection.cs" />
     <Compile Include="Connection\Topology.cs" />
+    <Compile Include="Extensions\ZipInputStreamExtensions.cs" />
     <Compile Include="HSLColor.cs" />
     <Compile Include="Model\City.cs" />
     <Compile Include="Model\Facade.cs" />
@@ -413,6 +414,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Compiler\NodeMachinePluginTemplate.zip">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

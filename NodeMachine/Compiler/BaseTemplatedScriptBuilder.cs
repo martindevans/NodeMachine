@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 
 namespace NodeMachine.Compiler
 {
@@ -49,13 +47,13 @@ namespace NodeMachine.Compiler
 
         protected abstract string Markup();
 
-        protected abstract string Name();
+        public abstract string Name();
 
         protected abstract Guid Id();
 
         protected abstract string Description();
 
-        public SyntaxTree Build(ISet<string> tags)
+        public string Build(ISet<string> tags)
         {
             var template = 
 
@@ -79,7 +77,7 @@ namespace NodeMachine.Compiler
             if (template.Contains("TEMPLATED"))
                 throw new NotImplementedException("Programmer Error!");
 
-            return CSharpSyntaxTree.ParseText(template);
+            return template;
         }
     }
 }

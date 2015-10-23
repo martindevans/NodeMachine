@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
-using Base_CityGeneration.Elements.Building.Design;
+using System.Xml.Linq;
 using EpimetheusPlugins.Scripts;
+using ICSharpCode.SharpZipLib.Zip;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
+using NodeMachine.Extensions;
 using NodeMachine.Model.Project;
 
 namespace NodeMachine.Compiler
@@ -27,7 +27,7 @@ namespace NodeMachine.Compiler
             var templateNamespace = ToCSharpName(_project.ProjectData.Name);
 
             var tags = new HashSet<string>();
-            var trees = new List<SyntaxTree>();
+            var csharpFiles = new List<KeyValuePair<string, string>>();
 
             return await Task.Run(() => {
 
@@ -39,8 +39,14 @@ namespace NodeMachine.Compiler
                     return false;
                 }
 
+                //Unpack the project template into the directory
+                UnpackTemplate(dir);
+
                 foreach (var building in _project.ProjectData.Buildings)
-                    trees.Add(new BuildingBuilder(building, templateNamespace).Build(tags));
+                {
+                    var b = new BuildingBuilder(building, templateNamespace);
+                    csharpFiles.Add(new KeyValuePair<string, string>(b.Name() + ".cs", b.Build(tags)));
+                }
                 //foreach (var block in _project.ProjectData.Blocks)
                 //    trees.Add(new BlockBuilder(block, templateNamespace).Build(tags));
                 //foreach (var city in _project.ProjectData.Cities)
@@ -53,54 +59,47 @@ namespace NodeMachine.Compiler
                 //    trees.Add(new RoomBuilder(room, templateNamespace).Build(tags));
 
                 //Convert all the tags we've discovered into syntax trees of empty interfaces
-                trees.AddRange(tags.Select(t => TagToSyntaxTree(t, templateNamespace)));
+                csharpFiles.AddRange(tags.Select(t => new KeyValuePair<string, string>(t, TagToCSharpCode(t, templateNamespace))));
 
-                //Build ourselves a suitable compiler
-                var compilation = CSharpCompilation.Create(
-                    _project.ProjectData.Name,
-                    syntaxTrees: trees,
-                    references: References().Select(a => MetadataReference.CreateFromFile(a)),
-                    options: new CSharpCompilationOptions(
-                        outputKind: OutputKind.DynamicallyLinkedLibrary,
-                        optimizationLevel: OptimizationLevel.Release,
-                        platform: Platform.X86
-                    )
-                );
-
-                //Write compile result into memory
-                using (var msDll = new MemoryStream())
-                using (var msPdb = new MemoryStream())
+                //Output the files into the project directory
+                foreach (var fileSpec in csharpFiles)
                 {
-                    var result = compilation.Emit(msDll, msPdb);
-
-                    //If we fail, write out errors
-                    if (!result.Success)
+                    using (var f = File.Create(Path.Combine(dir, "NodeMachinePluginTemplate", fileSpec.Key)))
+                    using (var w = new StreamWriter(f))
                     {
-                        foreach (var diagnostic in result.Diagnostics.Where(a => a.IsWarningAsError || a.Severity == DiagnosticSeverity.Error))
-                            outputMessages.Add(string.Format("{0}: {1}", diagnostic.Id, diagnostic.GetMessage()));
-                        return false;
+                        w.Write(fileSpec.Value);
                     }
-
-                    //If we succeeded, write out results to dll
-                    using (var file = File.Create(Path.Combine(dir, string.Format("{0}.dll", templateNamespace))))
-                        msDll.CopyTo(file);
-                    using (var file = File.Create(Path.Combine(dir, string.Format("{0}.pdb", templateNamespace))))
-                        msPdb.CopyTo(file);
-
-                    //Also write out the _Config.ini
-                    using (var file = File.Create(Path.Combine(dir, "_Config.ini")))
-                    using (var writer = new StreamWriter(file))
-                    {
-                        writer.WriteLine("id={0}", _project.ProjectData.Guid);
-                        writer.WriteLine("load={0}.dll", templateNamespace);
-
-                        foreach (var metadataValue in _project.ProjectData.Metadata)
-                            writer.WriteLine("{0}={1}", metadataValue.Key, metadataValue.Value);
-                    }
-
-                    return true;
                 }
+
+                //Fill in template with file includes
+                var projPath = Path.Combine(dir, "NodeMachinePluginTemplate", "NodeMachinePluginTemplate.csproj");
+                var proj = XDocument.Load(projPath);
+
+                var compileItemGroup = proj.Root
+                                           .Elements(XName.Get("ItemGroup", "http://schemas.microsoft.com/developer/msbuild/2003"))
+                                           .Single(e => e.Elements(XName.Get("Compile", "http://schemas.microsoft.com/developer/msbuild/2003")).Any());
+
+                foreach (var fileSpec in csharpFiles)
+                {
+                    compileItemGroup.Add(new XElement(
+                        XName.Get("Compile", "http://schemas.microsoft.com/developer/msbuild/2003"),
+                        new XAttribute("Include", fileSpec.Key)
+                    ));
+                }
+
+                proj.Save(projPath, SaveOptions.None);
+
+                throw new NotImplementedException("Add _Config.ini as a CopyToOutputDirectory file");
+
+                return true;
             });
+        }
+
+        private static void UnpackTemplate(string dir)
+        {
+            var fs = new FileSystem();
+            using (ZipInputStream s = new ZipInputStream(fs.File.OpenRead(Path.Combine("Compiler" ,"NodeMachinePluginTemplate.zip"))))
+                s.UnpackToDirectory(dir, fs);
         }
 
         internal static string ToCSharpName(string str)
@@ -109,62 +108,7 @@ namespace NodeMachine.Compiler
                 .Replace(" ", "_");
         }
 
-        private static IEnumerable<string> References()
-        {
-            //System
-            yield return typeof(object).Assembly.Location;
-            yield return typeof(Enumerable).Assembly.Location;
-
-            //Base-CityGeneration
-            yield return typeof(BuildingDesigner).Assembly.Location;
-            yield return typeof(Cassowary.CassowaryException).Assembly.Location;
-            yield return typeof(EpimetheusPlugins.Names).Assembly.Location;
-            yield return typeof(HandyCollections.RecentlyUsedQueue<>).Assembly.Location;
-            yield return typeof(ICSharpCode.SharpZipLib.SharpZipBaseException).Assembly.Location;
-            yield return typeof(Mercurial.AddCommand).Assembly.Location;
-            yield return typeof(Myre.ActionDisposable).Assembly.Location;
-            yield return typeof(Myre.Debugging.CommandAttribute).Assembly.Location;
-            yield return typeof(Myre.Entities.BehaviourData).Assembly.Location;
-            yield return typeof(Myre.Graphics.Camera).Assembly.Location;
-            yield return typeof(Newtonsoft.Json.ConstructorHandling).Assembly.Location;
-            yield return typeof(Ninject.ActivationException).Assembly.Location;
-            yield return typeof(NLog.GlobalDiagnosticsContext).Assembly.Location;
-            yield return typeof(Placeholder.Configuration).Assembly.Location;
-            yield return typeof(Placeholder.AI.Control.BehaviourTree.BaseStateHandlingNode).Assembly.Location;
-            yield return typeof(Placeholder.AI.Pathfinding.BasePathEnumerable<>).Assembly.Location;
-            yield return typeof(Placeholder.Audio2.Names).Assembly.Location;
-            yield return typeof(Placeholder.ConstructiveSolidGeometry.Configuration).Assembly.Location;
-            yield return typeof(Placeholder.Entities.Names).Assembly.Location;
-            yield return typeof(Placeholder.Networking.Names).Assembly.Location;
-            yield return typeof(Placeholder.Serialization.Configuration).Assembly.Location;
-            yield return typeof(Poly2Tri.P2T).Assembly.Location;
-            yield return typeof(SharpYaml.IParser).Assembly.Location;
-            yield return typeof(SupersonicSound.FmodException).Assembly.Location;
-            yield return typeof(SwizzleMyVectors.Matrix4x4Extensions).Assembly.Location;
-
-            ////Base-CityGeneration (Transitive Closure)
-            //var allCitygenReferences = new HashSet<Assembly>();
-            //var processingStack = new Stack<Assembly>();
-            //processingStack.Push(typeof(BuildingDesigner).Assembly);
-
-            ////Process until stack is empty
-            //while (processingStack.Count > 0)
-            //{
-            //    var a = processingStack.Pop();
-
-            //    if (allCitygenReferences.Add(a))
-            //    {
-            //        yield return a.Location;
-
-            //        foreach (var referencedAssembly in a.GetReferencedAssemblies())
-            //        {
-            //            //processingStack.Push(referencedAssembly.
-            //        }
-            //    }
-            //}
-        }
-
-        private static SyntaxTree TagToSyntaxTree(string iname, string templateNamespace)
+        private static string TagToCSharpCode(string iname, string templateNamespace)
         {
             var template =
 @"namespace /*TEMPLATED_NAMESPACE*/
@@ -178,7 +122,7 @@ namespace NodeMachine.Compiler
                 .Replace("/*TEMPLATED_NAMESPACE*/", templateNamespace)
                 .Replace("/*TEMPLATED_INTERFACE_NAME*/", iname);
 
-            return CSharpSyntaxTree.ParseText(template);
+            return template;
         }
 
         internal static string BuildTagsList(IEnumerable<KeyValuePair<string, string>> tagsValues, ISet<string> outputTagNames)
