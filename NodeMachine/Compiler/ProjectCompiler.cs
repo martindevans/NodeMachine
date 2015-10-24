@@ -59,7 +59,7 @@ namespace NodeMachine.Compiler
                 //    trees.Add(new RoomBuilder(room, templateNamespace).Build(tags));
 
                 //Convert all the tags we've discovered into syntax trees of empty interfaces
-                csharpFiles.AddRange(tags.Select(t => new KeyValuePair<string, string>(t, TagToCSharpCode(t, templateNamespace))));
+                csharpFiles.AddRange(tags.Select(t => new KeyValuePair<string, string>(t + ".cs", TagToCSharpCode(t, templateNamespace))));
 
                 //Output the files into the project directory
                 foreach (var fileSpec in csharpFiles)
@@ -71,14 +71,36 @@ namespace NodeMachine.Compiler
                     }
                 }
 
-                //Fill in template with file includes
+                //Parse template project XML
                 var projPath = Path.Combine(dir, "NodeMachinePluginTemplate", "NodeMachinePluginTemplate.csproj");
                 var proj = XDocument.Load(projPath);
 
+                //Find the ItemGroup with Compile elements
                 var compileItemGroup = proj.Root
                                            .Elements(XName.Get("ItemGroup", "http://schemas.microsoft.com/developer/msbuild/2003"))
                                            .Single(e => e.Elements(XName.Get("Compile", "http://schemas.microsoft.com/developer/msbuild/2003")).Any());
 
+                //Find the ItemGroup with None elements
+                var noneItemGroup = proj.Root
+                                           .Elements(XName.Get("ItemGroup", "http://schemas.microsoft.com/developer/msbuild/2003"))
+                                           .Single(e => e.Elements(XName.Get("None", "http://schemas.microsoft.com/developer/msbuild/2003")).Any());
+
+                // Write out the _Config.ini as a None element with a copy command
+                using (var file = File.Create(Path.Combine(dir, Path.Combine("NodeMachinePluginTemplate", "_Config.ini"))))
+                using (var writer = new StreamWriter(file))
+                {
+                    writer.WriteLine("id={0}", _project.ProjectData.Guid);
+                    writer.WriteLine("load={0}.dll", templateNamespace);
+
+                    foreach (var metadataValue in _project.ProjectData.Metadata)
+                        writer.WriteLine("{0}={1}", metadataValue.Key, metadataValue.Value);
+                }
+                noneItemGroup.Add(new XElement(XName.Get("None", "http://schemas.microsoft.com/developer/msbuild/2003"),
+                    new XAttribute("Include", "_Config.ini"),
+                    new XElement(XName.Get("CopyToOutputDirectory", "http://schemas.microsoft.com/developer/msbuild/2003"), "PreserveNewest")
+                ));
+
+                //Add the Csharp files as Compile elements
                 foreach (var fileSpec in csharpFiles)
                 {
                     compileItemGroup.Add(new XElement(
@@ -88,8 +110,6 @@ namespace NodeMachine.Compiler
                 }
 
                 proj.Save(projPath, SaveOptions.None);
-
-                throw new NotImplementedException("Add _Config.ini as a CopyToOutputDirectory file");
 
                 return true;
             });
