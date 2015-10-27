@@ -1,0 +1,49 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Numerics;
+using Base_CityGeneration.Elements.Blocks;
+using Base_CityGeneration.Elements.Blocks.Spec;
+using Base_CityGeneration.Parcels.Parcelling;
+using EpimetheusPlugins.Procedural;
+using EpimetheusPlugins.Scripts;
+using Myre.Collections;
+
+namespace NM_/*TEMPLATED_NAMESPACE*/
+{
+    [Script("/*TEMPLATED_GUID*/", "/*TEMPLATED_DESCRIPTION*/")]
+    public class BlockTemplate_/*TEMPLATED_NAME*/
+        : BaseBlock /*TEMPLATED_TAGS*/
+    {
+        private readonly BlockSpec _spec;
+
+        public BlockTemplate_/*TEMPLATED_NAME*/()
+        {
+            _spec = BlockSpec.Deserialize(new StringReader(@"/*TEMPLATED_SCRIPT*/"));
+        }
+
+		public override bool Accept(Prism bounds, INamedDataProvider parameters)
+        {
+            return true;
+        }
+
+        protected override IEnumerable<Parcel> GenerateParcels(IEnumerable<Vector2> footprint)
+        {
+            return _spec.CreateParcels(new Parcel(footprint, footprint.Select(a => "road").ToArray()), Random, HierarchicalParameters);
+        }
+
+		protected override IEnumerable<KeyValuePair<Parcel, ISubdivisionContext>> CreateParcelNodes(Parcel[] parcels, float height)
+        {
+            foreach (var parcel in parcels)
+            {
+                var script = _spec.SelectLot(parcel, Random, HierarchicalParameters, (a, b) => ScriptReference.Find(a, b).Random((Func<double>)Random));
+
+                yield return new KeyValuePair<Parcel, ISubdivisionContext>(
+                    parcel,
+                    CreateChild(new Prism(height, parcel.Points()), Quaternion.Identity, Vector3.Zero, script)
+                );
+            }
+        }
+    }
+}

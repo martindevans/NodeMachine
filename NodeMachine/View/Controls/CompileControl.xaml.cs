@@ -9,7 +9,6 @@ using MahApps.Metro.Controls.Dialogs;
 using NodeMachine.Compiler;
 using NodeMachine.Model.Project;
 using Clipboard = System.Windows.Forms.Clipboard;
-using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
 using UserControl = System.Windows.Controls.UserControl;
 
 namespace NodeMachine.View.Controls

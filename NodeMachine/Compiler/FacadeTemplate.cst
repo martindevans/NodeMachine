@@ -1,0 +1,146 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Numerics;
+using Base_CityGeneration.Elements.Building.Facades;
+using BeautifulBlueprints.Elements;
+using BeautifulBlueprints.Layout;
+using BeautifulBlueprints.Layout.Svg;
+using BeautifulBlueprints.Serialization;
+using EpimetheusPlugins.Procedural;
+using EpimetheusPlugins.Scripts;
+using Myre.Collections;
+using Path = BeautifulBlueprints.Elements.Path;
+
+namespace NM_/*TEMPLATED_NAMESPACE*/
+{
+    [Script("/*TEMPLATED_GUID*/", "/*TEMPLATED_DESCRIPTION*/")]
+    public class FacadeTemplate_/*TEMPLATED_NAME*/
+        : BaseBuildingFacade, ILayoutContainer /*TEMPLATED_TAGS*/
+    {
+        private readonly ILayoutContainer _layout;
+
+        public string Description
+        {
+            get { return _layout.Description; }
+        }
+
+        public Guid Id
+        {
+            get { return _layout.Id; }
+        }
+
+        public FacadeTemplate_/*TEMPLATED_NAME*/()
+        {
+            _layout = Yaml.Deserialize(new StringReader(@"/*TEMPLATED_SCRIPT*/"));
+        }       
+
+        #region ILayout implementation
+        public IEnumerator<KeyValuePair<string, string>> GetEnumerator()
+        {
+            return _layout.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return ((IEnumerable)_layout).GetEnumerator();
+        }
+
+        public string this[string key]
+        {
+            get { return _layout[key]; }
+        }
+
+        public BaseElement Root
+        {
+            get { return _layout.Root; }
+        }
+        #endregion
+
+        public override bool Accept(Prism bounds, INamedDataProvider parameters)
+        {
+            return true;
+        }
+
+        public override void Subdivide(Prism bounds, ISubdivisionGeometry geometry, INamedDataCollection hierarchicalParameters)
+        {
+            //Layout the facade
+            var solution = Layout(Random, (decimal)Section.Width * 100, (decimal)bounds.Height * 100, _layout);
+
+            //Get the path elements from the layout (we don't care about other elements, ultimately they're just there to position paths correctly)
+            var paths = solution.Where(a => a.Tag is PathLayout).ToArray();
+
+            //Convert the paths to stamps and place them into the facade
+            var stamps = paths.SelectMany(a => Convert((PathLayout)a.Tag, (Path)a.Element));
+            foreach (var stamp in stamps)
+                AddStamp(stamp);
+        }
+
+        #region BeautifulBlueprints layout helpers
+        private static IEnumerable<Solver.Solution> Layout(Func<double> random, decimal width, decimal height, ILayoutContainer layout)
+        {
+            var solution = Solver.Solve(-width / 2m, width / 2m, height / 2m, -height / 2m, layout.Root, new Solver.SolverOptions(
+                subsectionFinder: CreateSubsectionFinder(random)
+            )).ToArray();
+
+            return solution;
+        }
+
+        private static Solver.SubsectionFinder CreateSubsectionFinder(Func<double> random)
+        {
+            return (name, tags) => {
+
+                //Find a layout container that matches these tags and select a random one
+                var c = ScriptReference.Find(tags, typeof(ILayoutContainer)).Random(random);
+
+                //Create an instance of this type and extract the root element
+                return ((ILayoutContainer)Activator.CreateInstance(c.Type)).Root;
+            };
+        }
+
+        private static IEnumerable<BaseFacade.Stamp> Convert(PathLayout path, Path element)
+        {
+            var shapes = ExtractShapes(path);
+
+            foreach (var shape in shapes)
+            {
+                yield return new BaseFacade.Stamp(
+                    (float)element.StartDepth,
+                    (float)(element.StartDepth + element.Thickness),
+                    element.Additive,
+                    element.Brush,
+                    shape.ToArray()
+                );
+            }
+        }
+
+        private static IEnumerable<IReadOnlyList<Vector2>> ExtractShapes(PathLayout path)
+        {
+            var collection = new List<List<Vector2>>();
+
+            List<Vector2> polygon = null;
+            foreach (var point in path.Points)
+            {
+                if (point.StartOfLine)
+                {
+                    if (polygon != null)
+                        collection.Add(polygon);
+                    polygon = new List<Vector2>();
+                }
+
+                // ReSharper disable PossibleNullReferenceException
+                var p = new Vector2((float)point.X / 100f, (float)point.Y / 100f);
+                if (!polygon.Contains(p))
+                    // ReSharper restore PossibleNullReferenceException
+                    polygon.Add(p);
+            }
+
+            if (polygon != null)
+                collection.Add(polygon);
+            return collection;
+        }
+        #endregion
+    }
+}

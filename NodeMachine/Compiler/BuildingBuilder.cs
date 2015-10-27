@@ -10,7 +10,7 @@ namespace NodeMachine.Compiler
         : BaseTemplatedScriptBuilder<Building, BuildingDesigner>
     {
         public BuildingBuilder(Building building, string templateNamespace)
-            : base(building, "NodeMachine.Compiler.BuildingTemplate.cs", templateNamespace)
+            : base(building, "NodeMachine.Compiler.BuildingTemplate.cst", templateNamespace)
         {
         }
 

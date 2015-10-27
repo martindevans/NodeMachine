@@ -68,12 +68,12 @@ namespace NodeMachine.View.Controls
             }
         }
 
-        private LayoutContainer Deserialize(string text)
+        private ILayoutContainer Deserialize(string text)
         {
             return Yaml.Deserialize(new StringReader(text));
         }
 
-        private Solver.Solution[] Layout(decimal width, decimal height, LayoutContainer layout)
+        private Solver.Solution[] Layout(decimal width, decimal height, ILayoutContainer layout)
         {
             var solution = Solver.Solve(-width / 2m, width / 2m, height / 2m, -height / 2m, layout.Root, new Solver.SolverOptions(
                 subsectionFinder: FindSubsection
@@ -85,7 +85,7 @@ namespace NodeMachine.View.Controls
         private readonly Random _random = new Random();
         private BaseElement FindSubsection(string name, KeyValuePair<string, string>[] tags)
         {
-            List<LayoutContainer> possibilities = new List<LayoutContainer>();
+            List<ILayoutContainer> possibilities = new List<ILayoutContainer>();
             foreach (var facade in ProjectDataModelCollection)
             {
                 var n = Deserialize(facade.Markup);

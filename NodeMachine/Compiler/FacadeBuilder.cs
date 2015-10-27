@@ -1,27 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Base_CityGeneration.Elements.Blocks.Spec;
+using BeautifulBlueprints.Layout;
+using BeautifulBlueprints.Serialization;
 using NodeMachine.Model;
 
 namespace NodeMachine.Compiler
 {
-    public class BlockBuilder
-        : BaseTemplatedScriptBuilder<Block, BlockSpec>
+    public class FacadeBuilder
+        : BaseTemplatedScriptBuilder<Facade, ILayoutContainer>
     {
-        public BlockBuilder(Block block, string templateNamespace)
-            : base(block, "NodeMachine.Compiler.BlockTemplate.cst", templateNamespace)
+        public FacadeBuilder(Facade building, string templateNamespace)
+            : base(building, "NodeMachine.Compiler.FacadeTemplate.cst", templateNamespace)
         {
         }
 
-        protected override BlockSpec Deserialize(Block input)
+        protected override ILayoutContainer Deserialize(Facade input)
         {
-            return BlockSpec.Deserialize(new StringReader(input.Markup));
+            return Yaml.Deserialize(new StringReader(input.Markup));
         }
 
         protected override IEnumerable<KeyValuePair<string, string>> Tags()
         {
-            return Deserialized.Tags;
+            return Deserialized;
         }
 
         protected override string Markup()

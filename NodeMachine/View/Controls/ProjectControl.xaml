@@ -154,6 +154,5 @@
         <Expander Tag="Floors" DataContext="{Binding ProjectManager.CurrentProject.ProjectData.Floors}" Template="{StaticResource ElementListTemplate}" />
         <Expander Tag="Rooms" DataContext="{Binding ProjectManager.CurrentProject.ProjectData.Rooms}" Template="{StaticResource ElementListTemplate}" />
         <Expander Tag="Facades" DataContext="{Binding ProjectManager.CurrentProject.ProjectData.Facades}" Template="{StaticResource ElementListTemplate}" />
-        <Expander Tag="Misc" DataContext="{Binding ProjectManager.CurrentProject.ProjectData.Misc}" Template="{StaticResource ElementListTemplate}" />
     </StackPanel>
 </UserControl>

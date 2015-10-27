@@ -1,0 +1,17 @@
+﻿using System.IO;
+using Base_CityGeneration.Elements.Building;
+using Base_CityGeneration.Elements.Building.Design;
+using EpimetheusPlugins.Scripts;
+
+namespace NM_/*TEMPLATED_NAMESPACE*/
+{
+    [Script("/*TEMPLATED_GUID*/", "/*TEMPLATED_DESCRIPTION*/")]
+    public class BuildingTemplate_/*TEMPLATED_NAME*/
+        : SpecBuildingContainer /*TEMPLATED_TAGS*/
+    {
+        public BuildingTemplate_/*TEMPLATED_NAME*/()
+            : base(BuildingDesigner.Deserialize(new StringReader(@"/*TEMPLATED_SCRIPT*/")))
+        {
+        }
+    }
+}
