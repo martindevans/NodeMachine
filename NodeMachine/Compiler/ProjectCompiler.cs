@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Abstractions;
 using System.Linq;
@@ -125,8 +126,11 @@ namespace NodeMachine.Compiler
 
         private static void UnpackTemplate(string dir)
         {
+            var bin = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            Debug.Assert(bin != null, "bin != null");
+
             var fs = new FileSystem();
-            using (ZipInputStream s = new ZipInputStream(fs.File.OpenRead(Path.Combine("Compiler" ,"NodeMachinePluginTemplate.zip"))))
+            using (ZipInputStream s = new ZipInputStream(fs.File.OpenRead(Path.Combine(bin, "Compiler" ,"NodeMachinePluginTemplate.zip"))))
                 s.UnpackToDirectory(dir, fs);
         }
 
