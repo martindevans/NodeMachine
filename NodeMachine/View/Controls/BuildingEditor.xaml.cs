@@ -87,7 +87,7 @@ namespace NodeMachine.View.Controls
         {
             Random r = new Random(seed);
             var m = new NamedBoxCollection();
-            Func<IEnumerable<KeyValuePair<string, string>>, Type[], EpimetheusPlugins.Scripts.ScriptReference> s = (a, b) => ScriptReferenceFactory.Create(null, Guid.Empty, string.Join(",", a));
+            Func<IEnumerable<KeyValuePair<string, string>>, Type[], EpimetheusPlugins.Scripts.ScriptReference> s = (a, b) => ScriptReferenceFactory.Create(typeof(NullScript), Guid.Empty, string.Join(",", a));
 
             var lot = Footprint();
 

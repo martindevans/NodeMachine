@@ -7,7 +7,7 @@ namespace NodeMachine.Model
     public class Floor
         : INotifyPropertyChanged
     {
-        private string _name;
+        private string _name = "Unnamed Floor";
         public string Name
         {
             get
@@ -17,6 +17,20 @@ namespace NodeMachine.Model
             set
             {
                 _name = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _markup;
+        public string Markup
+        {
+            get
+            {
+                return _markup;
+            }
+            set
+            {
+                _markup = value;
                 OnPropertyChanged();
             }
         }

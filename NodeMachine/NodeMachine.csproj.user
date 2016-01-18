@@ -4,6 +4,6 @@
     <ProjectView>ProjectFiles</ProjectView>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <StartArguments>C:\Users\Martin\Desktop\a.nmproj</StartArguments>
+    <StartArguments>"C:\Users\Martin\Documents\Heist2\Basic City Nmproj\a.nmproj"</StartArguments>
   </PropertyGroup>
 </Project>
