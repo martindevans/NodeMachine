@@ -10,10 +10,12 @@ namespace NodeMachine.ViewModel.Tabs
         : INotifyPropertyChanged
     {
         private readonly UIElement _content;
+        private readonly string _name;
 
-        public TabContent(UIElement content)
+        public TabContent(UIElement content, string name = null)
         {
             _content = content;
+            _name = name;
 
             var n = content as ITabName;
             if (n != null)
@@ -27,6 +29,10 @@ namespace NodeMachine.ViewModel.Tabs
         {
             get
             {
+                //Use the name explicitly set on this tab
+                if (_name != null)
+                    return _name;
+
                 //Try to use the tab name explicitly set on this item
                 var n = _content as ITabName;
                 if (n != null && !string.IsNullOrWhiteSpace(n.TabName))

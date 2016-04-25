@@ -25,7 +25,7 @@
                 <Setter Property="NewItemFactory" Value="{Binding NewItemFactory}" />
                 <Setter Property="ShowDefaultAddButton" Value="True" />
                 <Setter Property="ShowDefaultCloseButton" Value="True" />
-                <Setter Property="CustomHeaderItemTemplate">
+                <Setter Property="HeaderItemTemplate">
                     <Setter.Value>
                         <DataTemplate DataType="{x:Type common:TabContent}">
                             <TextBlock Text="{Binding TabName, Mode=OneWay}" />

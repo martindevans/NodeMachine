@@ -15,7 +15,6 @@ using System.Windows.Shapes;
 using Base_CityGeneration.Elements.Building.Design;
 using Base_CityGeneration.Elements.Building.Internals.Floors.Design;
 using Base_CityGeneration.Elements.Building.Internals.Floors.Plan;
-using Base_CityGeneration.Utilities;
 using EpimetheusPlugins.Testing.MockScripts;
 using Myre.Collections;
 using NodeMachine.Connection;
@@ -23,7 +22,6 @@ using NodeMachine.Model;
 using NodeMachine.Model.Project;
 using NodeMachine.ViewModel.Tabs;
 using SwizzleMyVectors.Geometry;
-using Section = Base_CityGeneration.Elements.Building.Internals.Floors.Design.Section;
 
 namespace NodeMachine.View.Controls
 {
@@ -32,7 +30,7 @@ namespace NodeMachine.View.Controls
     /// </summary>
     public partial class FloorEditor : BaseYamlEditorControl<Floor>, ITabName
     {
-        public IReadOnlyDictionary<string, IReadOnlyList<BasePolygonRegion<FloorplanRegion, Section>.Side>> Shapes { get { return FloorPlanShapes.Shapes; } }
+        public IReadOnlyDictionary<string, FloorPlanShape> Shapes { get { return FloorPlanShapes.Shapes; } }
 
         private Vector2 _canvasPosition;
         private Vector2 _previousMouse;
@@ -126,26 +124,34 @@ namespace NodeMachine.View.Controls
             GeneratingIndicator.IsBusy = false;
         }
 
-        private static Task<FloorPlan> GenerateLayout(FloorDesigner spec, Func<double> random, NamedBoxCollection metadata, IReadOnlyList<BasePolygonRegion<FloorplanRegion, Section>.Side> footprint)
+        private static Task<IFloorPlan> GenerateLayout(FloorDesigner spec, Func<double> random, NamedBoxCollection metadata, FloorPlanShape footprint)
         {
-            return Task<FloorPlan>.Factory.StartNew(() => {
-
+            return Task<IFloorPlan>.Factory.StartNew(() => {
                 Func<IEnumerable<KeyValuePair<string, string>>, Type[], EpimetheusPlugins.Scripts.ScriptReference> s = (a, b) => ScriptReferenceFactory.Create(typeof(NullScript), Guid.Empty, string.Join(",", a));
 
-                return spec.Design(random, metadata, s, footprint, 0.075f,
-                    new List<IReadOnlyList<Vector2>>(),
-                    new List<VerticalSelection>());
+                return spec.Design(
+                    random,
+                    metadata,
+                    s,
+                    footprint.Footprint,
+                    footprint.Subsections,
+                    0.075f,
+                    footprint.Verticals,
+
+                    //todo: verticals starting on this floor
+                    new List<VerticalSelection>()
+                );
             });
         }
 
         private static FloorDesigner Deserialize(string text, Func<double> random, INamedDataCollection metadata)
         {
-            return FloorDesigner.Deserialize(new StringReader(text), random, metadata);
+            return FloorDesigner.Deserialize(new StringReader(text));
         }
 
         protected override void SendToGame(object sender, RoutedEventArgs e)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         private void SeedChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -163,12 +169,11 @@ namespace NodeMachine.View.Controls
             Process.Start("https://bitbucket.org/martindevans/base-citygeneration/src/d90d4251cf2a0d11bea7242a56ae318713de1cf6/Base-CityGeneration/Elements/Building/Internals/Floors/Design/FloorSpec.md");
         }
 
-        private void DrawLayout(FloorPlan plan, int scale)
+        private void DrawLayout(IFloorPlan plan, int scale)
         {
             //Draw outline
             //todo: rewrite floorplan outline rendering to show external windows and doors
-            var outline = new Polygon
-            {
+            var outline = new Polygon {
                 Stroke = Brushes.Gray,
                 Fill = Brushes.Cornsilk,
                 StrokeThickness = 2
@@ -181,59 +186,54 @@ namespace NodeMachine.View.Controls
             foreach (var room in plan.Rooms)
             {
                 //Sections
-                foreach (var facade in room.GetFacades())
+                foreach (var facade in room.GetWalls())
                 {
-                    Brush c = Brushes.DarkBlue;
-                    if (facade.IsExternal && facade.Section.IsCorner)
-                        c = Brushes.Purple;
-                    else if (facade.IsExternal)
-                        c = Brushes.Green;
-                    else if (facade.Section.IsCorner)
-                        c = Brushes.CornflowerBlue;
-                    else if (facade.NeighbouringRoom != null)
-                        c = Brushes.Gray;
-
                     var facadePolygon = new Polygon {
-                        Stroke = c,
-                        StrokeThickness = 1
+                        Stroke = facade.IsExternal ? Brushes.Green : Brushes.CornflowerBlue,
+                        StrokeThickness = 1,
+                        Fill = Brushes.DeepSkyBlue
                     };
-                    facadePolygon.Points.Add(new Point(facade.Section.A.X * scale, facade.Section.A.Y * scale));
-                    facadePolygon.Points.Add(new Point(facade.Section.B.X * scale, facade.Section.B.Y * scale));
-                    facadePolygon.Points.Add(new Point(facade.Section.C.X * scale, facade.Section.C.Y * scale));
-                    facadePolygon.Points.Add(new Point(facade.Section.D.X * scale, facade.Section.D.Y * scale));
+                    facadePolygon.Points.Add(new Point(facade.Section.Inner1.X * scale, facade.Section.Inner1.Y * scale));
+                    facadePolygon.Points.Add(new Point(facade.Section.Inner2.X * scale, facade.Section.Inner2.Y * scale));
+                    facadePolygon.Points.Add(new Point(facade.Section.Outer1.X * scale, facade.Section.Outer1.Y * scale));
+                    facadePolygon.Points.Add(new Point(facade.Section.Outer2.X * scale, facade.Section.Outer2.Y * scale));
                     PreviewCanvas.Children.Add(facadePolygon);
                 }
 
-                var scr = room.Scripts.FirstOrDefault();
-                if (scr != null)
+                var fillPolygon = new Polygon {
+                    Stroke = null,
+                    Fill = Brushes.LightBlue
+                };
+                foreach (var vector2 in room.InnerFootprint)
+                    fillPolygon.Points.Add(new Point(vector2.X * scale, vector2.Y * scale));
+                PreviewCanvas.Children.Add(fillPolygon);
+
+                var middle = (room.InnerFootprint.Aggregate((a, b) => a + b) / room.InnerFootprint.Count) * scale;
+
+                var text = new TextBlock {
+                    Text = room.Id.ToString(),
+                    FontSize = 1.7f * scale / 2f,
+                    Foreground = Brushes.MidnightBlue,
+                    RenderTransform = new ScaleTransform(1, -1),
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                };
+
+                PreviewCanvas.Children.Add(text);
+                text.UpdateLayout();
+
+                var bound = BoundingRectangle.CreateFromPoints(room.OuterFootprint);
+                if (bound.Extent.Y > bound.Extent.X)
                 {
-                    var middle = (room.InnerFootprint.Aggregate((a, b) => a + b) / room.InnerFootprint.Count) * scale;
+                    var group = new TransformGroup();
+                    group.Children.Add(new ScaleTransform(-1, 1));
+                    group.Children.Add(new RotateTransform(270, text.ActualWidth / 2f, text.ActualHeight / 2f));
+                    group.Children.Add(new TranslateTransform(0, -text.ActualWidth * 1.25f));
 
-                    var text = new TextBlock() {
-                        Text = room.Name,
-                        FontSize = 1.7f * scale / 2f,
-                        Foreground = Brushes.MidnightBlue,
-                        RenderTransform = new ScaleTransform(1, -1),
-                        HorizontalAlignment = HorizontalAlignment.Center,
-                    };
-
-                    PreviewCanvas.Children.Add(text);
-                    text.UpdateLayout();
-
-                    var bound = BoundingRectangle.CreateFromPoints(room.OuterFootprint);
-                    if (bound.Extent.Y > bound.Extent.X)
-                    {
-                        var group = new TransformGroup();
-                        group.Children.Add(new ScaleTransform(-1, 1));
-                        group.Children.Add(new RotateTransform(270, text.ActualWidth / 2f, text.ActualHeight / 2f));
-                        group.Children.Add(new TranslateTransform(0, -text.ActualWidth * 1.25f));
-
-                        text.RenderTransform = group;
-                    }
-
-                    Canvas.SetLeft(text, middle.X - text.ActualWidth / 2f);
-                    Canvas.SetTop(text, middle.Y + text.ActualHeight / 2f);
+                    text.RenderTransform = group;
                 }
+
+                Canvas.SetLeft(text, middle.X - text.ActualWidth / 2f);
+                Canvas.SetTop(text, middle.Y + text.ActualHeight / 2f);
             }
         }
 
@@ -269,8 +269,6 @@ namespace NodeMachine.View.Controls
 
                 // Associate the transforms to the object 
                 PreviewCanvas.RenderTransform = group; 
-
-                Console.WriteLine(delta);
             }
         }
 
@@ -280,37 +278,73 @@ namespace NodeMachine.View.Controls
         }
     }
 
+    public class FloorPlanShape
+    {
+        public IReadOnlyList<Vector2> Footprint { get; private set; }
+
+        public IReadOnlyList<IReadOnlyList<Subsection>> Subsections { get; private set; }
+
+        public IReadOnlyList<IReadOnlyList<Vector2>> Verticals { get; private set; }
+
+        public FloorPlanShape(IReadOnlyList<Vector2> footprint, IReadOnlyList<IReadOnlyList<Subsection>> subsections, IReadOnlyList<IReadOnlyList<Vector2>> verticals)
+        {
+            Footprint = footprint;
+            Subsections = subsections;
+            Verticals = verticals;
+        }
+    }
+
     public static class FloorPlanShapes
     {
-        private static readonly FloorplanRegion.Side[] _rectangleWithWindow = {
-            new FloorplanRegion.Side(new Vector2(9, 0), new Vector2(9, -6), new Section[] {
-                new Section(0, 1, Section.Types.Window)
-            }),
-            new FloorplanRegion.Side(new Vector2(9, -6), new Vector2(0, -6), new Section[0]),
-            new FloorplanRegion.Side(new Vector2(0, -6), new Vector2(0, 0), new Section[0]),
-            new FloorplanRegion.Side(new Vector2(0, 0), new Vector2(9, 0), new Section[0]),
-        };
+        private static readonly FloorPlanShape _diagonalBendShape = new FloorPlanShape(
+            new[] {
+                new Vector2(10, 10), new Vector2(20, 0), new Vector2(23, 0), new Vector2(33, 10), new Vector2(43, 0),
+                new Vector2(28, -15), new Vector2(15, -15), new Vector2(0, 0)
+            },
+            new[] {
+                new Subsection[0],
+                new Subsection[0],
+                new Subsection[0],
+                new Subsection[0],
+                new Subsection[0],
+                new Subsection[0],
+                new Subsection[0],
+                new Subsection[0]
+            },
+            new Vector2[][] {
+            }
+        );
 
-        private static readonly FloorplanRegion.Side[] _rectangle = {
-            new FloorplanRegion.Side(new Vector2(9, 0), new Vector2(9, -6), new Section[0]),
-            new FloorplanRegion.Side(new Vector2(9, -6), new Vector2(0, -6), new Section[0]),
-            new FloorplanRegion.Side(new Vector2(0, -6), new Vector2(0, 0), new Section[0]),
-            new FloorplanRegion.Side(new Vector2(0, 0), new Vector2(9, 0), new Section[0]),
-        };
+        private static readonly FloorPlanShape _realFloorPlan = new FloorPlanShape(
+            new[] {
+                new Vector2(-25, 17),
+                new Vector2(0, 17),
+                new Vector2(3, 15),
+                new Vector2(33, 15),
+                new Vector2(38, 0),
+                new Vector2(-25, -25)
+            },
+            new[] {
+                new Subsection[0],
+                new Subsection[0],
+                new Subsection[0],
+                new Subsection[0],
+                new Subsection[0],
+                new Subsection[0]
+            },
+            new[] {
+                new[] {
+                    new Vector2(0, 0),
+                    new Vector2(7, 0),
+                    new Vector2(7, -7),
+                    new Vector2(0, -7),
+                }
+            }
+        );
 
-        private static readonly FloorplanRegion.Side[] _2Rectangles = {
-                new FloorplanRegion.Side(new Vector2(9, 5), new Vector2(9, -6), new Section[] { new Section(0, 1, Section.Types.Window) }),
-                new FloorplanRegion.Side(new Vector2(9, -6), new Vector2(0, -6), new Section[0]),
-                new FloorplanRegion.Side(new Vector2(0, -6), new Vector2(0, 0), new Section[0]),
-                new FloorplanRegion.Side(new Vector2(0, 0), new Vector2(-4, 0), new Section[0]),
-                new FloorplanRegion.Side(new Vector2(-4, 0), new Vector2(-4, 5), new Section[] { new Section(0, 1, Section.Types.Window) }),
-                new FloorplanRegion.Side(new Vector2(-4, 5), new Vector2(9, 5), new Section[0]),
-        };
-
-        public static readonly IReadOnlyDictionary<string, IReadOnlyList<BasePolygonRegion<FloorplanRegion, Section>.Side>> Shapes = new Dictionary<string, IReadOnlyList<BasePolygonRegion<FloorplanRegion, Section>.Side>> {
-            { "Rectangle (Window)", _rectangleWithWindow },
-            { "Rectangle", _rectangle },
-            { "2 Rectangles", _2Rectangles }
+        public static readonly IReadOnlyDictionary<string, FloorPlanShape> Shapes = new Dictionary<string, FloorPlanShape> {
+            { "Diagonal Bend", _diagonalBendShape },
+            { "Real Office Plan", _realFloorPlan }
         };
     }
 }

@@ -39,8 +39,8 @@
     </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Base-CityGeneration, Version=1.0.5861.31220, Culture=neutral, processorArchitecture=x86">
-      <HintPath>..\packages\Base-CityGeneration.1.0.5861.31220\lib\net46\Base-CityGeneration.exe</HintPath>
+    <Reference Include="Base-CityGeneration, Version=1.0.5959.31476, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\Base-CityGeneration.1.0.5959.31476\lib\net46\Base-CityGeneration.exe</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="BeautifulBlueprints, Version=0.0.39.0, Culture=neutral, processorArchitecture=MSIL">
@@ -51,73 +51,73 @@
       <HintPath>..\packages\BinarySearch.2.1.0.0\lib\net35-Client\BinarySearch.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Cassowary, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cassowary.4.0.0.0\lib\net35-Client\Cassowary.dll</HintPath>
+    <Reference Include="CGAL_StraightSkeleton_Dotnet, Version=3.0.2.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\CGAL_StraightSkeleton_Dotnet.3.0.2.0\lib\net46\CGAL_StraightSkeleton_Dotnet.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="CGAL_StraightSkeleton_Dotnet, Version=3.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <HintPath>..\packages\CGAL_StraightSkeleton_Dotnet.3.0.0.0\lib\net46\CGAL_StraightSkeleton_Dotnet.dll</HintPath>
+    <Reference Include="Character Controllers, Version=1.0.5940.2418, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\character-controllers.1.0.5940.2418\lib\net46\Character Controllers.exe</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Character Controllers, Version=1.0.5763.26751, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\character-controllers.1.0.5763.26751\lib\net46\Character Controllers.exe</HintPath>
+    <Reference Include="clipper_library, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Clipper.6.2.10\lib\net40\clipper_library.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Construct Gamemode, Version=1.0.5812.31304, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Construct-Gamemode.1.0.5812.31304\lib\net46\Construct Gamemode.dll</HintPath>
+    <Reference Include="Construct Gamemode, Version=1.0.5940.2793, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\Construct-Gamemode.1.0.5940.2793\lib\net46\Construct Gamemode.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Dragablz, Version=0.0.3.149, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dragablz.0.0.3.149\lib\net45\Dragablz.dll</HintPath>
+    <Reference Include="Dragablz, Version=0.0.3.160, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dragablz.0.0.3.160\lib\net45\Dragablz.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="EpimetheusPlugins, Version=1.0.5850.30806, Culture=neutral, processorArchitecture=x86">
-      <HintPath>..\packages\EpimetheusPlugins.Testing.1.0.5850.30808\lib\net46\EpimetheusPlugins.dll</HintPath>
+    <Reference Include="EpimetheusPlugins, Version=1.0.5954.27566, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\EpimetheusPlugins.1.0.5954.27566\lib\net46\EpimetheusPlugins.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="EpimetheusPlugins.Testing, Version=1.0.5850.30808, Culture=neutral, processorArchitecture=x86">
-      <HintPath>..\packages\EpimetheusPlugins.Testing.1.0.5850.30808\lib\net46\EpimetheusPlugins.Testing.dll</HintPath>
+    <Reference Include="EpimetheusPlugins.Testing, Version=1.0.5954.27569, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\EpimetheusPlugins.Testing.1.0.5954.27569\lib\net46\EpimetheusPlugins.Testing.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="FortuneVoronoi, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\FortuneVoronoi.4.0.0.0\lib\net46\FortuneVoronoi.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="HandyCollections, Version=4.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\HandyCollections.4.3.0.0\lib\net46\HandyCollections.dll</HintPath>
+    <Reference Include="HandyCollections, Version=5.8.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\HandyCollections.5.8.0.0\lib\net46\HandyCollections.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MahApps.Metro, Version=1.2.3.0, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
-      <HintPath>..\packages\MahApps.Metro.1.2.3.0\lib\net45\MahApps.Metro.dll</HintPath>
+    <Reference Include="MahApps.Metro, Version=1.2.4.0, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.1.2.4.0\lib\net45\MahApps.Metro.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Mercurial.Net, Version=1.1.1.607, Culture=neutral, PublicKeyToken=9e2fabf3af85dba9, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mercurial.Net.1.1.1.607\lib\net35-Client\Mercurial.Net.dll</HintPath>
+    <Reference Include="MathHelperRedux, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MathHelperRedux.1.0.0.0\lib\net452\MathHelperRedux.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
-    <Reference Include="Myre, Version=6.3.0.0, Culture=neutral, processorArchitecture=x86">
-      <HintPath>..\packages\Myre.6.3.0.0\lib\net46\Myre.dll</HintPath>
+    <Reference Include="Myre, Version=11.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\Myre.11.0.0.0\lib\net46\Myre.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Myre.Debugging, Version=4.0.3.0, Culture=neutral, processorArchitecture=x86">
-      <HintPath>..\packages\Myre.Debugging.4.0.3.0\lib\net46\Myre.Debugging.dll</HintPath>
+    <Reference Include="Myre.Debugging, Version=4.0.5.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\Myre.Debugging.4.0.5.0\lib\net46\Myre.Debugging.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Myre.Entities, Version=8.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <HintPath>..\packages\Myre.Entities.8.0.0.0\lib\net46\Myre.Entities.dll</HintPath>
+    <Reference Include="Myre.Entities, Version=12.5.0.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\Myre.Entities.12.5.0.0\lib\net46\Myre.Entities.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Myre.Graphics, Version=10.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <HintPath>..\packages\Myre.Graphics.10.0.0.0\lib\net46\Myre.Graphics.dll</HintPath>
+    <Reference Include="Myre.Graphics, Version=12.0.2.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\Myre.Graphics.12.0.2.0\lib\net46\Myre.Graphics.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
@@ -125,47 +125,47 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.2.3\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.3.1\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Placeholder, Version=3.1.1.0, Culture=neutral, processorArchitecture=x86">
-      <HintPath>..\packages\Placeholder.3.1.1.0\lib\net46\Placeholder.dll</HintPath>
+    <Reference Include="Placeholder, Version=3.2.0.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\Placeholder.3.2.0.0\lib\net46\Placeholder.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Placeholder.AI.Control, Version=14.1.1.0, Culture=neutral, processorArchitecture=x86">
-      <HintPath>..\packages\Placeholder.AI.Control.14.1.1.0\lib\net46\Placeholder.AI.Control.dll</HintPath>
+    <Reference Include="Placeholder.AI.Control, Version=15.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\Placeholder.AI.Control.15.0.0.0\lib\net46\Placeholder.AI.Control.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Placeholder.AI.Pathfinding, Version=9.2.1.0, Culture=neutral, processorArchitecture=x86">
-      <HintPath>..\packages\Placeholder.AI.Pathfinding.9.2.1.0\lib\net46\Placeholder.AI.Pathfinding.dll</HintPath>
+    <Reference Include="Placeholder.AI.Pathfinding, Version=11.3.0.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\Placeholder.AI.Pathfinding.11.3.0.0\lib\net46\Placeholder.AI.Pathfinding.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Placeholder.Audio2, Version=5.2.4.0, Culture=neutral, processorArchitecture=x86">
-      <HintPath>..\packages\Placeholder.Audio2.5.2.4.0\lib\net46\Placeholder.Audio2.dll</HintPath>
+    <Reference Include="Placeholder.Audio2, Version=5.2.8.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\Placeholder.Audio2.5.2.8.0\lib\net46\Placeholder.Audio2.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Placeholder.ConstructiveSolidGeometry, Version=11.1.1.0, Culture=neutral, processorArchitecture=x86">
-      <HintPath>..\packages\Placeholder.ConstructiveSolidGeometry.11.1.1.0\lib\net46\Placeholder.ConstructiveSolidGeometry.dll</HintPath>
+    <Reference Include="Placeholder.ConstructiveSolidGeometry, Version=13.0.2.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\Placeholder.ConstructiveSolidGeometry.13.0.2.0\lib\net46\Placeholder.ConstructiveSolidGeometry.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Placeholder.Entities, Version=2.1.0.0, Culture=neutral, processorArchitecture=x86">
-      <HintPath>..\packages\Placeholder.Entities.2.1.0.0\lib\net46\Placeholder.Entities.dll</HintPath>
+    <Reference Include="Placeholder.Entities, Version=2.1.2.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\Placeholder.Entities.2.1.2.0\lib\net46\Placeholder.Entities.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Placeholder.Networking, Version=2.1.1.0, Culture=neutral, processorArchitecture=x86">
-      <HintPath>..\packages\Placeholder.Networking.2.1.1.0\lib\net46\Placeholder.Networking.dll</HintPath>
+    <Reference Include="Placeholder.Networking, Version=2.2.2.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\Placeholder.Networking.2.2.2.0\lib\net46\Placeholder.Networking.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Placeholder.Serialization, Version=2.2.0.0, Culture=neutral, processorArchitecture=x86">
-      <HintPath>..\packages\Placeholder.Serialization.2.2.0.0\lib\net46\Placeholder.Serialization.dll</HintPath>
+    <Reference Include="Placeholder.Serialization, Version=3.0.2.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\Placeholder.Serialization.3.0.2.0\lib\net46\Placeholder.Serialization.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Poly2Tri, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Poly2Tri.1.0.1.0\lib\net35-Client\Poly2Tri.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="PrimitiveSvgBuilder, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\PrimitiveSvgBuilder.1.2.1.0\lib\net46\PrimitiveSvgBuilder.dll</HintPath>
+    <Reference Include="PrimitiveSvgBuilder, Version=1.2.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\PrimitiveSvgBuilder.1.2.2.0\lib\net46\PrimitiveSvgBuilder.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
@@ -184,15 +184,15 @@
       <HintPath>..\packages\SupersonicSound.4.1.1.0\lib\net46\SupersonicSound.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SwizzleMyVectors, Version=6.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SwizzleMyVectors.6.3.0.0\lib\net46\SwizzleMyVectors.dll</HintPath>
+    <Reference Include="SwizzleMyVectors, Version=6.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SwizzleMyVectors.6.5.0.0\lib\net46\SwizzleMyVectors.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.IO.Abstractions, Version=2.0.0.123, Culture=neutral, PublicKeyToken=d480b5b72fb413da, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.IO.Abstractions.2.0.0.123\lib\net40\System.IO.Abstractions.dll</HintPath>
+    <Reference Include="System.IO.Abstractions, Version=2.0.0.124, Culture=neutral, PublicKeyToken=d480b5b72fb413da, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Abstractions.2.0.0.124\lib\net40\System.IO.Abstractions.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Numerics" />
@@ -215,7 +215,7 @@
     </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\MahApps.Metro.1.2.3.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <HintPath>..\packages\MahApps.Metro.1.2.4.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Xml" />
@@ -226,35 +226,35 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
-    <Reference Include="websocket-sharp.clone, Version=1.0.2.27032, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\websocket-sharp.clone.2.0.0\lib\net45\websocket-sharp.clone.dll</HintPath>
+    <Reference Include="websocket-sharp.clone, Version=1.0.2.39869, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\websocket-sharp.clone.3.0.0\lib\net45\websocket-sharp.clone.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="Xceed.Wpf.AvalonDock, Version=2.6.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.2.6\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
+    <Reference Include="Xceed.Wpf.AvalonDock, Version=2.7.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.7\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Aero, Version=2.6.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.2.6\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Aero, Version=2.7.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.7\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Metro, Version=2.6.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.2.6\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Metro, Version=2.7.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.7\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010, Version=2.6.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.2.6\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010, Version=2.7.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.7\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Xceed.Wpf.DataGrid, Version=2.6.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.2.6\lib\net40\Xceed.Wpf.DataGrid.dll</HintPath>
+    <Reference Include="Xceed.Wpf.DataGrid, Version=2.7.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.7\lib\net40\Xceed.Wpf.DataGrid.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Xceed.Wpf.Toolkit, Version=2.6.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.2.6\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
+    <Reference Include="Xceed.Wpf.Toolkit, Version=2.7.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.7\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
@@ -291,6 +291,9 @@
     <Compile Include="Model\Project\ProjectData.cs" />
     <Compile Include="Model\Project\ProjectManager.cs" />
     <Compile Include="Model\ScriptReference.cs" />
+    <Compile Include="Ninject\GameModule.cs" />
+    <Compile Include="Ninject\ProjectModule.cs" />
+    <Compile Include="Ninject\TabModule.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ViewModel\Converter\BooleanInverter.cs" />
     <Compile Include="ViewModel\Converter\CapitalizeFirstLetterConverter.cs" />
@@ -439,12 +442,6 @@
     <Resource Include="Resources\NodeMachineIcon.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\WindowsIcons-license.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Entypo-license.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="boost_chrono-vc120-mt-gd-1_59.dll" />
     <Content Include="boost_system-vc120-mt-gd-1_59.dll" />
     <Content Include="boost_thread-vc120-mt-gd-1_59.dll" />
@@ -453,6 +450,8 @@
     <Content Include="CGAL_StraightSkeleton_Wrapper.dll" />
     <Content Include="libgmp-10.dll" />
     <Content Include="libmpfr-4.dll" />
+    <Resource Include="Resources\Entypo-license.txt" />
+    <Resource Include="Resources\WindowsIcons-license.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

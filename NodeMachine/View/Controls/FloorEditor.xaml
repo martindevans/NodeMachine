@@ -32,13 +32,13 @@
             <TextBox 
                     Grid.Column="0"
                     VerticalAlignment="Center"
-                    Text="{Binding Path=Value.Name, TargetNullValue='Unnamed Block', UpdateSourceTrigger=PropertyChanged}"
+                    Text="{Binding Path=Value.Name, TargetNullValue='Unnamed Floor', UpdateSourceTrigger=PropertyChanged}"
                     FontWeight="Light"
                     Foreground="{DynamicResource WindowTitleColorBrush}"
                     FontSize="24"
                     FontFamily="Segoe UI">
             </TextBox>
-            <Button Style="{DynamicResource MetroCircleButtonStyle}" Width="50" Height="50" Grid.Column="1" ToolTip="Add Block" Click="AddToProject" Visibility="{Binding Path=Unsaved, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Button Style="{DynamicResource MetroCircleButtonStyle}" Width="50" Height="50" Grid.Column="1" ToolTip="Add Floor" Click="AddToProject" Visibility="{Binding Path=Unsaved, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <Rectangle Width="25" Height="25">
                     <Rectangle.Fill>
                         <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_add}" />

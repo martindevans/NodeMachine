@@ -8,6 +8,7 @@ using NodeMachine.View;
 using NodeMachine.View.Controls;
 using NodeMachine.ViewModel.Tabs;
 using System.Windows;
+using NodeMachine.Ninject;
 
 namespace NodeMachine
 {
@@ -20,34 +21,38 @@ namespace NodeMachine
 
         public App()
         {
-            _container = new StandardKernel();
+            _container = new StandardKernel(
+                new TabModule(),
+                new ProjectModule(),
+                new GameModule()
+            );
         }
 
-        protected override void OnStartup(StartupEventArgs e)
+        protected override async void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
 
-            ConfigureContainer();
-            ComposeObjects();
-
-            LoadStartupFile(e, _container);
+            await SetupMainWindow(e);
 
             Current.MainWindow.Show();
         }
 
-        private void ConfigureContainer()
+        private async Task SetupMainWindow(StartupEventArgs startupEventArgs)
         {
-            _container.Bind<IGameConnection>().ToConstant(_container.Get<GameConnection>());
-            _container.Bind<IProjectManager>().ToConstant(_container.Get<ProjectManager>());
-
-            _container.Bind<IInterTabClient>().To<InterTabClient>();
-            _container.Bind<IInterLayoutClient>().To<InterLayoutClient>();
-        }
-
-        private void ComposeObjects()
-        {
+            //Create the main window
             Current.MainWindow = _container.Get<MainWindow>();
-            ((MainWindow)Current.MainWindow).TabContents.Add(new TabContent(_container.Get<NewTabControl>()));
+
+            //Check that there is a file arg
+            if (await LoadStartupFile(startupEventArgs))
+            {
+                //valid startup file specified and project loaded, show project tab
+                ((MainWindow)Current.MainWindow).TabContents.Add(new TabContent(_container.Get<ProjectControl>(), "Project"));
+            }
+            else
+            {
+                //No (valid) startup file specified, just show the new tab control
+                ((MainWindow)Current.MainWindow).TabContents.Add(new TabContent(_container.Get<NewTabControl>()));
+            }
         }
 
         protected override void OnExit(ExitEventArgs e)
@@ -57,23 +62,24 @@ namespace NodeMachine
             _container.Get<IGameConnection>().Disconnect();
         }
 
-        private void LoadStartupFile(StartupEventArgs e, IKernel container)
+        private async Task<bool> LoadStartupFile(StartupEventArgs e)
         {
             //Check that there is a file arg
             if (e.Args.Length == 0)
-                return;
+                return false;
 
             //Check the file really exists
             FileInfo file = new FileInfo(e.Args[0]);
             if (!file.Exists)
-                return;
+                return false;
 
             //Check that it has the right extension
             if (file.Extension != ".nmproj")
-                return;
+                return false;
 
-            var manager = container.Get<IProjectManager>();
-            Task.Run(() => manager.OpenProject(file.FullName)).Wait();
+            var manager = _container.Get<IProjectManager>();
+            await manager.OpenProject(file.FullName);
+            return true;
         }
     }
 }
